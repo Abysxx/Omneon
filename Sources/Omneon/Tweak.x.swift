@@ -12,15 +12,22 @@ struct Omneon: Tweak {
     static let version = "0.0.1"
     //I don't care about supporting certain app versions. at least right now
     init() {
-
+        //General
         if UserDefaults.removeExplicitIcon {
             RemoveExplicitIcon().activate()
         }
+        //NowPlaying
         if UserDefaults.hideAddButton {
             HideAddButton().activate()
         }
         if UserDefaults.hideBanButton {
             HideBanButton().activate()
+        }
+        if UserDefaults.hideExplore {
+            HideExplore().activate()
+        }
+        if UserDefaults.hideCredits {
+            HideCredits().activate()
         }
 
     }
