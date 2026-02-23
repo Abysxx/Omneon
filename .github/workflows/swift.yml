@@ -1,33 +1,74 @@
-import Orion
-import UIKit
-import SwiftUI
+name: Build Rootless Tweak
 
-struct RemoveExplicitIcon: HookGroup { }
+on:
+  workflow_dispatch:
 
-class SPTPlayerTrack_OmneonHook: ClassHook<NSObject> {
-  typealias Group = RemoveExplicitIcon
-  static let targetName = "SPTPlayerTrack"
+env:
+  SWIFTPROTOBUF_VERSION: "1.29.0"
 
-  func metadata() -> [String: String] {
-      var meta = orig.metadata()
-      meta["is_explicit"] = "false"
-      return meta
-  }
-}
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      THEOS: ${{ github.workspace }}/theos
+      THEOS_PACKAGE_SCHEME: rootless
 
-class SPTEncoreLabel_OmneonHook: ClassHook<UIView> {
-    typealias Group = RemoveExplicitIcon
-    static let targetName = "SPTEncoreLabel"
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
 
-    func isHidden() -> Bool {
-        let originalHidden = orig.isHidden()
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.2.0'
 
-        if target.accessibilityIdentifier == "Components.UI.ExplicitIcon",
-           originalHidden == false {
-            target.alpha = 0.0
-            return true
-        }
+      # Cache Theos
+      - name: Cache Theos
+        uses: actions/cache@v4
+        id: cache-theos
+        with:
+          path: theos
+          key: theos-cache-v1
 
-        return originalHidden
-    }
-}
+      - name: Setup Theos (if cache miss)
+        if: steps.cache-theos.outputs.cache-hit != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: theos/theos
+          path: theos
+          submodules: recursive
+
+      # Install deps
+      - name: Install Dependencies
+        run: |
+          brew install make dpkg ldid wget
+          echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH
+
+      # Cache SwiftProtobuf (rootless only)
+      - name: Cache SwiftProtobuf
+        uses: actions/cache@v4
+        id: cache-swiftprotobuf
+        with:
+          path: theos/lib/iphone/rootless/SwiftProtobuf.framework
+          key: swiftprotobuf-rootless-${{ env.SWIFTPROTOBUF_VERSION }}
+
+      - name: Install SwiftProtobuf (if cache miss)
+        if: steps.cache-swiftprotobuf.outputs.cache-hit != 'true'
+        run: |
+          mkdir swiftprotobuf && cd swiftprotobuf
+          wget https://github.com/whoeevee/swift-protobuf/releases/download/${{ env.SWIFTPROTOBUF_VERSION }}/org.swift.protobuf.swiftprotobuf_${{ env.SWIFTPROTOBUF_VERSION }}_iphoneos-arm64.deb
+          ar -x org.swift.protobuf.swiftprotobuf_${{ env.SWIFTPROTOBUF_VERSION }}_iphoneos-arm64.deb
+          tar -xvf data.tar.lzma
+          cp -r var/jb/Library/Frameworks/SwiftProtobuf.framework $THEOS/lib/iphone/rootless
+
+      # Build
+      - name: Build Rootless Package
+        run: make package FINALPACKAGE=1
+
+      # Upload
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: rootless-deb
+          path: packages/*.deb
+          if-no-files-found: error
