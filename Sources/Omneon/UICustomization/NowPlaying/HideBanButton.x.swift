@@ -7,24 +7,24 @@ struct HideBanButton: HookGroup { }
 class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIViewController> {
     typealias Group = HideBanButton
     static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
-    private let removeIndex: Int = 0
+    
+    private let hideIndex: Int = 1
 
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
 
         guard let root = target.view, root.subviews.count > 1 else { return }
-        let v = root.subviews[1]
+        let container = root.subviews[1]
 
-        guard let stack = v as? UIStackView else {
-            v.isHidden = true
+        guard let stack = container as? UIStackView else {
+            container.isHidden = true
             return
         }
-        let arrangedCopy = stack.arrangedSubviews
 
-        if arrangedCopy.count > removeIndex {
-            let toRemove = arrangedCopy[removeIndex]
-            stack.removeArrangedSubview(toRemove)
-            toRemove.removeFromSuperview()
+        if stack.arrangedSubviews.count > hideIndex {
+            let viewToHide = stack.arrangedSubviews[hideIndex]
+            viewToHide.isHidden = true
+            NSLog("[Fire] Hid arrangedSubview at index \(hideIndex)")
         }
     }
 }
