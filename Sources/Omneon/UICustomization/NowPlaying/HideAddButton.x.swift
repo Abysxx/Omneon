@@ -7,25 +7,23 @@ struct HideAddButton: HookGroup { }
 class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIViewController> {
     typealias Group = HideAddButton
     static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
-    private let removeIndex: Int = 1
+    
+    private let hideIndex: Int = 1
 
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
 
         guard let root = target.view, root.subviews.count > 1 else { return }
-        let v = root.subviews[1]
+        let container = root.subviews[1]
 
-        guard let stack = v as? UIStackView else {
-            v.isHidden = true
+        guard let stack = container as? UIStackView else {
+            container.isHidden = true
             return
         }
 
-        for (i, arranged) in stack.arrangedSubviews.enumerated() {
-            if i == removeIndex {
-                stack.removeArrangedSubview(arranged)
-                arranged.removeFromSuperview()
-                break
-            }
+        if stack.arrangedSubviews.count > hideIndex {
+            let viewToHide = stack.arrangedSubviews[hideIndex]
+            viewToHide.isHidden = true
         }
     }
 }
