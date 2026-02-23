@@ -18,3 +18,5 @@ remove_explicit_icon = "Remove/Hide Explicit Icon";
 
 hide_add_button = "Hide Add Button";
 hide_ban_button = "Hide Ban Button";
+hide_explore = "Hide Explore";
+hide_credits = "Hide Credits";
