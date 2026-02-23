@@ -6,6 +6,8 @@ extension UserDefaults {
     private static let removeExplicitIconKey = "removeExplicitIcon"
     private static let hideAddButtonKey = "hideAddButton"
     private static let hideBanButtonKey = "hideBanButton"
+    private static let hideExploreKey = "hideExplore"
+    private static let hideCreditsKey = "hideCredits"
 
     static var removeExplicitIcon: Bool {
         get {
@@ -31,6 +33,24 @@ extension UserDefaults {
         }
         set (hideBanButton) {
             container.set(hideBanButton, forKey: hideBanButtonKey)
+        }
+    }
+    
+    static var hideExplore: Bool {
+        get {
+            container.object(forKey: hideExploreKey) as? Bool ?? false
+        }
+        set (hideBanButton) {
+            container.set(hideExplore, forKey: hideExploreKey)
+        }
+    }
+    
+    static var hideCredits: Bool {
+        get {
+            container.object(forKey: hideCreditsKey) as? Bool ?? false
+        }
+        set (hideBanButton) {
+            container.set(hideCredits, forKey: hideCreditsKey)
         }
     }
 }
