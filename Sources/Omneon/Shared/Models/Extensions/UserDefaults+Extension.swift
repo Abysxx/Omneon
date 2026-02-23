@@ -4,8 +4,8 @@ extension UserDefaults {
     static var container: UserDefaults = .standard
 
     private static let removeExplicitIconKey = "removeExplicitIcon"
-    private static let hideAddButton = "hideAddButton"
-    private static let hideBanButton = "hideBanButton"
+    private static let hideAddButtonKey = "hideAddButton"
+    private static let hideBanButtonKey = "hideBanButton"
 
     static var removeExplicitIcon: Bool {
         get {
