@@ -16,6 +16,12 @@ struct Omneon: Tweak {
         if UserDefaults.removeExplicitIcon {
             RemoveExplicitIcon().activate()
         }
+        if UserDefaults.hideAddButton {
+            HideAddButton().activate()
+        }
+        if UserDefaults.hideBanButton {
+            HideBanButton().activate()
+        }
 
     }
 }
