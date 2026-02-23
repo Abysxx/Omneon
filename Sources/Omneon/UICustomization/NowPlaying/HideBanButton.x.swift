@@ -19,13 +19,12 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIViewContr
             v.isHidden = true
             return
         }
+        let arrangedCopy = stack.arrangedSubviews
 
-        for (i, arranged) in stack.arrangedSubviews.enumerated() {
-            if i == removeIndex {
-                stack.removeArrangedSubview(arranged)
-                arranged.removeFromSuperview()
-                break
-            }
+        if arrangedCopy.count > removeIndex {
+            let toRemove = arrangedCopy[removeIndex]
+            stack.removeArrangedSubview(toRemove)
+            toRemove.removeFromSuperview()
         }
     }
 }
