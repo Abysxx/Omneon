@@ -11,7 +11,7 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIView> {
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
 
-        let root = target else { return }
+        let root = target
         let subs = root.subviews
         guard subs.count > 1 else { return }
 
