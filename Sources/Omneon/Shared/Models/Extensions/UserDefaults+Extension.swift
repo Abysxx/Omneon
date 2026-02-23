@@ -38,7 +38,7 @@ extension UserDefaults {
     
     static var hideExplore: Bool {
         get {
-            container.object(forKey: hideExploreKey) as? Bool ?? false
+            container.object(forKey: hideExploreKey) as? Bool ?? true
         }
         set (hideBanButton) {
             container.set(hideExplore, forKey: hideExploreKey)
@@ -47,7 +47,7 @@ extension UserDefaults {
     
     static var hideCredits: Bool {
         get {
-            container.object(forKey: hideCreditsKey) as? Bool ?? false
+            container.object(forKey: hideCreditsKey) as? Bool ?? true
         }
         set (hideBanButton) {
             container.set(hideCredits, forKey: hideCreditsKey)
