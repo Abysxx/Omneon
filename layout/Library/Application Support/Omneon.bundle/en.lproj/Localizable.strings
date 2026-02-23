@@ -1,5 +1,7 @@
 /* MARK: Settings */
 customization = "Customization";
+general = "General";
+now_playing = "Now Playing";
 
 
 reset_data = "Reset Data";
@@ -13,3 +15,6 @@ restart_is_required_description = "App restart is required after changing.";
 // UI
 
 remove_explicit_icon = "Remove/Hide Explicit Icon";
+
+hide_add_button = "Hide Add Button";
+hide_ban_button = "Hide Ban Button";
