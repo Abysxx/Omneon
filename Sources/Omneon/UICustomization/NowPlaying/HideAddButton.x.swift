@@ -4,13 +4,26 @@ import SwiftUI
 
 struct HideAddButton: HookGroup { }
 
-class SPTPlayerTrack_OmneonHook_1: ClassHook<NSObject> {
-  typealias Group = HideAddButton
-  static let targetName = "SPTPlayerTrack"
+class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIView> {
+    typealias Group = HideAddButton
+    static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
 
-  func metadata() -> [String: String] {
-      var meta = orig.metadata()
-      meta["collection.can_add"] = "false"
-      return meta
-  }
+    func viewDidLayoutSubviews() {
+        orig.viewDidLayoutSubviews()
+
+        guard let root = target else { return }
+        let subs = root.subviews
+        guard subs.count > 1 else { return }
+
+        let v = subs[1]
+
+        if let stack = v as? UIStackView {
+            if let first = stack.arrangedSubviews.first {
+                stack.removeArrangedSubview(first)
+                first.removeFromSuperview()
+            }
+        } else {
+            v.isHidden = true
+        }
+    }
 }
