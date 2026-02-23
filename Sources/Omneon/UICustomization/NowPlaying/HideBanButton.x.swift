@@ -24,7 +24,6 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIViewContr
         if stack.arrangedSubviews.count > hideIndex {
             let viewToHide = stack.arrangedSubviews[hideIndex]
             viewToHide.isHidden = true
-            NSLog("[Fire] Hid arrangedSubview at index \(hideIndex)")
         }
     }
 }
