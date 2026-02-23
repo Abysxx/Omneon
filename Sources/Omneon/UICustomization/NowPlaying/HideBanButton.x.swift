@@ -8,7 +8,7 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIViewContr
     typealias Group = HideBanButton
     static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
     
-    private let hideIndex: Int = 1
+    private let hideIndex: Int = 0
 
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
