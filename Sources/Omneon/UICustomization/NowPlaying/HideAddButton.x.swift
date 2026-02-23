@@ -11,9 +11,7 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIViewContr
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
 
-        let root = target.view
-
-        guard let root = root, root.subviews.count > 1 else { return }
+        guard let root = target.view, root.subviews.count > 1 else { return }
 
         let v = root.subviews[1]
 
@@ -22,7 +20,7 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIViewContr
             return
         }
 
-        if stack.arrangedSubviews.count > 1 {
+        if stack.arrangedSubviews.count > 0 {
             let second = stack.arrangedSubviews[1]
             stack.removeArrangedSubview(second)
             second.removeFromSuperview()
