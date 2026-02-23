@@ -29,13 +29,26 @@ struct OmneonSettingsView: View {
 
             Button {
                 pushSettingsController(
-                    with: OmneonUISettingsView(),
-                    title: "customization".localized
+                    with: OmneonGeneralSettingsView(),
+                    title: "general".localized
                 )
             } label: {
                 NavigationSectionView(
                     color: Color(hex: "#64D2FF"),
-                    title: "customization".localized,
+                    title: "general".localized,
+                    imageSystemName: "paintpalette.fill"
+                )
+            }
+
+            Button {
+                pushSettingsController(
+                    with: OmneonNowPlayingSettingsView(),
+                    title: "now_playing".localized
+                )
+            } label: {
+                NavigationSectionView(
+                    color: Color(hex: "#64D2FF"),
+                    title: "now_playing".localized,
                     imageSystemName: "paintpalette.fill"
                 )
             }
