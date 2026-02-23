@@ -16,7 +16,7 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIViewContr
         let v = root.subviews[1]
 
         guard let stack = v as? UIStackView else {
-            v.isHidden = false
+            v.isHidden = true
             return
         }
 
