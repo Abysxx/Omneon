@@ -29,7 +29,7 @@ struct OmneonSettingsVersionView: View {
             if isUpdateAvailable {
                 Link(
                     "update_available".localized,
-                    destination: URL(string: "https://github.com/abysxx")!
+                    destination: URL(string: "https://github.com/abysxx/Omneon")!
                 )
             }
         } footer: {
