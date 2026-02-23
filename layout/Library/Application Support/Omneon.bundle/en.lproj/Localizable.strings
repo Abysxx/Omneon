@@ -1,0 +1,15 @@
+/* MARK: Settings */
+customization = "Customization";
+
+
+reset_data = "Reset Data";
+reset_data_description = "Clear cached data and restart the app.";
+
+checking_for_update = "Checking for Update...";
+update_available = "Update Available";
+
+restart_is_required_description = "App restart is required after changing.";
+
+// UI
+
+remove_explicit_icon = "Remove/Hide Explicit Icon";
