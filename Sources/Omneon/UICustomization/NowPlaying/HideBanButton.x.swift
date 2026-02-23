@@ -17,7 +17,6 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIViewContr
 
         guard let stack = v as? UIStackView else {
             v.isHidden = true
-            NSLog("[Fire] Expected UIStackView but got \(type(of: v)). Hidden instead.")
             return
         }
 
@@ -25,7 +24,6 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIViewContr
             let first = stack.arrangedSubviews[0]
             stack.removeArrangedSubview(first)
             first.removeFromSuperview()
-            NSLog("[Fire] Removed first arrangedSubview safely.")
         }
     }
 }
