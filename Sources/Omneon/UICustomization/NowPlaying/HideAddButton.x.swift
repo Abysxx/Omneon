@@ -4,7 +4,7 @@ import SwiftUI
 
 struct HideAddButton: HookGroup { }
 
-class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIView> {
+class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIView> {
     typealias Group = HideAddButton
     static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
 
@@ -12,18 +12,18 @@ class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIView> {
         orig.viewDidLayoutSubviews()
 
         let root = target
-        let subs = root.subviews
-        guard subs.count > 1 else { return }
+        guard root.subviews.count > 1 else { return }
 
-        let v = subs[1]
+        let v = root.subviews[1]
 
-        if let stack = v as? UIStackView {
-            if let first = stack.arrangedSubviews.first {
-                stack.removeArrangedSubview(first)
-                first.removeFromSuperview()
-            }
-        } else {
+        guard let stack = v as? UIStackView else {
             v.isHidden = true
+            return
+        }
+        if stack.arrangedSubviews.count > 1 {
+            let second = stack.arrangedSubviews[1]
+            stack.removeArrangedSubview(second)
+            second.removeFromSuperview()
         }
     }
 }
