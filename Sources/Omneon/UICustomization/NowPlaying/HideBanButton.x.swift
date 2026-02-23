@@ -4,27 +4,30 @@ import SwiftUI
 
 struct HideBanButton: HookGroup { }
 
-class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIView> {
-    typealias Group = HideAddButton
+class NowPlaying_ModesImpl_InformationElementsUnit_Hook_1: ClassHook<UIView> {
+    typealias Group = HideBanButton
     static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
 
     func viewDidLayoutSubviews() {
+
         orig.viewDidLayoutSubviews()
 
         let root = target
-        let subs = root.subviews
-        guard subs.count > 1 else { return }
 
-        let v = subs[1]
+        guard root.subviews.count > 1 else { return }
 
-        if let stack = v as? UIStackView {
-            if stack.arrangedSubviews.count > 1 {
-                let second = stack.arrangedSubviews[1]
-                stack.removeArrangedSubview(second)
-                second.removeFromSuperview()
-            }
-        } else {
+        let v = root.subviews[1]
+
+        guard let stack = v as? UIStackView else {
             v.isHidden = true
+            return
+        }
+
+        if stack.arrangedSubviews.count > 0 {
+            let first = stack.arrangedSubviews[0]
+            stack.removeArrangedSubview(first)
+            first.removeFromSuperview()
+
         }
     }
 }
