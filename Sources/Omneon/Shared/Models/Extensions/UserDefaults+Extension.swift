@@ -38,18 +38,18 @@ extension UserDefaults {
     
     static var hideExplore: Bool {
         get {
-            container.object(forKey: hideExploreKey) as? Bool ?? true
+            container.object(forKey: hideExploreKey) as? Bool ?? false
         }
-        set (hideBanButton) {
+        set (hideExplore) {
             container.set(hideExplore, forKey: hideExploreKey)
         }
     }
     
     static var hideCredits: Bool {
         get {
-            container.object(forKey: hideCreditsKey) as? Bool ?? true
+            container.object(forKey: hideCreditsKey) as? Bool ?? false
         }
-        set (hideBanButton) {
+        set (hideCredits) {
             container.set(hideCredits, forKey: hideCreditsKey)
         }
     }
