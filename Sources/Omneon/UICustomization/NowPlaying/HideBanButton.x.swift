@@ -4,13 +4,27 @@ import SwiftUI
 
 struct HideBanButton: HookGroup { }
 
-class SPTPlayerTrack_OmneonHook_2: ClassHook<NSObject> {
-  typealias Group = HideBanButton
-  static let targetName = "SPTPlayerTrack"
+class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIView> {
+    typealias Group = HideAddButton
+    static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
 
-  func metadata() -> [String: String] {
-      var meta = orig.metadata()
-      meta["collection.can_ban"] = "false"
-      return meta
-  }
+    func viewDidLayoutSubviews() {
+        orig.viewDidLayoutSubviews()
+
+        guard let root = target else { return }
+        let subs = root.subviews
+        guard subs.count > 1 else { return }
+
+        let v = subs[1]
+
+        if let stack = v as? UIStackView {
+            if stack.arrangedSubviews.count > 1 {
+                let second = stack.arrangedSubviews[1]
+                stack.removeArrangedSubview(second)
+                second.removeFromSuperview()
+            }
+        } else {
+            v.isHidden = true
+        }
+    }
 }
