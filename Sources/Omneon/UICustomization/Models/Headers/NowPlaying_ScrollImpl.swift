@@ -1,5 +1,5 @@
 import UIKit
-import foundation
+import Foundation
 
 // MARK: - Protocol for hooking ScrollCollectionViewWithDynamicSizing
 @objc protocol ScrollCollectionViewWithDynamicSizingProtocol {
