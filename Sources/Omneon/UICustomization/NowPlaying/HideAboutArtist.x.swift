@@ -1,27 +1,72 @@
 import Orion
 import UIKit
+import Foundation
 
-struct HideAboutArtist: HookGroup { }
+struct HideAboutArtist: HookGroup {}
 
-class ScrollCollectionViewHook_3: ClassHook<UICollectionView> {
+// Track the index path to hide
+var hiddenIndexPath: IndexPath? = nil
+
+class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideAboutArtist
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
     func layoutSubviews() {
         orig.layoutSubviews()
 
-        let targetIdentifier = "scrolling_npv_collection_view_cell_accessibility_identifier_1"
-
         for cell in target.visibleCells {
-            if cell.accessibilityIdentifier == targetIdentifier {
-                NSLog("[Fire] Found target cell, hiding it.")
+            if cell.subviews.contains(where: { subview in
+                subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView"})
+            }) {
+                if let indexPath = target.indexPath(for: cell) {
+                    if hiddenIndexPath != indexPath {
+                        hiddenIndexPath = indexPath
+                        target.collectionViewLayout.invalidateLayout()
+                    }
+                }
                 cell.isHidden = true
-                
-                // If you prefer full removal instead:
-                //if let indexPath = target.indexPath(for: cell) {
-                //     target.deleteItems(at: [indexPath])
-                // }
+                cell.isUserInteractionEnabled = false
+                break
             }
         }
+    }
+}
+
+class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
+    typealias Group = HideAboutArtist
+
+    // Match the layout used by the target collection view
+    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
+
+    @objc(layoutAttributesForElementsInRect:)
+    func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
+        guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
+        NSLog("[Omneon] \(hiddenIndexPath)")
+        if let hidden = hiddenIndexPath {
+            attrs = attrs.map { attr in
+                // Only target cells, not headers/footers/decorations
+                if attr.representedElementCategory == .cell && attr.indexPath == hidden {
+                    let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
+                    zeroed.frame = .zero
+                    zeroed.isHidden = true
+                    return zeroed
+                }
+                return attr
+            }
+        }
+        return attrs as NSArray
+    }
+
+    @objc(layoutAttributesForItemAtIndexPath:)
+    func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
+
+        if let hidden = hiddenIndexPath, indexPath == hidden {
+            let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
+            zeroed.frame = .zero
+            zeroed.isHidden = true
+            return zeroed
+        }
+        return attr
     }
 }
