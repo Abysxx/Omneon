@@ -37,6 +37,13 @@ struct OmneonNowPlayingSettingsView: View {
                         set: { UserDefaults.hideCredits = $0 }
                     )
                 )
+                Toggle(
+                    "hide_about_artist".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideAboutArtist },
+                        set: { UserDefaults.hideAboutArtist = $0 }
+                    )
+                )
             }
 
             NonIPadSpacerView()
