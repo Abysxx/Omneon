@@ -17,21 +17,17 @@ class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
             if cell.subviews[0].subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
                 cell.alpha = 0
                 cell.isUserInteractionEnabled = false
-                // if let indexPath = target.indexPath(for: cell) {
-                //     target.deleteItems(at: [indexPath])
-                // }
-                if let indexPath = target.indexPath(for: cell),
+                if let indexPath = target.indexPath(for: cell) {
+                     target.deleteItems(at: [indexPath])
+                }
+                target.UICollectionViewData._totalItemCount -= 1
+                /*if let indexPath = target.indexPath(for: cell),
                    let attributes = target.layoutAttributesForItem(at: indexPath) {
 
                     attributes.size = .zero
                     attributes.frame.size = .zero
-                }
+                }*/
             }
         }
     }
-    func reloadItems(at indexPaths: [IndexPath]) {
-        NSLog("[Omneon] reloadItems called with: \(indexPaths)")
-        orig.reloadItems(at: indexPaths)
-    }
-    
 }
