@@ -3,7 +3,7 @@ import UIKit
 
 struct HideExplore: HookGroup { }
 
-class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
+class ScrollCollectionViewHook_0: ClassHook<NSObject> {
     typealias Group = HideExplore
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
 
