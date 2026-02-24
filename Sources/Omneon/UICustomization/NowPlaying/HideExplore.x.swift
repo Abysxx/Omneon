@@ -9,19 +9,29 @@ class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
 
     func layoutSubviews() {
         orig.layoutSubviews()
-
-        let targetIdentifier = "scrolling_npv_collection_view_cell_accessibility_identifier_0"
-
+        
+        let targetIdentifier = "Components.UI.ArtistBioCardNowPlayingView"
+    
         for cell in target.visibleCells {
-            if cell.accessibilityIdentifier == targetIdentifier {
-                NSLog("[Fire] Found target cell, hiding it.")
-                cell.isHidden = true
-                
-                // If you prefer full removal instead:
+            // Probably unstable
+            if cell.subviews[0].subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
+                cell.alpha = 0
+                cell.isUserInteractionEnabled = false
                 // if let indexPath = target.indexPath(for: cell) {
                 //     target.deleteItems(at: [indexPath])
                 // }
+                if let indexPath = target.indexPath(for: cell),
+                   let attributes = target.layoutAttributesForItem(at: indexPath) {
+
+                    attributes.size = .zero
+                    attributes.frame.size = .zero
+                }
             }
         }
     }
+    func reloadItems(at indexPaths: [IndexPath]) {
+        NSLog("[Omneon] reloadItems called with: \(indexPaths)")
+        orig.reloadItems(at: indexPaths)
+    }
+    
 }
