@@ -26,7 +26,7 @@ struct OmneonSettingsView: View {
             OmneonSettingsVersionView()
 
             //
-
+            Section(footer: Text("restart_is_required_description".localized)){
             Button {
                 pushSettingsController(
                     with: OmneonGeneralSettingsView(),
@@ -52,7 +52,7 @@ struct OmneonSettingsView: View {
                     imageSystemName: "paintpalette.fill"
                 )
             }
-
+            }
 
             //
 
