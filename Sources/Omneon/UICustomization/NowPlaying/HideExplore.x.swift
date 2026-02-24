@@ -1,5 +1,6 @@
 import Orion
 import UIKit
+import Foundation
 
 struct HideExplore: HookGroup {}
 
