@@ -5,7 +5,7 @@ import Foundation
 struct HideExplore: HookGroup {}
 
 // Track the index path to hide
-var hiddenIndexPath: IndexPath? = nil
+var hiddenIndexPath_1: IndexPath? = nil
 
 class HideExplore_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideExplore
@@ -22,8 +22,8 @@ class HideExplore_CollectionViewHook: ClassHook<UICollectionView> {
             }) {
                 if let indexPath = target.indexPath(for: cell) {
                     // Only invalidate if the hidden path changed
-                    if hiddenIndexPath != indexPath {
-                        hiddenIndexPath = indexPath
+                    if hiddenIndexPath_1 != indexPath {
+                        hiddenIndexPath_1 = indexPath
                         target.collectionViewLayout.invalidateLayout()
                     }
                 }
@@ -44,8 +44,7 @@ class HideExplore_LayoutHook: ClassHook<UICollectionViewLayout> {
     @objc(layoutAttributesForElementsInRect:)
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        NSLog("[Omneon] \(hiddenIndexPath)")
-        if let hidden = hiddenIndexPath {
+        if let hidden = hiddenIndexPath_1 {
             attrs = attrs.map { attr in
                 // Only target cells, not headers/footers/decorations
                 if attr.representedElementCategory == .cell && attr.indexPath == hidden {
