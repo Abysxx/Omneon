@@ -5,22 +5,32 @@ struct HideExplore: HookGroup { }
 
 class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
     typealias Group = HideExplore
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
 
-    func layoutSubviews() {
+    // The class we want to hide
+    private let hiddenClassName = "WatchFeed_NPVProviderImpl.WatchFeedNPVView"
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         
-        orig.layoutSubviews()
-        
-        let targetIdentifier = "Components.UI.ArtistBioCardNowPlayingView"
-        
-        for cell in target.visibleCells {
-            if cell.subviews[0].subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
-                if let indexPath = target.indexPath(for: cell) {
-                    target.performBatchUpdates({
-                        target.deleteItems(at: [indexPath])
-                    }, completion: nil)
-                }
+        // Recursively check if any descendant view matches the class name
+        func containsHiddenClass(_ view: UIView) -> Bool {
+            let viewClassName = NSStringFromClass(type(of: view))
+            if viewClassName == hiddenClassName { return true }
+            for subview in view.subviews {
+                if containsHiddenClass(subview) { return true }
             }
+            return false
         }
+        
+        if containsHiddenClass(cell) {
+            cell.isHidden = true
+            cell.alpha = 0
+            cell.contentView.isHidden = true
+            cell.isUserInteractionEnabled = false
+            NSLog("[Omneon] Hiding cell at \(indexPath) because it contains \(hiddenClassName)")
+        }
+        
+        return cell
     }
 }
