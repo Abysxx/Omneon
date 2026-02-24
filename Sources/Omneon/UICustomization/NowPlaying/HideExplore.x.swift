@@ -17,10 +17,10 @@ class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
             if cell.subviews[0].subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
                 cell.alpha = 0
                 cell.isUserInteractionEnabled = false
-                if let indexPath = target.indexPath(for: cell) {
-                     target.deleteItems(at: [indexPath])
-                }
-                target.UICollectionViewData._totalItemCount -= 1
+                cell.isHidden = true
+                cell.contentView.isHidden = true
+                cell.setNeedsLayout()
+                cell.layoutIfNeeded()
                 /*if let indexPath = target.indexPath(for: cell),
                    let attributes = target.layoutAttributesForItem(at: indexPath) {
 
