@@ -3,25 +3,26 @@ import UIKit
 
 struct HideCredits: HookGroup { }
 
-class NowPlayingScrollLayoutHook: ClassHook<UICollectionViewLayout> {
+class ScrollCollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideCredits
-    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
-    func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let attributes = orig.layoutAttributesForElements(in: rect) else {
-            return nil
-        }
+    func layoutSubviews() {
+        orig.layoutSubviews()
 
-        for attr in attributes {
-            if let collectionView = target.collectionView,
-               let cell = collectionView.cellForItem(at: attr.indexPath),
-               cell.accessibilityIdentifier == "scrolling_npv_collection_view_cell_accessibility_identifier_2" {
+        let targetIdentifier = "scrolling_npv_collection_view_cell_accessibility_identifier_2"
 
-                attr.size = .zero
-                attr.frame.size = .zero
+        for cell in target.visibleCells {
+            if cell.accessibilityIdentifier == targetIdentifier {
+                cell.alpha = 0
+                cell.isUserInteractionEnabled = false
+                if let indexPath = target.indexPath(for: cell),
+                   let attributes = target.layoutAttributesForItem(at: indexPath) {
+
+                    attributes.size = .zero
+                    attributes.frame.size = .zero
+                }
             }
         }
-
-        return attributes
     }
 }
