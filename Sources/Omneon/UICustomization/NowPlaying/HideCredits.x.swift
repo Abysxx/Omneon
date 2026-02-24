@@ -18,9 +18,9 @@ class ScrollCollectionViewHook_2: ClassHook<UICollectionView> {
                 cell.isHidden = true
                 
                 // If you prefer full removal instead:
-                // if let indexPath = target.indexPath(for: cell) {
-                //     target.deleteItems(at: [indexPath])
-                // }
+                if let indexPath = target.indexPath(for: cell) {
+                     target.deleteItems(at: [indexPath])
+                }
             }
         }
     }
