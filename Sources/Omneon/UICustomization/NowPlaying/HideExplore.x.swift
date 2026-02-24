@@ -6,7 +6,7 @@ struct HideExplore: HookGroup {}
 // Track the index path to hide
 var hiddenIndexPath: IndexPath? = nil
 
-class ScrollCollectionViewHook: ClassHook<UICollectionView> {
+class HideExplore_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideExplore
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
@@ -34,7 +34,7 @@ class ScrollCollectionViewHook: ClassHook<UICollectionView> {
     }
 }
 
-class CollectionViewLayoutHook: ClassHook<UICollectionViewLayout> {
+class HideExplore_LayoutHook: ClassHook<UICollectionViewLayout> {
     typealias Group = HideExplore
 
     // Match the layout used by the target collection view
