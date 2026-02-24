@@ -23,11 +23,15 @@ struct Omneon: Tweak {
         if UserDefaults.hideBanButton {
             HideBanButton().activate()
         }
+        // NowPlaying Footer (ish)
         if UserDefaults.hideExplore {
             HideExplore().activate()
         }
         if UserDefaults.hideCredits {
             HideCredits().activate()
+        }
+        if UserDefaults.hideAboutArtist {
+            HideAboutArtist().activate()
         }
 
     }
