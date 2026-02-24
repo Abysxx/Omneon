@@ -5,7 +5,7 @@ import Foundation
 struct HideAboutArtist: HookGroup {}
 
 // Track the index path to hide
-var hiddenIndexPath: IndexPath? = nil
+var hiddenIndexPath_3: IndexPath? = nil
 
 class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideAboutArtist
@@ -13,14 +13,18 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
 
     func layoutSubviews() {
         orig.layoutSubviews()
+        
+        // Such a long name bruh
+        let targetClass: AnyClass = NSClassFromString("_TtC14Creator_ECMKitP33_9A9A9C9886A2DEDE51521D11F82E7F9026CreatorBiographyCardLayout")!
 
         for cell in target.visibleCells {
             if cell.subviews.contains(where: { subview in
-                subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView"})
+                subview.subviews.contains(where: { $0.isKind(of: targetClass) })
             }) {
                 if let indexPath = target.indexPath(for: cell) {
-                    if hiddenIndexPath != indexPath {
-                        hiddenIndexPath = indexPath
+                    // Only invalidate if the hidden path changed
+                    if hiddenIndexPath_1 != indexPath {
+                        hiddenIndexPath_1 = indexPath
                         target.collectionViewLayout.invalidateLayout()
                     }
                 }
@@ -41,8 +45,8 @@ class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     @objc(layoutAttributesForElementsInRect:)
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        NSLog("[Omneon] \(hiddenIndexPath)")
-        if let hidden = hiddenIndexPath {
+        NSLog("[Omneon] \(hiddenIndexPath_3)")
+        if let hidden = hiddenIndexPath_3 {
             attrs = attrs.map { attr in
                 // Only target cells, not headers/footers/decorations
                 if attr.representedElementCategory == .cell && attr.indexPath == hidden {
