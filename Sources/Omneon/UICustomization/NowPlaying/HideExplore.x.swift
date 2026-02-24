@@ -41,6 +41,7 @@ class HideExplore_LayoutHook: ClassHook<UICollectionViewLayout> {
     // Match the layout used by the target collection view
     static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
 
+    @objc(layoutAttributesForElementsInRect:)
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
         NSLog("[Omneon] \(hiddenIndexPath)")
