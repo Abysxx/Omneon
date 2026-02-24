@@ -41,7 +41,6 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
     @objc(layoutAttributesForElementsInRect:)
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        NSLog("[Omneon] \(hiddenIndexPath)")
         if let hidden = hiddenIndexPath {
             attrs = attrs.map { attr in
                 // Only target cells, not headers/footers/decorations
