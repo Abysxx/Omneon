@@ -6,5 +6,5 @@ Description: A Spotify tweak that adds more customization options *WIP*
 Maintainer: Abyss
 Author: Abyss
 Section: Tweaks
-Icon: /Icon.PNG
+Icon: https://github.com/Abysxx/Omneon/blob/main/Icon.PNG?raw=true
 Depends: ${ORION}, firmware (>= 12.2)
