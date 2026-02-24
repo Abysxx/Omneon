@@ -5,7 +5,7 @@ import Foundation
 struct HideCredits: HookGroup {}
 
 // Track the index path to hide
-var hiddenIndexPath: IndexPath? = nil
+var hiddenIndexPath_2: IndexPath? = nil
 
 class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideCredits
@@ -19,8 +19,8 @@ class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
                 subview.subviews.contains(where: { $0.accessibilityIdentifier == "TrackCredits.Card" })
             }) {
                 if let indexPath = target.indexPath(for: cell) {
-                    if hiddenIndexPath != indexPath {
-                        hiddenIndexPath = indexPath
+                    if hiddenIndexPath_2 != indexPath {
+                        hiddenIndexPath_2 = indexPath
                         target.collectionViewLayout.invalidateLayout()
                     }
                 }
@@ -41,7 +41,7 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
     @objc(layoutAttributesForElementsInRect:)
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        if let hidden = hiddenIndexPath {
+        if let hidden = hiddenIndexPath_2 {
             attrs = attrs.map { attr in
                 // Only target cells, not headers/footers/decorations
                 if attr.representedElementCategory == .cell && attr.indexPath == hidden {
@@ -60,7 +60,7 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
     func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
 
-        if let hidden = hiddenIndexPath, indexPath == hidden {
+        if let hidden = hiddenIndexPath_2, indexPath == hidden {
             let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
             zeroed.frame = .zero
             zeroed.isHidden = true
