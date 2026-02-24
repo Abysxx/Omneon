@@ -45,12 +45,14 @@ class HideExplore_LayoutHook: ClassHook<UICollectionViewLayout> {
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
         
+        NSLog("[Omneon] \(hiddenIndexPath)")
         if let hidden = hiddenIndexPath {
             attrs = attrs.map { attr in
                 if attr.indexPath == hidden {
                     let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
                     zeroed.frame = .zero
                     zeroed.isHidden = true
+                    NSLog("[Omneon] \(zeroed)")
                     return zeroed
                 }
                 return attr
@@ -67,6 +69,7 @@ class HideExplore_LayoutHook: ClassHook<UICollectionViewLayout> {
             let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
             zeroed.frame = .zero
             zeroed.isHidden = true
+            NSLog("[Omneon] \(zeroed)")
             return zeroed
         }
         return attr
