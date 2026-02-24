@@ -3,25 +3,25 @@ import UIKit
 
 struct HideCredits: HookGroup { }
 
-class ScrollCollectionViewHook_2: ClassHook<UICollectionView> {
+class NowPlayingScrollLayoutHook: ClassHook<UICollectionViewLayout> {
     typealias Group = HideCredits
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
+    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
 
-    func layoutSubviews() {
-        orig.layoutSubviews()
+    func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let attributes = orig.layoutAttributesForElements(in: rect) else {
+            return nil
+        }
 
-        let targetIdentifier = "scrolling_npv_collection_view_cell_accessibility_identifier_2"
+        for attr in attributes {
+            if let collectionView = target.collectionView,
+               let cell = collectionView.cellForItem(at: attr.indexPath),
+               cell.accessibilityIdentifier == "scrolling_npv_collection_view_cell_accessibility_identifier_2" {
 
-        for cell in target.visibleCells {
-            if cell.accessibilityIdentifier == targetIdentifier {
-                NSLog("[Fire] Found target cell, hiding it.")
-                cell.isHidden = true
-                
-                // If you prefer full removal instead:
-                if let indexPath = target.indexPath(for: cell) {
-                     target.deleteItems(at: [indexPath])
-                }
+                attr.size = .zero
+                attr.frame.size = .zero
             }
         }
+
+        return attributes
     }
 }
