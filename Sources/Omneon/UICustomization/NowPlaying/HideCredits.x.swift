@@ -16,7 +16,7 @@ class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
 
         for cell in target.visibleCells {
             if cell.subviews.contains(where: { subview in
-                subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView" })
+                subview.subviews.contains(where: { $0.accessibilityIdentifier == "TrackCredits.Card" })
             }) {
                 if let indexPath = target.indexPath(for: cell) {
                     if hiddenIndexPath != indexPath {
