@@ -8,40 +8,30 @@ class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
     func layoutSubviews() {
+        
         orig.layoutSubviews()
-
+        
         let targetIdentifier = "Components.UI.ArtistBioCardNowPlayingView"
-
-        var indexPathsToDelete: [IndexPath] = []
-
+        
         for cell in target.visibleCells {
-            guard let first = cell.subviews.first,
-                  let second = first.subviews.first,
-                  let third = second.subviews.first else { continue }
-
-            if third.accessibilityIdentifier == targetIdentifier {
-                cell.isHidden = true
+            // Probably unstable
+            if cell.subviews[0].subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
                 cell.alpha = 0
                 cell.isUserInteractionEnabled = false
+                cell.isHidden = true
                 cell.contentView.isHidden = true
-                if let indexPath = target.indexPath(for: cell) {
-                    indexPathsToDelete.append(indexPath)
+                cell.setNeedsLayout()
+                cell.layoutIfNeeded()
+                if let indexPath = target.indexPath(for: cell), let attributes = target.layoutAttributesForItem(at: indexPath) { 
+                    attributes.size = .zero
+                    attributes.frame.size = .zero
                 }
             }
         }
-        if !indexPathsToDelete.isEmpty {
-            target.performBatchUpdates({
-                for indexPath in indexPathsToDelete {
-                    target.deleteItems(at: [indexPath])
-                    if let collectionData = target.value(forKey: "UICollectionViewData") as? NSObject {
-                        let totalCountKey = "_totalItemCount"
-                        if let current = collectionData.value(forKey: totalCountKey) as? Int {
-                            collectionData.setValue(current - 1, forKey: totalCountKey)
-                        }
-                    }
-                }
-            }, completion: nil)
-        }
-        target.collectionViewLayout.invalidateLayout()
+    }
+    
+    func insertItems(at indexPaths: [IndexPath]) {
+        orig.insertItems(at: indexPaths)
+        NSLog("[Omneon] reloadItems: \(indexPaths)")
     }
 }
