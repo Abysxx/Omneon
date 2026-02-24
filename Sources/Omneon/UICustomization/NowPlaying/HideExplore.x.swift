@@ -14,24 +14,26 @@ class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
         let targetIdentifier = "Components.UI.ArtistBioCardNowPlayingView"
         
         for cell in target.visibleCells {
-            // Probably unstable
             if cell.subviews[0].subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
+                // Hide the cell
+                cell.isHidden = true
                 cell.alpha = 0
                 cell.isUserInteractionEnabled = false
-                cell.isHidden = true
                 cell.contentView.isHidden = true
-                cell.setNeedsLayout()
-                cell.layoutIfNeeded()
-                if let indexPath = target.indexPath(for: cell), let attributes = target.layoutAttributesForItem(at: indexPath) { 
-                    attributes.size = .zero
-                    attributes.frame.size = .zero
+                
+                // Force UICollectionView to treat it as zero size
+                if let indexPath = target.indexPath(for: cell),
+                   let layout = target.collectionViewLayout as? UICollectionViewFlowLayout {
+                    
+                    // Use invalidation to force the layout to recalc
+                    layout.invalidateLayout(with: UICollectionViewFlowLayoutInvalidationContext())
+                    
+                    // Optional: if using iOS 14+ self-sizing cells
+                    target.performBatchUpdates({
+                        target.reloadItems(at: [indexPath])
+                    }, completion: nil)
                 }
             }
         }
-    }
-    
-    func insertItems(at indexPaths: [IndexPath]) {
-        orig.insertItems(at: indexPaths)
-        NSLog("[Omneon] reloadItems: \(indexPaths)")
     }
 }
