@@ -65,7 +65,7 @@ class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
 
-        if let hidden = hiddenIndexPath, indexPath == hidden {
+        if let hidden = hiddenIndexPath_3, indexPath == hidden {
             let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
             zeroed.frame = .zero
             zeroed.isHidden = true
