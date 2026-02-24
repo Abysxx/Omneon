@@ -3,34 +3,40 @@ import UIKit
 
 struct HideExplore: HookGroup { }
 
-class ScrollCollectionViewHook_0: ClassHook<NSObject> {
+class ScrollCollectionViewHook_0: ClassHook<UICollectionView> {
     typealias Group = HideExplore
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
-    // The class we want to hide
-    private let hiddenClassName = "WatchFeed_NPVProviderImpl.WatchFeedNPVView"
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
+    func layoutSubviews() {
+        orig.layoutSubviews()
         
-        // Recursively check if any descendant view matches the class name
-        func containsHiddenClass(_ view: UIView) -> Bool {
-            let viewClassName = NSStringFromClass(type(of: view))
-            if viewClassName == hiddenClassName { return true }
-            for subview in view.subviews {
-                if containsHiddenClass(subview) { return true }
+        // Target class to check
+        let targetClass: AnyClass = NSClassFromString("WatchFeed_NPVProviderImpl.WatchFeedNPVView")!
+        
+        for cell in target.visibleCells {
+            // Look for subviews containing the target class
+            if cell.subviews.contains(where: { subview in
+                subview.subviews.contains(where: { $0.isKind(of: targetClass) })
+            }) {
+                // Hide the cell completely
+                cell.alpha = 0
+                cell.isHidden = true
+                cell.isUserInteractionEnabled = false
+                cell.contentView.isHidden = true
+
+                // Force layout updates
+                cell.setNeedsLayout()
+                cell.layoutIfNeeded()
+                
+                // Adjust layout attributes
+                if let indexPath = target.indexPath(for: cell),
+                   let attributes = target.layoutAttributesForItem(at: indexPath) {
+                    attributes.size = .zero
+                    attributes.frame = .zero
+                }
+                
+                break // only hide the first match
             }
-            return false
         }
-        
-        if containsHiddenClass(cell) {
-            cell.isHidden = true
-            cell.alpha = 0
-            cell.contentView.isHidden = true
-            cell.isUserInteractionEnabled = false
-            NSLog("[Omneon] Hiding cell at \(indexPath) because it contains \(hiddenClassName)")
-        }
-        
-        return cell
     }
 }
