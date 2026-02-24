@@ -1,10 +1,10 @@
 import Orion
 import UIKit
 
-struct HideCredits: HookGroup { }
+struct HideAboutArtist: HookGroup { }
 
 class ScrollCollectionViewHook_3: ClassHook<UICollectionView> {
-    typealias Group = HideCredits
+    typealias Group = HideAboutArtist
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
     func layoutSubviews() {
