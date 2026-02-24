@@ -1,31 +1,72 @@
 import Orion
 import UIKit
+import Foundation
 
-struct HideCredits: HookGroup { }
+struct HideCredits: HookGroup {}
 
-class ScrollCollectionViewHook: ClassHook<UICollectionView> {
+// Track the index path to hide
+var hiddenIndexPath: IndexPath? = nil
+
+class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
     func layoutSubviews() {
         orig.layoutSubviews()
 
-        // So apparently this changes and isn't the same everytime smh
-        //let targetIdentifier = "scrolling_npv_collection_view_cell_accessibility_identifier_2"
-        let targetIdentifier = "TrackCredits.Card"
-    
         for cell in target.visibleCells {
-            // Probably unstable
-            if cell.subviews[0].subviews[0].accessibilityIdentifier == targetIdentifier {
-                cell.alpha = 0
-                cell.isUserInteractionEnabled = false
-                if let indexPath = target.indexPath(for: cell),
-                   let attributes = target.layoutAttributesForItem(at: indexPath) {
-
-                    attributes.size = .zero
-                    attributes.frame.size = .zero
+            if cell.subviews.contains(where: { subview in
+                subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView" })
+            }) {
+                if let indexPath = target.indexPath(for: cell) {
+                    if hiddenIndexPath != indexPath {
+                        hiddenIndexPath = indexPath
+                        target.collectionViewLayout.invalidateLayout()
+                    }
                 }
+                cell.isHidden = true
+                cell.isUserInteractionEnabled = false
+                break
             }
         }
+    }
+}
+
+class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
+    typealias Group = HideCredits
+
+    // Match the layout used by the target collection view
+    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
+
+    @objc(layoutAttributesForElementsInRect:)
+    func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
+        guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
+        NSLog("[Omneon] \(hiddenIndexPath)")
+        if let hidden = hiddenIndexPath {
+            attrs = attrs.map { attr in
+                // Only target cells, not headers/footers/decorations
+                if attr.representedElementCategory == .cell && attr.indexPath == hidden {
+                    let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
+                    zeroed.frame = .zero
+                    zeroed.isHidden = true
+                    return zeroed
+                }
+                return attr
+            }
+        }
+        return attrs as NSArray
+    }
+
+    @objc(layoutAttributesForItemAtIndexPath:)
+    func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
+
+        if let hidden = hiddenIndexPath, indexPath == hidden {
+            let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
+            zeroed.frame = .zero
+            zeroed.isHidden = true
+            return zeroed
+        }
+        return attr
     }
 }
