@@ -27,10 +27,11 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         }
         return cell
     }
-
+    
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath == hiddenIndexPath_2 {
+            cell.layoutIfNeeded() // force full layout before capturing height
             hiddenCellHeight_2 = cell.bounds.height
             NSLog("[Omneon] hiddenCellHeight in willDisplay: \(cell.bounds.height)")
             cell.isHidden = true
@@ -43,7 +44,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         }
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
-
+    
     @objc(collectionView:layout:insetForSectionAtIndex:)
     func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insets = orig.collectionView(collectionView, layout: layout, insetForSectionAt: section)
