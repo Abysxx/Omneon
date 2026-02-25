@@ -27,7 +27,7 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
     
     func layoutSubviews() {
         orig.layoutSubviews()
-        
+        for cell in target.visibleCells {
             if containsIdentifier(cell, identifier: "Components.UI.ArtistBioCardNowPlayingView") {
             NSLog("[Omneon](1) Found accessibilityIdentifier")
             if let indexPath = target.indexPath(for: cell) {
@@ -43,7 +43,7 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
             }
         }
     }
-
+}
 
 class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     typealias Group = HideAboutArtist
