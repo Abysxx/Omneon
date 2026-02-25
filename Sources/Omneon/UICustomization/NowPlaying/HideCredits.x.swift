@@ -6,19 +6,6 @@ struct HideCredits: HookGroup {}
 
 var hiddenIndexPath_2: IndexPath? = nil
 
-
-func containsIdentifier(_ view: UIView, identifier: String) -> Bool {
-    if view.accessibilityIdentifier == identifier {
-        return true
-    }
-    for subview in view.subviews {
-        if containsIdentifier(subview, identifier: identifier) {
-            return true
-        }
-    }
-    return false
-}
-
 class HideCredits_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
