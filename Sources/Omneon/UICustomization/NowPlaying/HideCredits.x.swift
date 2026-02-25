@@ -13,7 +13,13 @@ class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
 
     func layoutSubviews() {
         orig.layoutSubviews()
-        NSLog("[Omneon] Delegate: \(NSStringFromClass(type(of: target.delegate as AnyObject)))")
+        var count: UInt32 = 0
+        if let methods = class_copyMethodList(NSClassFromString("NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"), &count) {
+            for i in 0..<Int(count) {
+                NSLog("[Omneon] Method: \(NSStringFromSelector(method_getName(methods[i])))")
+            }
+            free(methods)
+        }
         for cell in target.visibleCells {
             if cell.subviews.contains(where: { subview in
                 subview.subviews.contains(where: { $0.accessibilityIdentifier == "TrackCredits.Card" })
@@ -32,15 +38,3 @@ class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
     }
 }
 
-class HideCredits_DelegateHook: ClassHook<NSObject> {
-    typealias Group = HideCredits
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
-
-    @objc(collectionView:layout:sizeForItemAtIndexPath:)
-    func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath == hiddenIndexPath_2 {
-            return .zero
-        }
-        return orig.collectionView(collectionView, layout: layout, sizeForItemAt: indexPath)
-    }
-}
