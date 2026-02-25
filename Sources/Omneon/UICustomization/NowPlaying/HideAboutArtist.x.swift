@@ -52,10 +52,10 @@ class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     @objc(layoutAttributesForElementsInRect:)
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        // Testing
         if let hidden = hiddenIndexPath_3 {
             attrs = attrs.map { attr in
-                if attr.indexPath == hidden {
+                // Only target cells, not headers/footers/decorations
+                if attr.representedElementCategory == .cell && attr.indexPath == hidden {
                     let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
                     zeroed.frame = .zero
                     zeroed.isHidden = true
