@@ -29,9 +29,8 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
         orig.layoutSubviews()
         for cell in target.visibleCells {
             if containsIdentifier(cell, identifier: "Components.UI.ArtistBioCardNowPlayingView") {
-            NSLog("[Omneon](1) Found accessibilityIdentifier")
+            NSLog("[Omneon](1) Found ArtistBiography")
             if let indexPath = target.indexPath(for: cell) {
-                NSLog("[Omneon](2) \(indexPath)")
                     if hiddenIndexPath_3 != indexPath {
                         hiddenIndexPath_3 = indexPath
                         target.collectionViewLayout.invalidateLayout()
@@ -55,13 +54,14 @@ class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
         if let hidden = hiddenIndexPath_3 {
-            NSLog("[Omneon](3) \(hiddenIndexPath_3)")
             attrs = attrs.map { attr in
                 // Only target cells, not headers/footers/decorations
+                NSLog("[Omneon](2) \(attr)")
                 if attr.representedElementCategory == .cell && attr.indexPath == hidden {
                     let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
                     zeroed.frame = .zero
                     zeroed.isHidden = true
+                    NSLog("[Omneon](3) \(zeroed)")
                     return zeroed
                 }
                 return attr
