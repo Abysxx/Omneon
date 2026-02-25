@@ -61,6 +61,15 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
         return attrs as NSArray
     }
 
+    @objc(collectionView:layout:sizeForItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath == hiddenIndexPath_2 {
+            NSLog("[Omneon] CollectionView Attempt")
+            return .zero
+        }
+        return orig.collectionView(collectionView, layout: layout, sizeForItemAt: indexPath)
+    }
+
     @objc(layoutAttributesForItemAtIndexPath:)
     func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
