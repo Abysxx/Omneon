@@ -32,19 +32,15 @@ class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
     }
 }
 
-class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
+class HideCredits_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideCredits
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
 
-    // Match the layout used by the target collection view
-    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
-    @objc(prepareLayout)
-    func prepareLayout() {
-        orig.prepareLayout()
-        
-        if let hidden = hiddenIndexPath_2,
-           let attr = target.layoutAttributesForItem(at: hidden) {
-            attr.frame = .zero
-            attr.isHidden = true
+    @objc(collectionView:layout:sizeForItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath == HideCreditsState.hiddenIndexPath {
+            return .zero
         }
+        return orig.collectionView(collectionView, layout: layout, sizeForItemAt: indexPath)
     }
 }
