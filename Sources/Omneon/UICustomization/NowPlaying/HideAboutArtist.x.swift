@@ -7,17 +7,28 @@ struct HideAboutArtist: HookGroup {}
 // Track the index path to hide
 var hiddenIndexPath_3: IndexPath? = nil
 
+func containsIdentifier(_ view: UIView, identifier: String) -> Bool {
+    if view.accessibilityIdentifier == identifier {
+        return true
+    }
+    for subview in view.subviews {
+        if containsIdentifier(subview, identifier: identifier) {
+            return true
+        }
+    }
+    return false
+}
+
 class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideAboutArtist
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
 
+    
+    
     func layoutSubviews() {
         orig.layoutSubviews()
         
-        for cell in target.visibleCells {
-            if cell.subviews.contains(where: { subview in
-                subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView" })
-            }) {
+            if containsIdentifier(cell, identifier: "Components.UI.ArtistBioCardNowPlayingView") {
             NSLog("[Omneon](1) Found accessibilityIdentifier")
             if let indexPath = target.indexPath(for: cell) {
                 NSLog("[Omneon](2) \(indexPath)")
@@ -28,11 +39,10 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
                 }
                 cell.isHidden = true
                 cell.isUserInteractionEnabled = false
-                break
+                
             }
         }
     }
-}
 
 
 class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
