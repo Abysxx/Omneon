@@ -32,18 +32,25 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath == hiddenIndexPath_2 {
             cell.layoutIfNeeded()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                hiddenCellHeight_2 = cell.bounds.height
-                NSLog("[Omneon] delayed hiddenCellHeight: \(cell.bounds.height)")
-                collectionView.collectionViewLayout.invalidateLayout()
-            }
+            hiddenCellHeight_2 = cell.bounds.height
+            NSLog("[Omneon] Cell Height: \(cell.bounds.height)")
             cell.isHidden = true
+    
+            // Remove any previously added zero height constraints to avoid duplicates
+            cell.constraints.filter { $0.identifier == "HideCredits_ZeroHeight" }.forEach { $0.isActive = false }
             cell.contentView.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
             cell.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
+    
             let zeroHeight = cell.heightAnchor.constraint(equalToConstant: 0)
             zeroHeight.priority = .required
+            zeroHeight.identifier = "HideCredits_ZeroHeight"
             zeroHeight.isActive = true
             cell.layoutIfNeeded()
+    
+            // Invalidate layout to pick up correct height
+            DispatchQueue.main.async {
+                collectionView.collectionViewLayout.invalidateLayout()
+            }
         }
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
