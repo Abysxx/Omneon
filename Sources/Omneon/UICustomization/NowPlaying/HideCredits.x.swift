@@ -41,7 +41,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
             cell.contentView.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
             cell.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
     
-            let zeroHeight = cell.heightAnchor.constraint(equalToConstant: 0)
+            let zeroHeight = cell.heightAnchor.constraint(equalToConstant: 100)
             zeroHeight.priority = .required
             zeroHeight.identifier = "HideCredits_ZeroHeight"
             zeroHeight.isActive = true
@@ -59,7 +59,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insets = orig.collectionView(collectionView, layout: layout, insetForSectionAt: section)
         if hiddenIndexPath_2 != nil && hiddenCellHeight_2 > 0 {
-            insets.bottom -= hiddenCellHeight_2
+            insets.bottom -= (hiddenCellHeight_2 - 100)
         }
         return insets
     }
