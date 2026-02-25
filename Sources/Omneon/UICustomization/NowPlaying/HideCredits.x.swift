@@ -13,7 +13,7 @@ class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
 
     func layoutSubviews() {
         orig.layoutSubviews()
-        NSLog("[Omenon] Delegate: \(NSStringFromClass(type(of: target.delegate)))")
+        NSLog("[Omneon] Delegate: \(NSStringFromClass(type(of: target.delegate as AnyObject)))")
         for cell in target.visibleCells {
             if cell.subviews.contains(where: { subview in
                 subview.subviews.contains(where: { $0.accessibilityIdentifier == "TrackCredits.Card" })
