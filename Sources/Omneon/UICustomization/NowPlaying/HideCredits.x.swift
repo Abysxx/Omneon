@@ -37,47 +37,14 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
 
     // Match the layout used by the target collection view
     static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
-
-    @objc(layoutAttributesForElementsInRect:)
-    func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
-        guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        if let hidden = hiddenIndexPath_2 {
-            NSLog("[Omneon] hiddenIndexPath: \(hidden)")
-            attrs = attrs.map { attr in
-                // Only target cells, not headers/footers/decorations
-                if attr.representedElementCategory == .cell {
-                    NSLog("[Omneon] cell attr indexPath: \(attr.indexPath) frame: \(attr.frame)")
-                }
-                if attr.representedElementCategory == .cell && attr.indexPath == hidden {
-                    NSLog("[Omneon] ZEROING [0,3]")
-                    let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
-                    zeroed.frame = .zero
-                    zeroed.isHidden = true
-                    return zeroed
-                }
-                return attr
-            }
+    @objc(prepareLayout)
+    func prepareLayout() {
+        orig.prepareLayout()
+        
+        if let hidden = hiddenIndexPath_2,
+           let attr = target.layoutAttributesForItem(at: hidden) {
+            attr.frame = .zero
+            attr.isHidden = true
         }
-        return attrs as NSArray
-    }
-
-    @objc(collectionView:numberOfItemsInSection:)
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        NSLog("[Omneon] Yup")
-        let count = orig.collectionView(collectionView, numberOfItemsInSection: section)
-        return hiddenIndexPath_2 != nil ? count - 1 : count
-    }
-
-    @objc(layoutAttributesForItemAtIndexPath:)
-    func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
-
-        if let hidden = hiddenIndexPath_2, indexPath == hidden {
-            let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
-            zeroed.frame = .zero
-            zeroed.isHidden = true
-            return zeroed
-        }
-        return attr
     }
 }
