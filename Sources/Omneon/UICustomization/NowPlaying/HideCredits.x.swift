@@ -49,6 +49,7 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
                     NSLog("[Omneon] cell attr indexPath: \(attr.indexPath) frame: \(attr.frame)")
                 }
                 if attr.representedElementCategory == .cell && attr.indexPath == hidden {
+                    NSLog("[Omneon] ZEROING [0,3]")
                     let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
                     zeroed.frame = .zero
                     zeroed.isHidden = true
