@@ -14,20 +14,26 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
     func layoutSubviews() {
         orig.layoutSubviews()
         
-        if cell.subviews.contains(where: { subview in
-            subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView"})
-        }) {
+        for cell in target.visibleCells {
+            if cell.subviews.contains(where: { subview in
+                subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView" })
+            }) {
             NSLog("[Omneon](1) Found accessibilityIdentifier")
             if let indexPath = target.indexPath(for: cell) {
                 NSLog("[Omneon](2) \(indexPath)")
-                if hiddenIndexPath_3 != indexPath {
-                    hiddenIndexPath_3 = indexPath
-                    target.collectionViewLayout.invalidateLayout()
+                    if hiddenIndexPath_3 != indexPath {
+                        hiddenIndexPath_3 = indexPath
+                        target.collectionViewLayout.invalidateLayout()
+                    }
                 }
+                cell.isHidden = true
+                cell.isUserInteractionEnabled = false
+                break
             }
         }
     }
 }
+
 
 class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     typealias Group = HideAboutArtist
