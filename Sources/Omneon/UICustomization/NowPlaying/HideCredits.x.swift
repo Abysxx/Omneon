@@ -16,8 +16,6 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
-            hiddenCellHeight_2 = cell.bounds.height
-            NSLog("[Omneon] hiddenCellHeight: \(cell.bounds.height)")
             collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "HideCredits_EmptyCell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: "HideCredits_EmptyCell", for: indexPath)
         }
@@ -27,6 +25,8 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath == hiddenIndexPath_2 {
+            hiddenCellHeight_2 = cell.bounds.height
+            NSLog("[Omneon] hiddenCellHeight in willDisplay: \(cell.bounds.height)")
             cell.isHidden = true
             cell.contentView.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
             cell.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
