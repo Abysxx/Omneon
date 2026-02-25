@@ -13,17 +13,17 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // If we already know this is the hidden cell, skip orig entirely
+        // Overwrite the original registration once
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "TRACK_CREDITS")
+        
         if indexPath == hiddenIndexPath_2 {
-            collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "HideCredits_EmptyCell")
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "HideCredits_EmptyCell", for: indexPath)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "TRACK_CREDITS", for: indexPath)
         }
         
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
-            collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "HideCredits_EmptyCell")
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "HideCredits_EmptyCell", for: indexPath)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "TRACK_CREDITS", for: indexPath)
         }
         return cell
     }
