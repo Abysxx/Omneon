@@ -65,7 +65,7 @@ class HideCredits_LayoutHook: ClassHook<UICollectionViewLayout> {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         NSLog("[Omneon] Yup")
         let count = orig.collectionView(collectionView, numberOfItemsInSection: section)
-        return HideExploreState.hiddenIndexPath != nil ? count - 1 : count
+        return hiddenIndexPath_2 != nil ? count - 1 : count
     }
 
     @objc(layoutAttributesForItemAtIndexPath:)
