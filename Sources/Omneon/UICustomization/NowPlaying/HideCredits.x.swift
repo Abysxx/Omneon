@@ -5,6 +5,7 @@ import Foundation
 struct HideCredits: HookGroup {}
 
 var hiddenIndexPath_2: IndexPath? = nil
+var hiddenCellHeight_2: CGFloat = 0
 
 class HideCredits_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideCredits
@@ -15,6 +16,8 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
+            hiddenCellHeight_2 = cell.bounds.height
+            NSLog("[Omneon] hiddenCellHeight: \(cell.bounds.height)")
             collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "HideCredits_EmptyCell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: "HideCredits_EmptyCell", for: indexPath)
         }
@@ -25,16 +28,8 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath == hiddenIndexPath_2 {
             cell.isHidden = true
-            cell.contentView.constraints.forEach { constraint in
-                if constraint.firstAttribute == .height {
-                    constraint.isActive = false
-                }
-            }
-            cell.constraints.forEach { constraint in
-                if constraint.firstAttribute == .height {
-                    constraint.isActive = false
-                }
-            }
+            cell.contentView.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
+            cell.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
             let zeroHeight = cell.heightAnchor.constraint(equalToConstant: 0)
             zeroHeight.priority = .required
             zeroHeight.isActive = true
@@ -46,11 +41,8 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     @objc(collectionView:layout:insetForSectionAtIndex:)
     func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insets = orig.collectionView(collectionView, layout: layout, insetForSectionAt: section)
-        NSLog("[Omneon] itemSize: \((layout as? UICollectionViewFlowLayout)?.itemSize ?? .zero)")
-        NSLog("[Omneon] insets: \(insets)")
-        if hiddenIndexPath_2 != nil {
-            let itemSize = (layout as? UICollectionViewFlowLayout)?.itemSize ?? .zero
-            insets.bottom -= itemSize.height
+        if hiddenIndexPath_2 != nil && hiddenCellHeight_2 > 0 {
+            insets.bottom -= hiddenCellHeight_2
         }
         return insets
     }
