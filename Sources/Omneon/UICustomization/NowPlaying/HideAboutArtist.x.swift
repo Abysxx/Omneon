@@ -14,26 +14,17 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
     func layoutSubviews() {
         orig.layoutSubviews()
         
-        // Such a long name bruh
-        let targetClass: AnyClass = NSClassFromString("_TtC14Creator_ECMKitP33_9A9A9C9886A2DEDE51521D11F82E7F9026CreatorBiographyCardLayout")!
-
-        for cell in target.visibleCells {
-            if cell.subviews.contains(where: { subview in
-                subview.subviews.contains(where: { $0.isKind(of: targetClass) })
-            }) {
-                if let indexPath = target.indexPath(for: cell) {
-                    // Only invalidate if the hidden path changed
-                    if hiddenIndexPath_3 != indexPath {
-                        NSLog("[Omneon]Before \(hiddenIndexPath_3)")
-                        hiddenIndexPath_3 = indexPath
-                        target.collectionViewLayout.invalidateLayout()
-                    }
+        if cell.subviews.contains(where: { subview in
+            subview.subviews.contains(where: { $0.accessibilityIdentifier == "Components.UI.ArtistBioCardNowPlayingView"})
+        }) {
+            NSLog("[Omneon](1) Found accessibilityIdentifier")
+            if let indexPath = target.indexPath(for: cell) {
+                NSLog("[Omneon](2) \(indexPath)")
+                if hiddenIndexPath_3 != indexPath {
+                    hiddenIndexPath_3 = indexPath
+                    target.collectionViewLayout.invalidateLayout()
                 }
-                cell.isHidden = true
-                cell.isUserInteractionEnabled = false
-                break
             }
-        }
     }
 }
 
@@ -47,7 +38,7 @@ class HideAboutArtist_LayoutHook: ClassHook<UICollectionViewLayout> {
     func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
         guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
         if let hidden = hiddenIndexPath_3 {
-            NSLog("[Omneon]ElementFunc: \(hiddenIndexPath_3)")
+            NSLog("[Omneon](3) \(hiddenIndexPath_3)")
             attrs = attrs.map { attr in
                 // Only target cells, not headers/footers/decorations
                 if attr.representedElementCategory == .cell && attr.indexPath == hidden {
