@@ -4,6 +4,21 @@ import Foundation
 
 struct HideCredits: HookGroup {}
 
+var hiddenIndexPath_2: IndexPath? = nil
+
+
+func containsIdentifier(_ view: UIView, identifier: String) -> Bool {
+    if view.accessibilityIdentifier == identifier {
+        return true
+    }
+    for subview in view.subviews {
+        if containsIdentifier(subview, identifier: identifier) {
+            return true
+        }
+    }
+    return false
+}
+
 class HideCredits_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
@@ -11,8 +26,8 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
-        if findAccessibilityIdentifier(cell, identifier: "TrackCredits.Card") {
-            HideCreditsState.hiddenIndexPath = indexPath
+        if containsIdentifier(cell, identifier: "TrackCredits.Card") {
+            hiddenIndexPath_2 = indexPath
             collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "HideCredits_EmptyCell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: "HideCredits_EmptyCell", for: indexPath)
         }
@@ -21,7 +36,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
 
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath == HideCreditsState.hiddenIndexPath {
+        if indexPath == hiddenIndexPath_2 {
             cell.frame = .zero
             cell.isHidden = true
         }
