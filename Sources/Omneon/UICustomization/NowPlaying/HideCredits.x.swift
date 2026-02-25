@@ -38,7 +38,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
 
     @objc(collectionView:layout:sizeForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath == HideCreditsState.hiddenIndexPath {
+        if indexPath == hiddenIndexPath_2 {
             return .zero
         }
         return orig.collectionView(collectionView, layout: layout, sizeForItemAt: indexPath)
