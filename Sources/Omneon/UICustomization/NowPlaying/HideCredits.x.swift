@@ -10,9 +10,15 @@ var hiddenCellHeight_2: CGFloat = 0
 class HideCredits_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
-
+    
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // If we already know this is the hidden cell, skip orig entirely
+        if indexPath == hiddenIndexPath_2 {
+            collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "HideCredits_EmptyCell")
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "HideCredits_EmptyCell", for: indexPath)
+        }
+        
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
