@@ -25,6 +25,7 @@ class HideAboutArtist_CollectionViewHook: ClassHook<UICollectionView> {
                     target.collectionViewLayout.invalidateLayout()
                 }
             }
+        }
     }
 }
 
