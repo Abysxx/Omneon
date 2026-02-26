@@ -14,7 +14,7 @@ class NowPlaying_ModesImpl_FooterElementsUnit_Hook_2: ClassHook<UIViewController
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
 
-        guard let root = target.view
+        guard let root = target.view, root.subviews.count > 1 else { return }
         let container = root.subviews[0]
 
         guard let stack = container as? UIStackView else {
