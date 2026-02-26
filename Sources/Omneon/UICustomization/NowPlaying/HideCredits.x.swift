@@ -54,13 +54,17 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Omneon_EmptyCell")
         if indexPath == hiddenIndexPath_2 {
             NSLog("[Omneon] HideCredits returning empty cell for known index \(indexPath)")
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
+            let empty = collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
+            empty.restorationIdentifier = "Omneon_EmptyCell"
+            return empty
         }
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             NSLog("[Omneon] HideCredits found target in cellForItemAt \(indexPath), replacing")
             hiddenIndexPath_2 = indexPath
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
+            let empty = collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
+            empty.restorationIdentifier = "Omneon_EmptyCell"
+            return empty
         }
         return cell
     }
@@ -68,16 +72,21 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath == hiddenIndexPath_2 {
-            NSLog("[Omneon] HideCredits hiding cell at known index \(indexPath)")
-            cell.isHidden = true
-            cell.alpha = 0
-            cell.transform = CGAffineTransform(scaleX: 0, y: 0)
-            cell.superview?.bringSubviewToFront(cell)
-            cell.frame = .zero
-            cell.bounds = .zero
+            NSLog("[Omneon] HideCredits removing cell at known index \(indexPath)")
+            orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
+            DispatchQueue.main.async {
+                cell.removeFromSuperview()
+            }
+            return
+        }
+
+        // Skip our own empty cells
+        if cell.restorationIdentifier == "Omneon_EmptyCell" {
+            NSLog("[Omneon] HideCredits skipping own empty cell at \(indexPath)")
             orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
             return
         }
+
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             NSLog("[Omneon] HideCredits found target in willDisplay \(indexPath), reloading")
             hiddenIndexPath_2 = indexPath
@@ -85,6 +94,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
                 collectionView.reloadItems(at: [indexPath])
             }
         }
+
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
 }
