@@ -3,6 +3,10 @@ customization = "Customization";
 general = "General";
 now_playing = "Now Playing";
 
+// Sections/Other
+
+information_elements = "Information Elements";
+scroll_view_elements = "Scroll View Elements";
 
 reset_data = "Reset Data";
 reset_data_description = "Clear cached data and restart the app.";
@@ -21,3 +25,4 @@ hide_ban_button = "Hide Ban Button";
 hide_explore = "Hide Explore";
 hide_credits = "Hide Credits";
 hide_about_artist = "Hide About Artist";
+hide_lyrics_card = "Hide Lyrics";
