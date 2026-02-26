@@ -48,6 +48,8 @@ class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
                 }
             }
         }
-        NSLog(output)
+        let path = "/var/jb/var/mobile/Documents/omneon_dump.txt"
+        try? output.write(toFile: path, atomically: true, encoding: .utf8)
+        NSLog("[Omneon] Dump written to \(path)")
     }
 }
