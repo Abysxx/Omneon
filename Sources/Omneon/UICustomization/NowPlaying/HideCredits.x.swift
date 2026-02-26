@@ -10,10 +10,7 @@ func scanAndHideCredits(in collectionView: UICollectionView) {
     for cell in collectionView.visibleCells {
         if containsIdentifier(cell, identifier: "TrackCredits.Card"),
            let indexPath = collectionView.indexPath(for: cell) {
-            if hiddenIndexPath_2 != indexPath {
-                hiddenIndexPath_2 = indexPath
-                collectionView.reloadItems(at: [indexPath])
-            }
+            hiddenIndexPath_2 = indexPath
             break
         }
     }
