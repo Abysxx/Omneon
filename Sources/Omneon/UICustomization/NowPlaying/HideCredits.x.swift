@@ -98,3 +98,19 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
 }
+
+class HideCredits_CellHook: ClassHook<UICollectionViewCell> {
+    typealias Group = HideCredits
+    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollCellWithDynamicSizing"
+
+    func didMoveToSuperview() {
+        orig.didMoveToSuperview()
+        guard target.superview != nil else { return }
+        if containsIdentifier(target, identifier: "TrackCredits.Card") {
+            NSLog("[Omneon] HideCredits cell with TrackCredits.Card added to superview, removing")
+            DispatchQueue.main.async {
+                self.target.removeFromSuperview()
+            }
+        }
+    }
+}
