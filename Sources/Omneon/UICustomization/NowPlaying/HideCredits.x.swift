@@ -74,16 +74,17 @@ class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
 class HideCredits_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
-
+    
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Omneon_EmptyCell")
         if indexPath == hiddenIndexPath_2 {
-            return UICollectionViewCell()
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
         }
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
-            return UICollectionViewCell()
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
         }
         return cell
     }
