@@ -24,41 +24,10 @@ class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
     func nowPlayingScrollViewModelWithDidLoadComponents(for arg1: AnyObject, withDifferentProviders arg2: Bool, scrollEnabledValueChanged arg3: Bool) {
         orig.nowPlayingScrollViewModelWithDidLoadComponents(for: arg1, withDifferentProviders: arg2, scrollEnabledValueChanged: arg3)
 
-        guard let collectionView = target.value(forKey: "collectionView") as? UICollectionView else {
-            NSLog("[Omneon] Could not get collectionView")
-            return
-        }
-
-        // Log components to file
-        var output = "[Omneon] Loaded components:\n"
-        for section in 0..<collectionView.numberOfSections {
-            output += "  Section \(section) - \(collectionView.numberOfItems(inSection: section)) items\n"
-            for item in 0..<collectionView.numberOfItems(inSection: section) {
-                let indexPath = IndexPath(item: item, section: section)
-                if let cell = collectionView.cellForItem(at: indexPath) {
-                    output += "    [\(section),\(item)] class: \(NSStringFromClass(type(of: cell)))"
-                    if let id = cell.accessibilityIdentifier { output += " id: \(id)" }
-                    output += "\n"
-                    func logSubviews(_ view: UIView, indent: Int) {
-                        for subview in view.subviews {
-                            let pad = String(repeating: "  ", count: indent)
-                            output += "\(pad)- \(NSStringFromClass(type(of: subview)))"
-                            if let id = subview.accessibilityIdentifier { output += " id: \(id)" }
-                            output += "\n"
-                            logSubviews(subview, indent: indent + 1)
-                        }
-                    }
-                    logSubviews(cell, indent: 3)
-                } else {
-                    output += "    [\(section),\(item)] (not visible/loaded)\n"
-                }
-            }
-        }
-        let path = "/var/jb/var/mobile/Documents/omneon_dump.txt"
-        try? output.write(toFile: path, atomically: true, encoding: .utf8)
-        NSLog("[Omneon] Dump written to \(path)")
-
-        // Scan and hide
+    @objc(nowPlayingScrollViewModelWithDidLoadComponentsFor:withDifferentProviders:scrollEnabledValueChanged:)
+    func nowPlayingScrollViewModelWithDidLoadComponents(for arg1: AnyObject, withDifferentProviders arg2: Bool, scrollEnabledValueChanged arg3: Bool) {
+        orig.nowPlayingScrollViewModelWithDidLoadComponents(for: arg1, withDifferentProviders: arg2, scrollEnabledValueChanged: arg3)
+        guard let collectionView = target.value(forKey: "collectionView") as? UICollectionView else { return }
         scanAndHideCredits(in: collectionView)
     }
 
@@ -82,31 +51,28 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
             return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
         }
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
-        NSLog("[Omneon] cellForItemAt [\(indexPath.section),\(indexPath.item)] class: \(NSStringFromClass(type(of: cell))) subviews: \(cell.subviews.count) containsIdentifier: \(containsIdentifier(cell, identifier: "TrackCredits.Card"))")
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
             return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
         }
         return cell
     }
-
+    
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath == hiddenIndexPath_2 {
-            cell.layoutIfNeeded()
             cell.isHidden = true
-            cell.constraints.filter { $0.identifier == "HideCredits_ZeroHeight" }.forEach { $0.isActive = false }
-            cell.contentView.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
-            cell.constraints.forEach { $0.isActive = $0.firstAttribute != .height }
-            let zeroHeight = cell.heightAnchor.constraint(equalToConstant: 0)
-            zeroHeight.priority = .required
-            zeroHeight.identifier = "HideCredits_ZeroHeight"
-            zeroHeight.isActive = true
-            cell.layoutIfNeeded()
+            orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
+            return
+        }
+        
+        if containsIdentifier(cell, identifier: "TrackCredits.Card") {
+            hiddenIndexPath_2 = indexPath
             DispatchQueue.main.async {
-                collectionView.collectionViewLayout.invalidateLayout()
+                collectionView.reloadItems(at: [indexPath])
             }
         }
+        
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
 }
