@@ -13,9 +13,9 @@ footer_elements = "Footer Elements";
 hide_add_button = "Hide Add Button";
 hide_ban_button = "Hide Ban Button";
 
-hide_bluetooth_icon = "Hide Bluetooth Icon";
-hide_queue_icon = "Hide Queue Icon";
-hide_share_icon = "Hide Share Icon";
+hide_bluetooth_button = "Hide Bluetooth Button";
+hide_queue_button = "Hide Queue Button";
+hide_share_button = "Hide Share Button";
 
 hide_explore = "Hide Explore";
 hide_credits = "Hide Credits";
