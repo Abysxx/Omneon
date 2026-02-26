@@ -3,10 +3,29 @@ customization = "Customization";
 general = "General";
 now_playing = "Now Playing";
 
-// Sections/Other
+// NowPaying Sections
 
 information_elements = "Information Elements";
 scroll_view_elements = "Scroll View Elements";
+footer_elements = "Footer Elements";
+
+// NowPlaying Buttons
+hide_add_button = "Hide Add Button";
+hide_ban_button = "Hide Ban Button";
+
+hide_bluetooth_icon = "Hide Bluetooth Icon";
+hide_queue_icon = "Hide Queue Icon";
+hide_share_icon = "Hide Share Icon";
+
+hide_explore = "Hide Explore";
+hide_credits = "Hide Credits";
+hide_about_artist = "Hide About Artist";
+hide_lyrics_card = "Hide Lyrics";
+
+// General Buttons
+remove_explicit_icon = "Remove/Hide Explicit Icon";
+
+// Stuff
 
 reset_data = "Reset Data";
 reset_data_description = "Clear cached data and restart the app.";
@@ -14,15 +33,4 @@ reset_data_description = "Clear cached data and restart the app.";
 checking_for_update = "Checking for Update...";
 update_available = "Update Available";
 
-restart_is_required_description = "App restart is required after changing.";
-
-// UI
-
-remove_explicit_icon = "Remove/Hide Explicit Icon";
-
-hide_add_button = "Hide Add Button";
-hide_ban_button = "Hide Ban Button";
-hide_explore = "Hide Explore";
-hide_credits = "Hide Credits";
-hide_about_artist = "Hide About Artist";
-hide_lyrics_card = "Hide Lyrics";
+restart_is_required_description = "App restart is required after changing anything.";
