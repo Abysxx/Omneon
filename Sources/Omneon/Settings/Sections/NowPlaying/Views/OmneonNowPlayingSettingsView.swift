@@ -7,7 +7,13 @@ struct OmneonNowPlayingSettingsView: View {
         List {
 
             Section {
-                Section(header: Text("information_elements".localized)){
+                Section(header:
+                        Text("information_elements".localized)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .textCase(nil)
+                            .padding(.bottom, 4)
+                    ){ 
                     Toggle(
                         "hide_add_button".localized,
                         isOn: Binding<Bool>(
@@ -25,7 +31,12 @@ struct OmneonNowPlayingSettingsView: View {
                     )
                 }
 
-                Section(header: Text("scroll_view_elements".localized)){
+                Section(header:
+                        Text("scroll_view_elements".localized)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .textCase(nil)
+                    )
                     Toggle(
                         "hide_explore".localized,
                         isOn: Binding<Bool>(
