@@ -9,40 +9,45 @@ var hiddenIndexPath_2: IndexPath? = nil
 class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollViewController"
-
-    func viewDidLoad() {
-        orig.viewDidLoad()
+    
+    @objc(nowPlayingScrollViewModelWithDidLoadComponentsFor:withDifferentProviders:scrollEnabledValueChanged:)
+    func nowPlayingScrollViewModelWithDidLoadComponents(for arg1: AnyObject, withDifferentProviders arg2: Bool, scrollEnabledValueChanged arg3: Bool) {
+        orig.nowPlayingScrollViewModelWithDidLoadComponents(for: arg1, withDifferentProviders: arg2, scrollEnabledValueChanged: arg3)
         
-        var output = "=== NowPlayingScrollViewController Dump ===\n"
-        
-        var cls: AnyClass? = NSClassFromString("NowPlaying_ScrollImpl.NowPlayingScrollViewController")
-        while let current = cls {
-            output += "\n--- \(NSStringFromClass(current)) ---\n"
-            
-            var methodCount: UInt32 = 0
-            if let methods = class_copyMethodList(current, &methodCount) {
-                for i in 0..<Int(methodCount) {
-                    output += "  METHOD: \(NSStringFromSelector(method_getName(methods[i])))\n"
-                }
-                free(methods)
-            }
-            
-            var ivarCount: UInt32 = 0
-            if let ivars = class_copyIvarList(current, &ivarCount) {
-                for i in 0..<Int(ivarCount) {
-                    let name = String(cString: ivar_getName(ivars[i])!)
-                    output += "  IVAR: \(name)\n"
-                }
-                free(ivars)
-            }
-            
-            cls = class_getSuperclass(current)
+        guard let collectionView = target.value(forKey: "collectionView") as? UICollectionView else {
+            NSLog("[Omneon] Could not get collectionView")
+            return
         }
         
-        output += "\n=== End Dump ==="
-        
-        let path = "/var/jb/var/mobile/Documents/omneon_dump.txt"
-        try? output.write(toFile: path, atomically: true, encoding: .utf8)
-        NSLog("[Omneon] Dump written to \(path)")
+        var output = "[Omneon] Loaded components:\n"
+        for section in 0..<collectionView.numberOfSections {
+            output += "  Section \(section) - \(collectionView.numberOfItems(inSection: section)) items\n"
+            for item in 0..<collectionView.numberOfItems(inSection: section) {
+                let indexPath = IndexPath(item: item, section: section)
+                if let cell = collectionView.cellForItem(at: indexPath) {
+                    output += "    [\(section),\(item)] class: \(NSStringFromClass(type(of: cell)))"
+                    if let id = cell.accessibilityIdentifier {
+                        output += " id: \(id)"
+                    }
+                    output += "\n"
+                    // Log all subview identifiers
+                    func logSubviews(_ view: UIView, indent: Int) {
+                        for subview in view.subviews {
+                            let pad = String(repeating: "  ", count: indent)
+                            output += "\(pad)- \(NSStringFromClass(type(of: subview)))"
+                            if let id = subview.accessibilityIdentifier {
+                                output += " id: \(id)"
+                            }
+                            output += "\n"
+                            logSubviews(subview, indent: indent + 1)
+                        }
+                    }
+                    logSubviews(cell, indent: 3)
+                } else {
+                    output += "    [\(section),\(item)] (not visible/loaded)\n"
+                }
+            }
+        }
+        NSLog(output)
     }
 }
