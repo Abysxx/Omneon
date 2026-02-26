@@ -4,22 +4,26 @@ import Foundation
 
 struct HideCredits: HookGroup {}
 
-class HideCredits_CellHook: ClassHook<UIView> {
+class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideCredits
-    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollCellWithDynamicSizing"
-    
-    func didMoveToSuperview() {
-        orig.didMoveToSuperview()
-        var cls: AnyClass? = NSClassFromString("NowPlaying_ScrollImpl.NowPlayingScrollCellWithDynamicSizing")
-        while let current = cls {
-            var count: UInt32 = 0
-            if let methods = class_copyMethodList(current, &count) {
-                for i in 0..<Int(count) {
-                    NSLog("[Omneon] [\(NSStringFromClass(current))] \(NSStringFromSelector(method_getName(methods[i])))")
-                }
-                free(methods)
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
+
+    @objc(insertItemsAtIndexPaths:)
+    func insertItems(at indexPaths: [IndexPath]) {
+        orig.insertItems(at: indexPaths)
+        NSLog("[Omneon] IndexPaths: \(indexPaths)")
+        for indexPath in indexPaths {
+            if let cell = target.cellForItem(at: indexPath),
+               containsIdentifier(cell, identifier: "TrackCredits.Card") {
+                hiddenIndexPath_2 = indexPath
+                cell.isHidden = true
             }
-            cls = class_getSuperclass(current)
         }
+    }
+
+    @objc(insertSections:)
+    func insertSections(_ sections: IndexSet) {
+        orig.insertSections(sections)
+        NSLog("[Omneon] Sections: \(sections)")
     }
 }
