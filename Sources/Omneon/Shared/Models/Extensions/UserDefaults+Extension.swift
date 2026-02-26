@@ -10,7 +10,7 @@ extension UserDefaults {
 
     private static let hideBluetoothButtonKey = "hideBluetoothButton"
     private static let hideQueueButtonKey = "hideQueueButton"
-    private static let hideShareButton = "hideShareIcon"
+    private static let hideShareButtonKey = "hideShareIcon"
     
     private static let hideExploreKey = "hideExplore"
     private static let hideCreditsKey = "hideCredits"
@@ -65,12 +65,12 @@ extension UserDefaults {
             container.set(hideQueueButton, forKey: hideQueueButtonKey)
         }
     }
-    static var hideShareIcon: Bool {
+    static var hideShareButton: Bool {
         get {
-            container.object(forKey: hideShareButton) as? Bool ?? false
+            container.object(forKey: hideShareButtonKey) as? Bool ?? false
         }
-        set (hideShareIcon) {
-            container.set(hideShareIcon, forKey: hideShareButton)
+        set (hideShareButton) {
+            container.set(hideShareButton, forKey: hideShareButtonKey)
         }
     }
     /// Scroll View
