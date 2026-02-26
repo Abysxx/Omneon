@@ -13,7 +13,7 @@ class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
     func viewDidLoad() {
         orig.viewDidLoad()
         
-        var output = "\n=== NowPlayingScrollViewController Dump ===\n"
+        var output = "=== NowPlayingScrollViewController Dump ===\n"
         
         var cls: AnyClass? = NSClassFromString("NowPlaying_ScrollImpl.NowPlayingScrollViewController")
         while let current = cls {
@@ -40,6 +40,9 @@ class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
         }
         
         output += "\n=== End Dump ==="
-        NSLog("[Omneon] \(output)")
+        
+        let path = "/var/mobile/Documents/omneon_dump.txt"
+        try? output.write(toFile: path, atomically: true, encoding: .utf8)
+        NSLog("[Omneon] Dump written to \(path)")
     }
 }
