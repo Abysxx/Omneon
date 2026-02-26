@@ -9,21 +9,21 @@ func exitApplication() {
 }
 
 struct Omneon: Tweak {
-    static let version = "0.0.1"
+    static let version = "0.1.0"
     //I don't care about supporting certain app versions. at least right now
     init() {
         //General
         if UserDefaults.removeExplicitIcon {
             RemoveExplicitIcon().activate()
         }
-        //NowPlaying
+        //NowPlaying InformationElements
         if UserDefaults.hideAddButton {
             HideAddButton().activate()
         }
         if UserDefaults.hideBanButton {
             HideBanButton().activate()
         }
-        // NowPlaying Footer (ish)
+        // NowPlaying ScrollView
         if UserDefaults.hideExplore {
             HideExplore().activate()
         }
@@ -32,6 +32,9 @@ struct Omneon: Tweak {
         }
         if UserDefaults.hideAboutArtist {
             HideAboutArtist().activate()
+        }
+        if UserDefaults.hideLyricsCard {
+            HideLyricsCard().activate()
         }
 
     }
