@@ -82,6 +82,7 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
             return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
         }
         let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
+        NSLog("[Omneon] cellForItemAt [\(indexPath.section),\(indexPath.item)] class: \(NSStringFromClass(type(of: cell))) subviews: \(cell.subviews.count) containsIdentifier: \(containsIdentifier(cell, identifier: "TrackCredits.Card"))")
         if containsIdentifier(cell, identifier: "TrackCredits.Card") {
             hiddenIndexPath_2 = indexPath
             return collectionView.dequeueReusableCell(withReuseIdentifier: "Omneon_EmptyCell", for: indexPath)
