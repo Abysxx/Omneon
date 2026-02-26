@@ -36,7 +36,7 @@ struct OmneonNowPlayingSettingsView: View {
                             .font(.footnote)
                             .foregroundColor(.secondary)
                             .textCase(nil)
-                    )
+                    ){
                     Toggle(
                         "hide_explore".localized,
                         isOn: Binding<Bool>(
