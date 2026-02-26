@@ -39,17 +39,17 @@ struct OmneonNowPlayingSettingsView: View {
                     )
                 )
                 Toggle(
-                    "hide_queue_button".localized,
-                    isOn: Binding<Bool>(
-                        get: { UserDefaults.hideQueueIcon },
-                        set: { UserDefaults.hideQueueIcon = $0 }
-                    )
-                )
-                Toggle(
                     "hide_share_button".localized,
                     isOn: Binding<Bool>(
                         get: { UserDefaults.hideShareIcon },
                         set: { UserDefaults.hideShareIcon = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_queue_button".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideQueueIcon },
+                        set: { UserDefaults.hideQueueIcon = $0 }
                     )
                 )
             } header: {
