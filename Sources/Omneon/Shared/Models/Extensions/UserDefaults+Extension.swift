@@ -9,6 +9,7 @@ extension UserDefaults {
     private static let hideExploreKey = "hideExplore"
     private static let hideCreditsKey = "hideCredits"
     private static let hideAboutArtistKey = "hideAboutArtist"
+    private static let hideLyricsCardKey = "hideLyricsCard"
     ///
     /// General
     ///
@@ -40,7 +41,9 @@ extension UserDefaults {
             container.set(hideBanButton, forKey: hideBanButtonKey)
         }
     }
-    
+    ///
+    /// NowPlaying Scroll View
+    ///
     static var hideExplore: Bool {
         get {
             container.object(forKey: hideExploreKey) as? Bool ?? false
@@ -64,6 +67,14 @@ extension UserDefaults {
         }
         set (hideAboutArtist) {
             container.set(hideAboutArtist, forKey: hideAboutArtistKey)
+        }
+    }
+    static var hideLyricsCard: Bool {
+        get {
+            container.object(forKey: hideLyricsCardKey) as? Bool ?? false
+        }
+        set (hideLyricsCard) {
+            container.set(hideLyricsCard, forKey: hideLyricsCardKey)
         }
     }
 }
