@@ -70,6 +70,11 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         if indexPath == hiddenIndexPath_2 {
             NSLog("[Omneon] HideCredits hiding cell at known index \(indexPath)")
             cell.isHidden = true
+            cell.alpha = 0
+            cell.transform = CGAffineTransform(scaleX: 0, y: 0)
+            cell.superview?.bringSubviewToFront(cell)
+            cell.frame = .zero
+            cell.bounds = .zero
             orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
             return
         }
