@@ -34,22 +34,22 @@ struct OmneonNowPlayingSettingsView: View {
                 Toggle(
                     "hide_bluetooth_button".localized,
                     isOn: Binding<Bool>(
-                        get: { UserDefaults.hideBluetoothIcon },
-                        set: { UserDefaults.hideBluetoothIcon = $0 }
+                        get: { UserDefaults.hideBluetoothButton },
+                        set: { UserDefaults.hideBluetoothButton = $0 }
                     )
                 )
                 Toggle(
                     "hide_share_button".localized,
                     isOn: Binding<Bool>(
-                        get: { UserDefaults.hideShareIcon },
-                        set: { UserDefaults.hideShareIcon = $0 }
+                        get: { UserDefaults.hideShareButton },
+                        set: { UserDefaults.hideShareButton = $0 }
                     )
                 )
                 Toggle(
                     "hide_queue_button".localized,
                     isOn: Binding<Bool>(
-                        get: { UserDefaults.hideQueueIcon },
-                        set: { UserDefaults.hideQueueIcon = $0 }
+                        get: { UserDefaults.hideQueueButton },
+                        set: { UserDefaults.hideQueueButton = $0 }
                     )
                 )
             } header: {
