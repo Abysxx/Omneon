@@ -6,26 +6,40 @@ struct HideCredits: HookGroup {}
 
 var hiddenIndexPath_2: IndexPath? = nil
 
-class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
+class HideCredits_ViewControllerHook: ClassHook<UIViewController> {
     typealias Group = HideCredits
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
+    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollViewController"
 
-    @objc(insertItemsAtIndexPaths:)
-    func insertItems(at indexPaths: [IndexPath]) {
-        orig.insertItems(at: indexPaths)
-        NSLog("[Omneon] IndexPaths: \(indexPaths)")
-        for indexPath in indexPaths {
-            if let cell = target.cellForItem(at: indexPath),
-               containsIdentifier(cell, identifier: "TrackCredits.Card") {
-                hiddenIndexPath_2 = indexPath
-                cell.isHidden = true
+    func viewDidLoad() {
+        orig.viewDidLoad()
+        
+        var output = "\n=== NowPlayingScrollViewController Dump ===\n"
+        
+        var cls: AnyClass? = NSClassFromString("NowPlaying_ScrollImpl.NowPlayingScrollViewController")
+        while let current = cls {
+            output += "\n--- \(NSStringFromClass(current)) ---\n"
+            
+            var methodCount: UInt32 = 0
+            if let methods = class_copyMethodList(current, &methodCount) {
+                for i in 0..<Int(methodCount) {
+                    output += "  METHOD: \(NSStringFromSelector(method_getName(methods[i])))\n"
+                }
+                free(methods)
             }
+            
+            var ivarCount: UInt32 = 0
+            if let ivars = class_copyIvarList(current, &ivarCount) {
+                for i in 0..<Int(ivarCount) {
+                    let name = String(cString: ivar_getName(ivars[i])!)
+                    output += "  IVAR: \(name)\n"
+                }
+                free(ivars)
+            }
+            
+            cls = class_getSuperclass(current)
         }
-    }
-
-    @objc(insertSections:)
-    func insertSections(_ sections: IndexSet) {
-        orig.insertSections(sections)
-        NSLog("[Omneon] Sections: \(sections)")
+        
+        output += "\n=== End Dump ==="
+        NSLog("[Omneon] \(output)")
     }
 }
