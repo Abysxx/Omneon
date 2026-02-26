@@ -112,13 +112,4 @@ class HideCredits_DelegateHook: ClassHook<NSObject> {
         }
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
-
-    @objc(collectionView:layout:insetForSectionAtIndex:)
-    func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        var insets = orig.collectionView(collectionView, layout: layout, insetForSectionAt: section)
-        if hiddenIndexPath_2 != nil {
-            insets.bottom -= 100
-        }
-        return insets
-    }
 }
