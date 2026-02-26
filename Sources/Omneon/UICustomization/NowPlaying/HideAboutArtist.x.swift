@@ -6,6 +6,20 @@ struct HideAboutArtist: HookGroup {}
 
 var hiddenIndexPath_3: IndexPath? = nil
 
+// !!! DONT DELETE
+// !!! Other functions depend on this
+func containsIdentifier(_ view: UIView, identifier: String) -> Bool {
+    if view.accessibilityIdentifier == identifier {
+        return true
+    }
+    for subview in view.subviews {
+        if containsIdentifier(subview, identifier: identifier) {
+            return true
+        }
+    }
+    return false
+}
+
 func scanAndHideBiography(in collectionView: UICollectionView) {
     for cell in collectionView.visibleCells {
         if containsIdentifier(cell, identifier: "Components.UI.ArtistBioCardNowPlayingView"),
