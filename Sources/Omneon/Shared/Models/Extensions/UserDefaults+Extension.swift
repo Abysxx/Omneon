@@ -8,9 +8,9 @@ extension UserDefaults {
     private static let hideAddButtonKey = "hideAddButton"
     private static let hideBanButtonKey = "hideBanButton"
 
-    private static let hideBluetoothIconKey = "hideBluetoothIcon"
-    private static let hideQueueIconKey = "hideQueueIcon"
-    private static let hideShareIconKey = "hideShareIcon"
+    private static let hideBluetoothButtonKey = "hideBluetoothButton"
+    private static let hideQueueButtonKey = "hideQueueButton"
+    private static let hideShareButton = "hideShareIcon"
     
     private static let hideExploreKey = "hideExplore"
     private static let hideCreditsKey = "hideCredits"
@@ -49,28 +49,28 @@ extension UserDefaults {
         }
     }
     /// Footer Elements
-    static var hideBluetoothIcon: Bool {
+    static var hideBluetoothButton: Bool {
         get {
-            container.object(forKey: hideBluetoothIconKey) as? Bool ?? false
+            container.object(forKey: hideBluetoothButtonKey) as? Bool ?? false
         }
-        set (hideBluetoothIcon) {
-            container.set(hideBluetoothIcon, forKey: hideBluetoothIconKey)
+        set (hideBluetoothButton) {
+            container.set(hideBluetoothButton, forKey: hideBluetoothButtonKey)
         }
     }
-    static var hideQueueIcon: Bool {
+    static var hideQueueButton: Bool {
         get {
-            container.object(forKey: hideQueueIconKey) as? Bool ?? false
+            container.object(forKey: hideQueueButtonKey) as? Bool ?? false
         }
-        set (hideQueueIcon) {
-            container.set(hideQueueIcon, forKey: hideQueueIconKey)
+        set (hideQueueButton) {
+            container.set(hideQueueButton, forKey: hideQueueButtonKey)
         }
     }
     static var hideShareIcon: Bool {
         get {
-            container.object(forKey: hideShareIconKey) as? Bool ?? false
+            container.object(forKey: hideShareButton) as? Bool ?? false
         }
         set (hideShareIcon) {
-            container.set(hideShareIcon, forKey: hideShareIconKey)
+            container.set(hideShareIcon, forKey: hideShareButton)
         }
     }
     /// Scroll View
