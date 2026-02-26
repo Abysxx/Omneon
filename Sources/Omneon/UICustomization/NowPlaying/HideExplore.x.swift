@@ -4,71 +4,86 @@ import Foundation
 
 struct HideExplore: HookGroup {}
 
-// Track the index path to hide
 var hiddenIndexPath_1: IndexPath? = nil
 
-class HideExplore_CollectionViewHook: ClassHook<UICollectionView> {
-    typealias Group = HideExplore
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
-
-    func layoutSubviews() {
-        orig.layoutSubviews()
-
-        let targetClass: AnyClass = NSClassFromString("WatchFeed_NPVProviderImpl.WatchFeedNPVView")!
-
-        for cell in target.visibleCells {
-            if cell.subviews.contains(where: { subview in
-                subview.subviews.contains(where: { $0.isKind(of: targetClass) })
-            }) {
-                if let indexPath = target.indexPath(for: cell) {
-                    // Only invalidate if the hidden path changed
-                    if hiddenIndexPath_1 != indexPath {
-                        hiddenIndexPath_1 = indexPath
-                        target.collectionViewLayout.invalidateLayout()
-                    }
+func scanAndHideExplore(in collectionView: UICollectionView) {
+    for cell in collectionView.visibleCells {
+        if containsIdentifier(cell, identifier: "Components.UI.WatchFeedCarouselEntryPoint"),
+           let indexPath = collectionView.indexPath(for: cell) {
+            if hiddenIndexPath_1 != indexPath {
+                hiddenIndexPath_1 = indexPath
+                DispatchQueue.main.async {
+                    collectionView.reloadData()
                 }
-                cell.isHidden = true
-                cell.isUserInteractionEnabled = false
-                break
             }
+            break
         }
     }
 }
 
-class HideExplore_LayoutHook: ClassHook<UICollectionViewLayout> {
+class HideExplore_ViewControllerHook: ClassHook<UIViewController> {
     typealias Group = HideExplore
+    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollViewController"
 
-    // Match the layout used by the target collection view
-    static let targetName = "NowPlaying_ScrollImpl.NowPlayingScrollLayout"
-
-    @objc(layoutAttributesForElementsInRect:)
-    func layoutAttributesForElements(in rect: CGRect) -> NSArray? {
-        guard var attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
-        if let hidden = hiddenIndexPath_1 {
-            attrs = attrs.map { attr in
-                // Only target cells, not headers/footers/decorations
-                if attr.representedElementCategory == .cell && attr.indexPath == hidden {
-                    let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
-                    zeroed.frame = .zero
-                    zeroed.isHidden = true
-                    return zeroed
-                }
-                return attr
-            }
+    @objc(nowPlayingScrollViewModelWithDidLoadComponentsFor:withDifferentProviders:scrollEnabledValueChanged:)
+    func nowPlayingScrollViewModelWithDidLoadComponents(for arg1: AnyObject, withDifferentProviders arg2: Bool, scrollEnabledValueChanged arg3: Bool) {
+        orig.nowPlayingScrollViewModelWithDidLoadComponents(for: arg1, withDifferentProviders: arg2, scrollEnabledValueChanged: arg3)
+        guard let collectionView = target.value(forKey: "collectionView") as? UICollectionView else {
+            return
         }
-        return attrs as NSArray
+        scanAndHideExplore(in: collectionView)
     }
 
-    @objc(layoutAttributesForItemAtIndexPath:)
-    func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard let attr = orig.layoutAttributesForItem(at: indexPath) else { return nil }
-
-        if let hidden = hiddenIndexPath_1, indexPath == hidden {
-            let zeroed = attr.copy() as! UICollectionViewLayoutAttributes
-            zeroed.frame = .zero
-            zeroed.isHidden = true
-            return zeroed
+    @objc(nowPlayingScrollViewModelWithDidMoveToRelativeTrack:withDifferentProviders:scrollEnabledValueChanged:)
+    func nowPlayingScrollViewModelWithDidMoveToRelativeTrack(for arg1: AnyObject, withDifferentProviders arg2: Bool, scrollEnabledValueChanged arg3: Bool) {
+        orig.nowPlayingScrollViewModelWithDidMoveToRelativeTrack(for: arg1, withDifferentProviders: arg2, scrollEnabledValueChanged: arg3)
+        guard let collectionView = target.value(forKey: "collectionView") as? UICollectionView else {
+            return
         }
-        return attr
+        hiddenIndexPath_1 = nil
+        scanAndHideExplore(in: collectionView)
+    }
+}
+
+class HideExplore_DelegateHook: ClassHook<NSObject> {
+    typealias Group = HideExplore
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
+
+    @objc(collectionView:numberOfItemsInSection:)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let count = orig.collectionView(collectionView, numberOfItemsInSection: section)
+        let adjusted = hiddenIndexPath_1 != nil ? count - 1 : count
+        return adjusted
+    }
+
+    @objc(collectionView:cellForItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let hidden = hiddenIndexPath_1 else {
+            // Haven't found the target yet, check this cell
+            let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
+            if containsIdentifier(cell, identifier: "Components.UI.WatchFeedCarouselEntryPoint") {
+                hiddenIndexPath_1 = indexPath
+                DispatchQueue.main.async {
+                    collectionView.reloadData()
+                }
+            }
+            return cell
+        }
+        let adjustedIndexPath = indexPath.item >= hidden.item
+            ? IndexPath(item: indexPath.item + 1, section: indexPath.section)
+            : indexPath
+        return orig.collectionView(collectionView, cellForItemAt: adjustedIndexPath)
+    }
+
+    @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Catch cells that had subviews added asynchronously
+        if hiddenIndexPath_1 == nil && containsIdentifier(cell, identifier: "Components.UI.WatchFeedCarouselEntryPoint") {
+            hiddenIndexPath_1 = indexPath
+            DispatchQueue.main.async {
+                collectionView.reloadData()
+            }
+        }
+        orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
 }
