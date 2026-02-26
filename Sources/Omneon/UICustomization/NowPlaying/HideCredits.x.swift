@@ -4,6 +4,8 @@ import Foundation
 
 struct HideCredits: HookGroup {}
 
+var hiddenIndexPath_2: IndexPath? = nil
+
 class HideCredits_CollectionViewHook: ClassHook<UICollectionView> {
     typealias Group = HideCredits
     static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewWithDynamicSizing"
