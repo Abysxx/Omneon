@@ -29,6 +29,37 @@ struct OmneonNowPlayingSettingsView: View {
                     .padding(.bottom, 4)
             }
             
+            //Footer Elements
+            Section {
+                Toggle(
+                    "hide_bluetooth_icon".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideBluetoothIcon },
+                        set: { UserDefaults.hideBluetoothIcon = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_queue_icon".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideQueueIcon },
+                        set: { UserDefaults.hideQueueIcon = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_share_icon".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideShareIcon },
+                        set: { UserDefaults.hideShareIcon = $0 }
+                    )
+                )
+            } header: {
+                Text("footer_elements".localized)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
+                    .padding(.bottom, 4)
+            }
+            
             // Scroll view elements
             Section {
                 Toggle(
