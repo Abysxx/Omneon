@@ -16,6 +16,10 @@ extension UserDefaults {
     private static let hideCreditsKey = "hideCredits"
     private static let hideAboutArtistKey = "hideAboutArtist"
     private static let hideLyricsCardKey = "hideLyricsCard"
+
+    private static let hideSmallBluetoothIconKey = "hideSmallBluetoothIcon"
+    private static let hideBigBluetoothIconKey = "hideBigBluetoothIcon"
+    private static let centerTitleKey = "centerTitle"
     ///
     /// General
     ///
@@ -82,7 +86,6 @@ extension UserDefaults {
             container.set(hideExplore, forKey: hideExploreKey)
         }
     }
-    
     static var hideCredits: Bool {
         get {
             container.object(forKey: hideCreditsKey) as? Bool ?? false
@@ -105,6 +108,31 @@ extension UserDefaults {
         }
         set (hideLyricsCard) {
             container.set(hideLyricsCard, forKey: hideLyricsCardKey)
+        }
+    }
+    /// Bar
+    static var hideSmallBluetoothIcon: Bool {
+        get {
+            container.object(forKey: hideSmallBluetoothIconKey) as? Bool ?? false
+        }
+        set (hideSmallBluetoothIcon) {
+            container.set(hideSmallBluetoothIcon, forKey: hideSmallBluetoothIconKey)
+        }
+    }
+    static var hideBigBluetoothIcon: Bool {
+        get {
+            container.object(forKey: hideSmallBluetoothIconKey) as? Bool ?? false
+        }
+        set (hideSmallBluetoothIcon) {
+            container.set(hideSmallBluetoothIcon, forKey: hideSmallBluetoothIconKey)
+        }
+    }
+    static var centerTitle: Bool {
+        get {
+            container.object(forKey: centerTitleKey) as? Bool ?? false
+        }
+        set (centerTitle) {
+            container.set(centerTitle, forKey: centerTitleKey)
         }
     }
 }
