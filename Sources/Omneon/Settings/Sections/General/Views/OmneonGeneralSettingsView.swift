@@ -14,6 +14,13 @@ struct OmneonGeneralSettingsView: View {
                         set: { UserDefaults.removeExplicitIcon = $0 }
                     )
                 )
+                Toggle(
+                    "hide_create_tab".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideCreateTab },
+                        set: { UserDefaults.hideCreateTab = $0 }
+                    )
+                )
             }
 
             NonIPadSpacerView()
