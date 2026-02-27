@@ -9,7 +9,7 @@ func exitApplication() {
 }
 
 struct Omneon: Tweak {
-    static let version = "0.1.0"
+    static let version = "0.1.1"
     //I don't care about supporting certain app versions. at least right now
     init() {
         //General
