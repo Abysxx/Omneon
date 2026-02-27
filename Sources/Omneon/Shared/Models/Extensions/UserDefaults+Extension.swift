@@ -5,6 +5,7 @@ extension UserDefaults {
 
     private static let removeExplicitIconKey = "removeExplicitIcon"
     private static let hideCreateTabKey = "hideCreateTab"
+    private static let makeTabBarNotTransparentKey = "makeTabBarNotTransparent"
     
     private static let hideAddButtonKey = "hideAddButton"
     private static let hideBanButtonKey = "hideBanButton"
@@ -38,6 +39,14 @@ extension UserDefaults {
         }
         set (hideCreateTab) {
             container.set(hideCreateTab, forKey: hideCreateTabKey)
+        }
+    }
+    static var makeTabBarNotTransparent: Bool {
+        get {
+            container.object(forKey: makeTabBarNotTransparentKey) as? Bool ?? false
+        }
+        set (makeTabBarNotTransparent) {
+            container.set(makeTabBarNotTransparent, forKey: makeTabBarNotTransparentKey)
         }
     }
     ///
