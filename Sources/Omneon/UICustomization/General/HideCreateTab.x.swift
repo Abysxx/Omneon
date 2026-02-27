@@ -10,9 +10,6 @@ class SPTAdaptiveTabBarController_Hook_1: ClassHook<UITabBarController> {
   
     func viewDidLayoutSubviews() {
         orig.viewDidLayoutSubviews()
-        guard let root = target.view, root.subviews.count > 1 else { return }
-        if let tabBar = root.subviews[1] as? UITabBar {
-            tabBar.items = tabBar.items?.filter { $0.title != "Create" }
-        }
+        target.viewControllers = target.viewControllers?.filter { $0.tabBarItem.title?.lowercased() != "create" }
     }
 }
