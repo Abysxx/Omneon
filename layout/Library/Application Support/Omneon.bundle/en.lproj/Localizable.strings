@@ -8,6 +8,7 @@ now_playing = "Now Playing";
 information_elements = "Information Elements";
 scroll_view_elements = "Scroll View Elements";
 footer_elements = "Footer Elements";
+now_playing_bar = "Bar (At The Bottom Of The Screen)";
 
 // NowPlaying Buttons
 hide_add_button = "Hide Add Button";
@@ -22,8 +23,15 @@ hide_credits = "Hide Credits";
 hide_about_artist = "Hide About Artist";
 hide_lyrics_card = "Hide Lyrics";
 
+hide_small_bluetooth_icon = "Hide Small Bluetooth Icon";
+hide_big_bluetooth_icon = "Hide Big Bluetooth Icon";
+center_title = "Center Track Title";
+center_title_footer = "*Recommended with hide small BT icon";
+
 // General Buttons
 remove_explicit_icon = "Remove/Hide Explicit Icon";
+hide_create_tab = "Hide Create Tab";
+make_tab_bar_not_transparent = "Make Tab Bar Not Transparent";
 
 // Stuff
 
