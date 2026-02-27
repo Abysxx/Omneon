@@ -99,6 +99,13 @@ struct OmneonNowPlayingSettingsView: View {
                         // Scroll view elements
             Section {
                 Toggle(
+                    "hide_big_bluetooth_icon".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideBigBluetoothIcon },
+                        set: { UserDefaults.hideBigBluetoothIcon = $0 }
+                    )
+                )
+                Toggle(
                     "hide_small_bluetooth_icon".localized,
                     isOn: Binding<Bool>(
                         get: { UserDefaults.hideSmallBluetoothIcon },
@@ -106,10 +113,10 @@ struct OmneonNowPlayingSettingsView: View {
                     )
                 )
                 Toggle(
-                    "hide_big_bluetooth_icon".localized,
+                    "center_title".localized,
                     isOn: Binding<Bool>(
-                        get: { UserDefaults.hideBigBluetoothIcon },
-                        set: { UserDefaults.hideBigBluetoothIcon = $0 }
+                        get: { UserDefaults.centerTitle },
+                        set: { UserDefaults.centerTitle = $0 }
                     )
                 )
             } header: {
@@ -117,17 +124,8 @@ struct OmneonNowPlayingSettingsView: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
                     .textCase(nil)
-            }
-            //This is apart of the thing above but the uhh yk, it makes it wrong... anyway move on
-            Section(footer: Text("center_title_footer".localized)) {
-                    Toggle(
-                        "center_title".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.centerTitle },
-                            set: { UserDefaults.centerTitle = $0 }
-                        )
-                    )
-                }
+            } footer: {Text("center_title_footer".localized)}
+            // Footer for whole section even tho its just for the last one
 
             NonIPadSpacerView()
         }
