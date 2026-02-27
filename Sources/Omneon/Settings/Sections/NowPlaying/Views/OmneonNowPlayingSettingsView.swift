@@ -112,7 +112,14 @@ struct OmneonNowPlayingSettingsView: View {
                         set: { UserDefaults.hideBigBluetoothIcon = $0 }
                     )
                 )
-                Section(footer: Text("center_title_footer".localized)) {
+            } header: {
+                Text("now_playing_bar".localized)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
+            }
+            //This is apart of the thing above but the uhh yk, it makes it wrong... anyway move on
+            Section(footer: Text("center_title_footer".localized)) {
                     Toggle(
                         "center_title".localized,
                         isOn: Binding<Bool>(
@@ -121,12 +128,6 @@ struct OmneonNowPlayingSettingsView: View {
                         )
                     )
                 }
-            } header: {
-                Text("now_playing_bar".localized)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                    .textCase(nil)
-            }
 
             NonIPadSpacerView()
         }
