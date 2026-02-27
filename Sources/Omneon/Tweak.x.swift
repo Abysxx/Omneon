@@ -22,7 +22,6 @@ struct Omneon: Tweak {
         if UserDefaults.makeTabBarNotTransparent {
             MakeTabBarNotTransparent().activate()
         }
-        makeTabBarNotTransparentKey
         //NowPlaying InformationElements
         if UserDefaults.hideAddButton {
             HideAddButton().activate()
