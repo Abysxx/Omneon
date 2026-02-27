@@ -4,6 +4,7 @@ extension UserDefaults {
     static var container: UserDefaults = .standard
 
     private static let removeExplicitIconKey = "removeExplicitIcon"
+    private static let hideCreateTabKey = "hideCreateTab"
     
     private static let hideAddButtonKey = "hideAddButton"
     private static let hideBanButtonKey = "hideBanButton"
@@ -29,6 +30,14 @@ extension UserDefaults {
         }
         set (removeExplicitIcon) {
             container.set(removeExplicitIcon, forKey: removeExplicitIconKey)
+        }
+    }
+    static var hideCreateTab: Bool {
+        get {
+            container.object(forKey: hideCreateTabKey) as? Bool ?? false
+        }
+        set (hideCreateTab) {
+            container.set(hideCreateTab, forKey: hideCreateTabKey)
         }
     }
     ///
