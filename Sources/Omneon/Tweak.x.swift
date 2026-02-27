@@ -16,6 +16,9 @@ struct Omneon: Tweak {
         if UserDefaults.removeExplicitIcon {
             RemoveExplicitIcon().activate()
         }
+        if UserDefaults.hideCreateTab {
+            HideCreateTab().activate()
+        }
         //NowPlaying InformationElements
         if UserDefaults.hideAddButton {
             HideAddButton().activate()
