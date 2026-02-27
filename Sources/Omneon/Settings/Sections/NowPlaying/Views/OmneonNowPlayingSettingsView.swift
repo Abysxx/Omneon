@@ -96,6 +96,37 @@ struct OmneonNowPlayingSettingsView: View {
                     .foregroundColor(.secondary)
                     .textCase(nil)
             }
+                        // Scroll view elements
+            Section {
+                Toggle(
+                    "hide_small_bluetooth_icon".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideSmallBluetoothIcon },
+                        set: { UserDefaults.hideSmallBluetoothIcon = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_big_bluetooth_icon".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideBigBluetoothIcon },
+                        set: { UserDefaults.hideBigBluetoothIcon = $0 }
+                    )
+                )
+                Section(footer: Text("center_title_footer".localized)) {
+                    Toggle(
+                        "center_title".localized,
+                        isOn: Binding<Bool>(
+                            get: { UserDefaults.centerTitle },
+                            set: { UserDefaults.centerTitle = $0 }
+                        )
+                    )
+                }
+            } header: {
+                Text("now_playing_bar".localized)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
+            }
 
             NonIPadSpacerView()
         }
