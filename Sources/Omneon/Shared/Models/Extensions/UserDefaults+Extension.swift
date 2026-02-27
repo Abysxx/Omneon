@@ -121,10 +121,10 @@ extension UserDefaults {
     }
     static var hideBigBluetoothIcon: Bool {
         get {
-            container.object(forKey: hideSmallBluetoothIconKey) as? Bool ?? false
+            container.object(forKey: hideBigBluetoothIconKey) as? Bool ?? false
         }
-        set (hideSmallBluetoothIcon) {
-            container.set(hideSmallBluetoothIcon, forKey: hideSmallBluetoothIconKey)
+        set (hideBigBluetoothIcon) {
+            container.set(hideBigBluetoothIcon, forKey: hideBigBluetoothIconKey)
         }
     }
     static var centerTitle: Bool {
