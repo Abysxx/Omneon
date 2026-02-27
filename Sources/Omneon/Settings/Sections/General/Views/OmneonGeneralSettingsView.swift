@@ -21,6 +21,13 @@ struct OmneonGeneralSettingsView: View {
                         set: { UserDefaults.hideCreateTab = $0 }
                     )
                 )
+                Toggle(
+                    "make_tab_bar_not_transparent".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.makeTabBarNotTransparent },
+                        set: { UserDefaults.makeTabBarNotTransparent = $0 }
+                    )
+                )
             }
 
             NonIPadSpacerView()
