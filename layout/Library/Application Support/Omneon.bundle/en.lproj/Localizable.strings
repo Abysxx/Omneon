@@ -8,7 +8,7 @@ now_playing = "Now Playing";
 information_elements = "Information Elements";
 scroll_view_elements = "Scroll View Elements";
 footer_elements = "Footer Elements";
-now_playing_bar = "Bar (At The Bottom Of The Screen);
+now_playing_bar = "Bar (At The Bottom Of The Screen)";
 
 // NowPlaying Buttons
 hide_add_button = "Hide Add Button";
