@@ -15,9 +15,9 @@ class NowPlaying_BarImpl_ContentViewControllerImplementation_Hook_2: ClassHook<U
 
         guard let root = target.view, root.subviews.count >= 5 else { return }
         let viewToCenter = root.subviews[hideIndex]
-        // shift the frame down 8 on the x-axis
+        // shift the frame down 8 on the y-axis
         var frame = viewToCenter.frame
-        frame.origin.x = 8
+        frame.origin.y = 8
         viewToCenter.frame = frame
     }
 }
