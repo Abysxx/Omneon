@@ -9,7 +9,7 @@ func exitApplication() {
 }
 
 struct Omneon: Tweak {
-    static let version = "0.1.1"
+    static let version = "0.2.0"
     //I don't care about supporting certain app versions. at least right now
     init() {
         //General
@@ -19,6 +19,10 @@ struct Omneon: Tweak {
         if UserDefaults.hideCreateTab {
             HideCreateTab().activate()
         }
+        if UserDefaults.makeTabBarNotTransparent {
+            MakeTabBarNotTransparent().activate()
+        }
+        makeTabBarNotTransparentKey
         //NowPlaying InformationElements
         if UserDefaults.hideAddButton {
             HideAddButton().activate()
