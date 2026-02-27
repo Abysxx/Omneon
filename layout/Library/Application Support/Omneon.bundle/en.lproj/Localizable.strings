@@ -30,6 +30,7 @@ center_title_footer = "*Recommended with hide small BT icon";
 
 // General Buttons
 remove_explicit_icon = "Remove/Hide Explicit Icon";
+hide_create_tab = "Hide Create Tab";
 
 // Stuff
 
