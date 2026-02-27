@@ -46,6 +46,16 @@ struct Omneon: Tweak {
         if UserDefaults.hideLyricsCard {
             HideLyricsCard().activate()
         }
+        // NowPlaying Bar
+        if UserDefaults.hideBigBluetoothIcon {
+            HideBigBluetoothIcon().activate()
+        }
+        if UserDefaults.hideSmallBluetoothIcon {
+            HideSmallBluetoothIcon().activate()
+        }
+        if UserDefaults.centerTitle {
+            CenterTitle().activate()
+        }
 
     }
 }
