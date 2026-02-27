@@ -4,8 +4,14 @@ extension UserDefaults {
     static var container: UserDefaults = .standard
 
     private static let removeExplicitIconKey = "removeExplicitIcon"
+    
     private static let hideAddButtonKey = "hideAddButton"
     private static let hideBanButtonKey = "hideBanButton"
+
+    private static let hideBluetoothButtonKey = "hideBluetoothButton"
+    private static let hideQueueButtonKey = "hideQueueButton"
+    private static let hideShareButtonKey = "hideShareIcon"
+    
     private static let hideExploreKey = "hideExplore"
     private static let hideCreditsKey = "hideCredits"
     private static let hideAboutArtistKey = "hideAboutArtist"
@@ -24,6 +30,7 @@ extension UserDefaults {
     ///
     /// NowPlaying
     ///
+    /// Information Elements
     static var hideAddButton: Bool {
         get {
             container.object(forKey: hideAddButtonKey) as? Bool ?? false
@@ -41,9 +48,32 @@ extension UserDefaults {
             container.set(hideBanButton, forKey: hideBanButtonKey)
         }
     }
-    ///
-    /// NowPlaying Scroll View
-    ///
+    /// Footer Elements
+    static var hideBluetoothButton: Bool {
+        get {
+            container.object(forKey: hideBluetoothButtonKey) as? Bool ?? false
+        }
+        set (hideBluetoothButton) {
+            container.set(hideBluetoothButton, forKey: hideBluetoothButtonKey)
+        }
+    }
+    static var hideQueueButton: Bool {
+        get {
+            container.object(forKey: hideQueueButtonKey) as? Bool ?? false
+        }
+        set (hideQueueButton) {
+            container.set(hideQueueButton, forKey: hideQueueButtonKey)
+        }
+    }
+    static var hideShareButton: Bool {
+        get {
+            container.object(forKey: hideShareButtonKey) as? Bool ?? false
+        }
+        set (hideShareButton) {
+            container.set(hideShareButton, forKey: hideShareButtonKey)
+        }
+    }
+    /// Scroll View
     static var hideExplore: Bool {
         get {
             container.object(forKey: hideExploreKey) as? Bool ?? false

@@ -23,6 +23,16 @@ struct Omneon: Tweak {
         if UserDefaults.hideBanButton {
             HideBanButton().activate()
         }
+        // NowPlaying FooterElements
+        if UserDefaults.hideBluetoothButton {
+            HideBluetoothButton().activate()
+        }
+        if UserDefaults.hideShareButton {
+            HideShareButton().activate()
+        }
+        if UserDefaults.hideQueueButton {
+            HideQueueButton().activate()
+        }
         // NowPlaying ScrollView
         if UserDefaults.hideExplore {
             HideExplore().activate()

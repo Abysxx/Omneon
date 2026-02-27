@@ -2,64 +2,103 @@ import SwiftUI
 import UIKit
 
 struct OmneonNowPlayingSettingsView: View {
-
     var body: some View {
         List {
-
+            
+            //Information Elements
             Section {
-                Section(header: Text("information_elements".localized)){
-                    Toggle(
-                        "hide_add_button".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.hideAddButton },
-                            set: { UserDefaults.hideAddButton = $0 }
-                        )
+                Toggle(
+                    "hide_add_button".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideAddButton },
+                        set: { UserDefaults.hideAddButton = $0 }
                     )
-    
-                    Toggle(
-                        "hide_ban_button".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.hideBanButton },
-                            set: { UserDefaults.hideBanButton = $0 }
-                        )
+                )
+                Toggle(
+                    "hide_ban_button".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideBanButton },
+                        set: { UserDefaults.hideBanButton = $0 }
                     )
-                }
-
-                Section(header: Text("scroll_view_elements".localized)){
-                    Toggle(
-                        "hide_explore".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.hideExplore },
-                            set: { UserDefaults.hideExplore = $0 }
-                        )
+                )
+            } header: {
+                Text("information_elements".localized)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
+                    .padding(.bottom, 4)
+            }
+            
+            //Footer Elements
+            Section {
+                Toggle(
+                    "hide_bluetooth_button".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideBluetoothButton },
+                        set: { UserDefaults.hideBluetoothButton = $0 }
                     )
-                    Toggle(
-                        "hide_credits".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.hideCredits },
-                            set: { UserDefaults.hideCredits = $0 }
-                        )
+                )
+                Toggle(
+                    "hide_share_button".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideShareButton },
+                        set: { UserDefaults.hideShareButton = $0 }
                     )
-                    Toggle(
-                        "hide_about_artist".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.hideAboutArtist },
-                            set: { UserDefaults.hideAboutArtist = $0 }
-                        )
+                )
+                Toggle(
+                    "hide_queue_button".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideQueueButton },
+                        set: { UserDefaults.hideQueueButton = $0 }
                     )
-                    Toggle(
-                        "hide_lyrics_card".localized,
-                        isOn: Binding<Bool>(
-                            get: { UserDefaults.hideLyricsCard },
-                            set: { UserDefaults.hideLyricsCard = $0 }
-                        )
+                )
+            } header: {
+                Text("footer_elements".localized)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
+                    .padding(.bottom, 4)
+            }
+            
+            // Scroll view elements
+            Section {
+                Toggle(
+                    "hide_explore".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideExplore },
+                        set: { UserDefaults.hideExplore = $0 }
                     )
-                }
+                )
+                Toggle(
+                    "hide_credits".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideCredits },
+                        set: { UserDefaults.hideCredits = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_about_artist".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideAboutArtist },
+                        set: { UserDefaults.hideAboutArtist = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_lyrics_card".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideLyricsCard },
+                        set: { UserDefaults.hideLyricsCard = $0 }
+                    )
+                )
+            } header: {
+                Text("scroll_view_elements".localized)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
             }
 
             NonIPadSpacerView()
         }
-
         .listStyle(GroupedListStyle())
     }
 }
