@@ -10,15 +10,15 @@ class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
 
     @objc(sortingFilteringPicker:selectedFilterRule:)
     func sortingFilteringPicker(_ picker: AnyObject, selectedFilterRule rule: AnyObject) {
-        NSLog("[Omneon] selectedFilterRule: %@", rule as AnyObject)
-        NSLog("[Omneon] selectedFilterRule class: %@", NSStringFromClass(type(of: rule)))
+        NSLog("[Omneon] selectedFilterRule: \(rule)")
+        NSLog("[Omneon] selectedFilterRule class: \(NSStringFromClass(type(of: rule)))")
         orig.sortingFilteringPicker(picker, selectedFilterRule: rule)
     }
 
     @objc(sortingFilteringPicker:deselectedFilterRule:)
     func sortingFilteringPicker(_ picker: AnyObject, deselectedFilterRule rule: AnyObject) {
-        NSLog("[Omneon] deselectedFilterRule: %@", rule as AnyObject)
-        NSLog("[Omneon] deselectedFilterRule class: %@", NSStringFromClass(type(of: rule)))
+        NSLog("[Omneon] DeselectedFilterRule: \(rule)")
+        NSLog("[Omneon] DeselectedFilterRule class: \(NSStringFromClass(type(of: rule)))")
         orig.sortingFilteringPicker(picker, deselectedFilterRule: rule)
     }
 
@@ -31,8 +31,8 @@ class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
 
     @objc(didCancelSortingFilteringPicker:reason:)
     func didCancelSortingFilteringPicker(_ picker: AnyObject, reason: AnyObject) {
-        NSLog("[Omneon] didCancelSortingFilteringPicker reason: %@", reason as AnyObject)
-        NSLog("[Omneon] reason class: %@", NSStringFromClass(type(of: reason)))
+        NSLog("[Omneon] didCancelSortingFilteringPicker reason: \(reason)")
+        NSLog("[Omneon] reason class: \(NSStringFromClass(type(of: reason)))")
         orig.didCancelSortingFilteringPicker(picker, reason: reason)
     }
 }
