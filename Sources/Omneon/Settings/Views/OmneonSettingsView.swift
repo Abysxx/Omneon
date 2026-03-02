@@ -55,7 +55,7 @@ struct OmneonSettingsView: View {
     
                 Button {
                     pushSettingsController(
-                        with: OmneonNowPlayingSettingsView(),
+                        with: OmneonYourLibrarySettingsView(),
                         title: "your_library".localized
                     )
                 } label: {
