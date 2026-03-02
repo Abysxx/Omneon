@@ -24,8 +24,8 @@ class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
 
     @objc(sortingFilteringPicker:selectedSortRule:)
     func sortingFilteringPicker(_ picker: AnyObject, selectedSortRule rule: AnyObject) {
-        NSLog("[Omneon] selectedSortRule: %@", rule as AnyObject)
-        NSLog("[Omneon] selectedSortRule class: %@", NSStringFromClass(type(of: rule)))
+        NSLog("[Omneon] selectedSortRule: \(rule)")
+        NSLog("[Omneon] selectedSortRule class: \(NSStringFromClass(type(of: rule)))")
         orig.sortingFilteringPicker(picker, selectedSortRule: rule)
     }
 
