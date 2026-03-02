@@ -4,35 +4,21 @@ import SwiftUI
 
 struct ForcePlaylist: HookGroup { }
 
-class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
+class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
-    static let targetName = "YourLibrary_CommonKit.YourLibrarySortingFilteringPickerController"
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
 
-    @objc(sortingFilteringPicker:selectedFilterRule:)
-    func sortingFilteringPicker(_ picker: AnyObject, selectedFilterRule rule: AnyObject) {
-        NSLog("[Omneon] selectedFilterRule: \(rule)")
-        NSLog("[Omneon] selectedFilterRule class: \(NSStringFromClass(type(of: rule)))")
-        orig.sortingFilteringPicker(picker, selectedFilterRule: rule)
-    }
-
-    @objc(sortingFilteringPicker:deselectedFilterRule:)
-    func sortingFilteringPicker(_ picker: AnyObject, deselectedFilterRule rule: AnyObject) {
-        NSLog("[Omneon] DeselectedFilterRule: \(rule)")
-        NSLog("[Omneon] DeselectedFilterRule class: \(NSStringFromClass(type(of: rule)))")
-        orig.sortingFilteringPicker(picker, deselectedFilterRule: rule)
-    }
-
-    @objc(sortingFilteringPicker:selectedSortRule:)
-    func sortingFilteringPicker(_ picker: AnyObject, selectedSortRule rule: AnyObject) {
-        NSLog("[Omneon] selectedSortRule: \(rule)")
-        NSLog("[Omneon] selectedSortRule class: \(NSStringFromClass(type(of: rule)))")
-        orig.sortingFilteringPicker(picker, selectedSortRule: rule)
-    }
-
-    @objc(didCancelSortingFilteringPicker:reason:)
-    func didCancelSortingFilteringPicker(_ picker: AnyObject, reason: AnyObject) {
-        NSLog("[Omneon] didCancelSortingFilteringPicker reason: \(reason)")
-        NSLog("[Omneon] reason class: \(NSStringFromClass(type(of: reason)))")
-        orig.didCancelSortingFilteringPicker(picker, reason: reason)
+    func viewDidLayoutSubviews() {
+        orig.viewDidLayoutSubviews()
+        var count: UInt32 = 0
+        let ivars = class_copyIvarList(type(of: target), &count)
+        for i in 0..<Int(count) {
+            if let ivar = ivars?[i] {
+                let name = String(cString: ivar_getName(ivar)!)
+                let value = target.value(forKey: name)
+                NSLog("[Omneon] ivar \(name): \(String(describing: value))")
+            }
+        }
+        free(ivars)
     }
 }
