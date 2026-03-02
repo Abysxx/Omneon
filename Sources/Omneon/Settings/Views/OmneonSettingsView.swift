@@ -27,31 +27,45 @@ struct OmneonSettingsView: View {
 
             //
             Section(footer: Text("restart_is_required_description".localized)){
-            Button {
-                pushSettingsController(
-                    with: OmneonGeneralSettingsView(),
-                    title: "general".localized
-                )
-            } label: {
-                NavigationSectionView(
-                    color: Color(hex: "#64D2FF"),
-                    title: "general".localized,
-                    imageSystemName: "paintpalette.fill"
-                )
-            }
-
-            Button {
-                pushSettingsController(
-                    with: OmneonNowPlayingSettingsView(),
-                    title: "now_playing".localized
-                )
-            } label: {
-                NavigationSectionView(
-                    color: Color(hex: "#64D2FF"),
-                    title: "now_playing".localized,
-                    imageSystemName: "paintpalette.fill"
-                )
-            }
+                Button {
+                    pushSettingsController(
+                        with: OmneonGeneralSettingsView(),
+                        title: "general".localized
+                    )
+                } label: {
+                    NavigationSectionView(
+                        color: Color(hex: "#64D2FF"),
+                        title: "general".localized,
+                        imageSystemName: "paintpalette.fill"
+                    )
+                }
+    
+                Button {
+                    pushSettingsController(
+                        with: OmneonNowPlayingSettingsView(),
+                        title: "now_playing".localized
+                    )
+                } label: {
+                    NavigationSectionView(
+                        color: Color(hex: "#64D2FF"),
+                        title: "now_playing".localized,
+                        imageSystemName: "paintpalette.fill"
+                    )
+                }
+    
+                Button {
+                    pushSettingsController(
+                        with: OmneonNowPlayingSettingsView(),
+                        title: "your_library".localized
+                    )
+                } label: {
+                    NavigationSectionView(
+                        color: Color(hex: "#64D2FF"),
+                        title: "your_library".localized,
+                        imageSystemName: "paintpalette.fill"
+                    )
+                }
+                
             }
 
             //
