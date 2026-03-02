@@ -2,6 +2,7 @@
 customization = "Customization";
 general = "General";
 now_playing = "Now Playing";
+your_library = "Your Library";
 
 // NowPaying Sections
 
@@ -32,6 +33,12 @@ center_title_footer = "*Recommended with hide small BT icon";
 remove_explicit_icon = "Remove/Hide Explicit Icon";
 hide_create_tab = "Hide Create Tab";
 make_tab_bar_not_transparent = "Make Tab Bar Not Transparent";
+
+// Your Library Sections
+main_view = "Main View";
+
+// Your Library Buttons
+force_playlist = "Force Playlist";
 
 // Stuff
 
