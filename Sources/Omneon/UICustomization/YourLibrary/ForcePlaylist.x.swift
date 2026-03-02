@@ -15,7 +15,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
         for i in 0..<Int(count) {
             if let ivar = ivars?[i] {
                 let name = String(cString: ivar_getName(ivar)!)
-                let value = target.value(forKey: name)
+                let value = object_getIvar(target, ivar)
                 NSLog("[Omneon] ivar \(name): \(String(describing: value))")
             }
         }
