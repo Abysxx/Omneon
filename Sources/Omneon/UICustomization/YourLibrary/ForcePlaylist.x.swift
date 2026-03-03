@@ -4,7 +4,7 @@ import SwiftUI
 
 struct ForcePlaylist: HookGroup { }
 
-class NowPlaying_ModesImpl_InformationElementsUnit_Hook_2: ClassHook<UIViewController> {
+class NowPlaying_ModesImpl_InformationElementsUnit_Hook_i86767886786876867867: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
     static let targetName = "NowPlaying_ModesImpl.InformationElementsUnit"
     
