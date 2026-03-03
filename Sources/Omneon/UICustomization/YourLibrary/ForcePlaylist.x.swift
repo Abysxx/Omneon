@@ -4,14 +4,21 @@ import SwiftUI
 
 struct ForcePlaylist: HookGroup { }
 
-class SPTSortingFilteringPickerDelegate_Hook: ClassHook<NSObject> {
+class NSObject_SortingFiltering_Hook: ClassHook<NSObject> {
     typealias Group = ForcePlaylist
-    static let targetName = "YourLibrary_CommonKit.YourLibrarySortingFilteringPickerController"
+    static let targetName = "NSObject"
 
     @objc(sortingFilteringPicker:selectedFilterRule:)
     func sortingFilteringPicker(_ picker: AnyObject, selectedFilterRule rule: AnyObject) {
+        NSLog("[Omneon] FOUND delegate class: \(NSStringFromClass(type(of: target)))")
         NSLog("[Omneon] selectedFilterRule: \(rule)")
-        NSLog("[Omneon] selectedFilterRule class: \(NSStringFromClass(type(of: rule)))")
         orig.sortingFilteringPicker(picker, selectedFilterRule: rule)
+    }
+
+    @objc(sortingFilteringPicker:selectedSortRule:)
+    func sortingFilteringPicker(_ picker: AnyObject, selectedSortRule rule: AnyObject) {
+        NSLog("[Omneon] FOUND delegate class: \(NSStringFromClass(type(of: target)))")
+        NSLog("[Omneon] selectedSortRule: \(rule)")
+        orig.sortingFilteringPicker(picker, selectedSortRule: rule)
     }
 }
