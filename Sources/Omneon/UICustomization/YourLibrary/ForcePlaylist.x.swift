@@ -6,7 +6,7 @@ struct ForcePlaylist: HookGroup { }
 
 class SPTSortingFilteringPickerDelegate_Hook: ClassHook<NSObject> {
     typealias Group = ForcePlaylist
-    static let targetName = "SPTSortingFilteringPickerDelegate"
+    static let targetName = "YourLibrary_CommonKit.YourLibrarySortingFilteringPickerController"
 
     @objc(sortingFilteringPicker:selectedFilterRule:)
     func sortingFilteringPicker(_ picker: AnyObject, selectedFilterRule rule: AnyObject) {
