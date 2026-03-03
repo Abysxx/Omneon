@@ -15,6 +15,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
         classes.withUnsafeMutableBufferPointer { buf in
             objc_getClassList(AutoreleasingUnsafeMutablePointer(buf.baseAddress!), count)
         }
+        var output = ""
         for cls in classes {
             var methodCount: UInt32 = 0
             let methods = class_copyMethodList(cls, &methodCount)
@@ -22,11 +23,14 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
                 if let method = methods?[i] {
                     let sel = NSStringFromSelector(method_getName(method))
                     if sel.lowercased().contains("sortingfiltering") {
-                        NSLog("[Omneon] class: \(NSStringFromClass(cls)) method: \(sel)")
+                        output += "class: \(NSStringFromClass(cls)) method: \(sel)\n"
                     }
                 }
             }
             free(methods)
         }
+        let path = "/var/jb/var/mobile/Documents/sortingfiltering_dump.txt"
+        try? output.write(toFile: path, atomically: true, encoding: .utf8)
+        NSLog("[Omneon] dumped to \(path)")
     }
 }
