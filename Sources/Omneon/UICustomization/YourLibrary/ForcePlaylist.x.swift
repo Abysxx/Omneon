@@ -8,9 +8,13 @@ class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
     typealias Group = ForcePlaylist
     static let targetName = "YourLibrary_CommonKit.YourLibrarySortingFilteringPickerController"
 
-    @objc(setDelegate:)
-    func setDelegate(_ delegate: AnyObject) {
-        NSLog("[Omneon] delegate class: \(NSStringFromClass(type(of: delegate)))")
-        orig.setDelegate(delegate)
+    @objc(init)
+    func `init`() -> AnyObject {
+        let result = orig.`init`()
+        let symbols = Thread.callStackSymbols
+        for symbol in symbols.prefix(10) {
+            NSLog("[Omneon] stack: \(symbol)")
+        }
+        return result
     }
 }
