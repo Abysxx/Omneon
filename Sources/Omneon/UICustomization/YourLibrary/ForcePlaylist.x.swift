@@ -25,7 +25,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
             }
         }
         
-        let path = "/var/jb/tmp/spotify_classes.txt"
+        let path = "/var/jb/var/mobile/Documents/spotify_classes.txt"
         try? output.write(toFile: path, atomically: true, encoding: .utf8)
         NSLog("[Omneon] dumped classes to \(path)")
     }
