@@ -8,15 +8,22 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
     
-    func viewDidLoad() {
-        orig.viewDidLoad()
+    func viewDidLayoutSubviews() {
+        orig.viewDidLayoutSubviews()
         var count: UInt32 = 0
-        guard let ivars = class_copyIvarList(type(of: target), &count) else { return }
+        let ivars = class_copyIvarList(type(of: target), &count)
         for i in 0..<Int(count) {
-            guard let name = ivar_getName(ivars[i]).map({ String(cString: $0) }) else { continue }
-            let value = object_getIvar(target, ivars[i])
-            guard let value = value else { continue }
-            NSLog("[Omneon] \(name): \(value)")
+            if let ivar = ivars?[i] {
+                let name = String(cString: ivar_getName(ivar)!)
+                let typeEncoding = String(cString: ivar_getTypeEncoding(ivar)!)
+                // only attempt to get object types (start with @)
+                if typeEncoding.hasPrefix("@") {
+                    let value = object_getIvar(target, ivar)
+                    NSLog("[Omneon] ivar \(name) (\(typeEncoding)): \(String(describing: value))")
+                } else {
+                    NSLog("[Omneon] ivar \(name) (\(typeEncoding)): <non-object>")
+                }
+            }
         }
         free(ivars)
     }
