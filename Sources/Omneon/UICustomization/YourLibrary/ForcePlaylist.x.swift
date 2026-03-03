@@ -8,13 +8,17 @@ class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
     typealias Group = ForcePlaylist
     static let targetName = "YourLibrary_CommonKit.YourLibrarySortingFilteringPickerController"
 
-    @objc(init)
-    func `init`() -> AnyObject {
-        let result = orig.`init`()
-        let symbols = Thread.callStackSymbols
-        for symbol in symbols.prefix(10) {
-            NSLog("[Omneon] stack: \(symbol)")
-        }
-        return result
+    @objc(sortingFilteringPicker:selectedFilterRule:)
+    func sortingFilteringPicker(_ picker: AnyObject, selectedFilterRule rule: AnyObject) {
+        NSLog("[Omneon] selectedFilterRule: \(rule)")
+        NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
+        orig.sortingFilteringPicker(picker, selectedFilterRule: rule)
+    }
+
+    @objc(sortingFilteringPicker:selectedSortRule:)
+    func sortingFilteringPicker(_ picker: AnyObject, selectedSortRule rule: AnyObject) {
+        NSLog("[Omneon] selectedSortRule: \(rule)")
+        NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
+        orig.sortingFilteringPicker(picker, selectedSortRule: rule)
     }
 }
