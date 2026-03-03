@@ -16,12 +16,17 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
         classes.withUnsafeMutableBufferPointer { buf in
             objc_getClassList(AutoreleasingUnsafeMutablePointer(buf.baseAddress!), count)
         }
+        
+        var output = ""
         for cls in classes {
             let name = NSStringFromClass(cls)
             if name.lowercased().contains("collection") || name.lowercased().contains("yourlibrary") {
-                NSLog("[Omneon] class: \(name)")
+                output += "\(name)\n"
             }
         }
         
+        let path = "/var/jb/tmp/spotify_classes.txt"
+        try? output.write(toFile: path, atomically: true, encoding: .utf8)
+        NSLog("[Omneon] dumped classes to \(path)")
     }
 }
