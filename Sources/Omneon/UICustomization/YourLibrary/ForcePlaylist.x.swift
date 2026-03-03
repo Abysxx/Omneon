@@ -4,21 +4,29 @@ import SwiftUI
 
 struct ForcePlaylist: HookGroup { }
 
-class YourLibrarySortingFilteringPickerController_Hook: ClassHook<NSObject> {
+class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
-    static let targetName = "YourLibrary_CommonKit.YourLibrarySortingFilteringPickerController"
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
 
-    @objc(sortingFilteringPicker:selectedFilterRule:)
-    func sortingFilteringPicker(_ picker: AnyObject, selectedFilterRule rule: AnyObject) {
-        NSLog("[Omneon] selectedFilterRule: \(rule)")
-        NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
-        orig.sortingFilteringPicker(picker, selectedFilterRule: rule)
-    }
-
-    @objc(sortingFilteringPicker:selectedSortRule:)
-    func sortingFilteringPicker(_ picker: AnyObject, selectedSortRule rule: AnyObject) {
-        NSLog("[Omneon] selectedSortRule: \(rule)")
-        NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
-        orig.sortingFilteringPicker(picker, selectedSortRule: rule)
+    func viewDidAppear(_ animated: Bool) {
+        orig.viewDidAppear(animated)
+        let count = objc_getClassList(nil, 0)
+        var classes = [AnyClass](repeating: NSObject.self, count: Int(count))
+        classes.withUnsafeMutableBufferPointer { buf in
+            objc_getClassList(AutoreleasingUnsafeMutablePointer(buf.baseAddress!), count)
+        }
+        for cls in classes {
+            var methodCount: UInt32 = 0
+            let methods = class_copyMethodList(cls, &methodCount)
+            for i in 0..<Int(methodCount) {
+                if let method = methods?[i] {
+                    let sel = NSStringFromSelector(method_getName(method))
+                    if sel.lowercased().contains("sortingfiltering") {
+                        NSLog("[Omneon] class: \(NSStringFromClass(cls)) method: \(sel)")
+                    }
+                }
+            }
+            free(methods)
+        }
     }
 }
