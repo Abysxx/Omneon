@@ -1,11 +1,45 @@
 # Omneon
 
-A Spotify tweak that adds more customization options *WIP*
-
+A Spotify tweak that adds more customization options *WIP*</br>
 The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpotifyReborn
 
-This is my first time making a tweak and coding with swift so if you find any issues or better ways to do something I'd appreciate any help
-This is also my first time making an actual project on github, so im new to this as well.
+## Features
+ Currently there are 15 customization options split into 2 different tabs with there own sub-sections,</br>
+ Here I'll list all of them and what they do
 
-Some other things to note is that i've been building the deb on here and testing it on my phone so thats why theres a lot of workflow runs & commits for testing things
-And I said its my first time using swift so tbh I'm using a bit of AI for help, but I'm working on learning swift every weekday so hopefully soon I won't need to use AI as much.
+### General
+- **Remove/Hide Explicit Icon** - Hides the Explicit Icon "E" all around the app and the lockscreen
+- **Hide Create Tab** - Hides the Create Tab "+" from the bottom navbar
+- **Make Tab Bar Not Transparent** - Makes the bottom navbar not have that slightly transparent part
+
+
+### Now Playing
+- **Information Elements** - These are the elements next to the song title in the NowPlaingView (NPV)
+  - **Hide Add Button** - Hides the add button "+"
+  - **Hide Ban Button** - Hides the ban button "-"
+
+
+- **Footer Elements** - These are the elements below the song title/artist name in the NPV
+  - **Hide Bluetooth Button** - Hides the bluetooth button
+  - **Hide Share Button** - Hides the share button
+  - **Hide Queue Button** - Hides the queue button
+
+
+- **Scroll View Elements** - These are the elements that show up in the NPV when you scroll down
+  - **Hide Explore** - Hides the explore section
+  - **Hide Credits** - Hides the credits section
+  - **Hide About Artist** - Hides the about artist section
+  - **Hide Lyrics** - Hides the lyrics section
+
+
+- **Now Playing Bar** - Unlike the others these affect the bar when your not clicked into the song
+  - **Hide Big Bluetooth Icon** - Hides the bluetooth icon next to the play/pause button on the left
+  - **Hide Small Bluetooth Icon** - Hides the bluetooth icon below the track title 
+  - **Center Track Title** - Centers the track title to the middle of the bar <sub>(will overlap with small bluetooth icon if not hidden)</sub>
+
+
+## About me / the project
+So currently this is my first tweak that I have ever made. I've been jailbreaking since ios 13 (or 12 i dont remeber) but I've finally decided to contribute something to the community. The reason I'm making this tweak is because I used to use sposify and spotilife but somewhat recently the older versions of spotify stopped working along with sposify.
+As I mentioned this is my first tweak I made so I'm still learning swift and to be upfront and honest I am also using AI to assist me, it's mostly used for debugging my code and helping me with finding the correct classes to hook too. Also this is my first like actual project on github. I'm also using githubs workflows to build and test my tweaks since I'm doing this on a school laptop mostly I'm not able to compile and test it somewhere else. Since I'm testing it on here there's lots of commits and ran workflows which idk if it matters but I though I'd just mention that incase anyone is wondering why there's so many commits and workflows. If you want to help or have any reconmendations for me I'd love to hear it.
+
+You can contact me at infabysx@gmail.com
