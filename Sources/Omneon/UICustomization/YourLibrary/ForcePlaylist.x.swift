@@ -11,7 +11,7 @@ extension Collection {
 var DidForcePlaylistAlready = false
 struct ForcePlaylist: HookGroup { }
 
-class EncoreCollectionView_Hook: ClassHook<UICollectionView> {
+class EncoreCollectionView_Hook: ClassHook<NSObject> {
     typealias Group = ForcePlaylist
     static let targetName = "_TtCE28EncoreConsumerMobile_BaseKitO19LegacyUI_ECMCoreKit5Views14CollectionView"
 
