@@ -9,8 +9,21 @@ extension Collection {
 }
 
 var DidForcePlaylistAlready = false
-
 struct ForcePlaylist: HookGroup { }
+
+class YourLibraryReusableContentBinderCollectionInterface_Hook: ClassHook<NSObject> {
+    typealias Group = ForcePlaylist
+    static let targetName = "YourLibrary_CommonKit.YourLibraryReusableContentBinderCollectionInterface"
+
+    @objc(collectionView:didSelectItemAtIndexPath:)
+    func collectionView(_ collectionView: AnyObject, didSelectItemAtIndexPath indexPath: AnyObject) {
+        NSLog("[Omneon] didSelectItemAtIndexPath called")
+        for symbol in Thread.callStackSymbols {
+            NSLog("[Omneon] \(symbol)")
+        }
+        orig.collectionView(collectionView, didSelectItemAtIndexPath: indexPath)
+    }
+}
 
 class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
@@ -18,7 +31,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
 
     func viewDidAppear(_ animated: Bool) {
         orig.viewDidAppear(animated)
-        if(DidForcePlaylistAlready){return}
+        if DidForcePlaylistAlready { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let view = self.target.view
             guard
@@ -30,7 +43,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
                 let s5 = s4.subviews[safe: 0],
                 let collectionView = s5.subviews[safe: 0] as? UICollectionView
             else { return }
-    
+
             NSLog("[Omneon] found collectionView: \(collectionView.accessibilityIdentifier ?? "no id")")
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
