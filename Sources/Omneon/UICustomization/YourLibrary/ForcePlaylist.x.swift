@@ -4,18 +4,26 @@ import SwiftUI
 
 struct ForcePlaylist: HookGroup { }
 
-class YourLibraryHeaderContentFiltersView_Hook: ClassHook<UIView> {
+class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
-    static let targetName = "YourLibrary_CommonKit.YourLibraryHeaderContentFiltersView"
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
 
-    @objc(initWithFrame:)
-    func initWithFrame(_ frame: CGRect) -> AnyObject {
-        let result = orig.initWithFrame(frame)
-        NSLog("[Omneon] YourLibraryHeaderContentFiltersView init: \(result)")
-        // log subviews to find the collection view
+    func viewDidAppear(_ animated: Bool) {
+        orig.viewDidAppear(animated)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            NSLog("[Omneon] subviews: \((result as AnyObject).subviews as Any)")
+            guard let filtersView = self.target.view.subviews.first?
+                .subviews.first?
+                .subviews.first?
+                .subviews.first else { return }
+            
+            if let collectionView = filtersView.subviews.first(where: { 
+                $0.accessibilityIdentifier == "Layout.CollectionView" 
+            }) as? UICollectionView {
+                let indexPath = IndexPath(item: 1, section: 0)
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
+                NSLog("[Omneon] forced playlist filter selection")
+            }
         }
-        return result
     }
 }
