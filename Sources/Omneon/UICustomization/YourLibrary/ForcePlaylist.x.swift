@@ -11,6 +11,20 @@ extension Collection {
 var DidForcePlaylistAlready = false
 struct ForcePlaylist: HookGroup { }
 
+class EncoreCollectionView_Hook: ClassHook<UICollectionView> {
+    typealias Group = ForcePlaylist
+    static let targetName = "_TtCE28EncoreConsumerMobile_BaseKitO19LegacyUI_ECMCoreKit5Views14CollectionView"
+
+    @objc(collectionView:didSelectItemAtIndexPath:)
+    func collectionView(_ collectionView: AnyObject, didSelectItemAtIndexPath indexPath: AnyObject) {
+        NSLog("[Omneon] Encore didSelectItemAtIndexPath")
+        for symbol in Thread.callStackSymbols {
+            NSLog("[Omneon] \(symbol)")
+        }
+        orig.collectionView(collectionView, didSelectItemAtIndexPath: indexPath)
+    }
+}
+
 class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
