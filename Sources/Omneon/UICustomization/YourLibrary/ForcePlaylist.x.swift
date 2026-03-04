@@ -8,6 +8,8 @@ extension Collection {
     }
 }
 
+var DidForcePlaylistAlready = false
+
 struct ForcePlaylist: HookGroup { }
 
 class YourLibraryViewController_Hook: ClassHook<UIViewController> {
@@ -16,6 +18,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
 
     func viewDidAppear(_ animated: Bool) {
         orig.viewDidAppear(animated)
+        if(DidForcePlaylistAlready){return}
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let view = self.target.view
             guard
@@ -32,6 +35,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
+            DidForcePlaylistAlready = true
         }
     }
 }
