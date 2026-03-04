@@ -11,20 +11,6 @@ extension Collection {
 var DidForcePlaylistAlready = false
 struct ForcePlaylist: HookGroup { }
 
-class YourLibraryReusableContentBinderCollectionInterface_Hook: ClassHook<NSObject> {
-    typealias Group = ForcePlaylist
-    static let targetName = "YourLibrary_CommonKit.YourLibraryReusableContentBinderCollectionInterface"
-
-    @objc(collectionView:didSelectItemAtIndexPath:)
-    func collectionView(_ collectionView: AnyObject, didSelectItemAtIndexPath indexPath: AnyObject) {
-        NSLog("[Omneon] didSelectItemAtIndexPath called")
-        for symbol in Thread.callStackSymbols {
-            NSLog("[Omneon] \(symbol)")
-        }
-        orig.collectionView(collectionView, didSelectItemAtIndexPath: indexPath)
-    }
-}
-
 class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
@@ -45,6 +31,8 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
             else { return }
 
             NSLog("[Omneon] found collectionView: \(collectionView.accessibilityIdentifier ?? "no id")")
+            NSLog("[Omneon] delegate: \(String(describing: collectionView.delegate))")
+            NSLog("[Omneon] delegate class: \(NSStringFromClass(type(of: collectionView.delegate as AnyObject)))")
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
