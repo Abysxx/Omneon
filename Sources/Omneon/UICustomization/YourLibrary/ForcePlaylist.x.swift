@@ -29,7 +29,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
             else { return }
     
             NSLog("[Omneon] found collectionView: \(collectionView.accessibilityIdentifier ?? "no id")")
-            let indexPath = IndexPath(item: 1, section: 0)
+            let indexPath = IndexPath(item: 0, section: 0)
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
         }
