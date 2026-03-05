@@ -4,7 +4,7 @@ A Spotify tweak that adds more customization options *WIP*</br>
 The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpotifyReborn
 
 ## Features
- Currently there are 15 customization options split into 2 different tabs with there own sub-sections,</br>
+ Currently there are 16 customization options split into 3 different tabs with there own sub-sections,</br>
  Here I'll list all of them and what they do
 
 ### General
@@ -12,18 +12,15 @@ The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpot
 - **Hide Create Tab** - Hides the Create Tab "+" from the bottom navbar
 - **Make Tab Bar Not Transparent** - Makes the bottom navbar not have that slightly transparent part
 
-
 ### Now Playing
 - **Information Elements** - These are the elements next to the song title in the NowPlaingView (NPV)
   - **Hide Add Button** - Hides the add button "+"
   - **Hide Ban Button** - Hides the ban button "-"
 
-
 - **Footer Elements** - These are the elements below the song title/artist name in the NPV
   - **Hide Bluetooth Button** - Hides the bluetooth button
   - **Hide Share Button** - Hides the share button
   - **Hide Queue Button** - Hides the queue button
-
 
 - **Scroll View Elements** - These are the elements that show up in the NPV when you scroll down
   - **Hide Explore** - Hides the explore section
@@ -31,11 +28,15 @@ The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpot
   - **Hide About Artist** - Hides the about artist section
   - **Hide Lyrics** - Hides the lyrics section
 
-
 - **Now Playing Bar** - Unlike the others these affect the bar when your not clicked into the song
   - **Hide Big Bluetooth Icon** - Hides the bluetooth icon next to the play/pause button on the left
   - **Hide Small Bluetooth Icon** - Hides the bluetooth icon below the track title 
   - **Center Track Title** - Centers the track title to the middle of the bar <sub>(will overlap with small bluetooth icon if not hidden)</sub>
+
+### Your Library
+- **Main View** - The view you see when you first click on "Your Library"
+
+  - **Force Playlist** - Auto selects the playlist filter on first open
 
 
 ## About me / the project
