@@ -28,7 +28,7 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
             let s5 = s4.subviews[safe: 0],
             let collectionView = s5.subviews[safe: 0] as? UICollectionView
         else { return }
-        let indexPath = IndexPath(item: 1, section: 0)
+        let indexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
         DidForcePlaylistAlready = true
