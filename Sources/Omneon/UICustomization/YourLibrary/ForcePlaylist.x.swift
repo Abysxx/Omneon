@@ -17,10 +17,16 @@ class EncoreCollectionView_Hook: ClassHook<NSObject> {
 
     @objc(collectionView:didSelectItemAtIndexPath:)
     func collectionView(_ collectionView: AnyObject, didSelectItemAtIndexPath indexPath: AnyObject) {
-        NSLog("[Omneon] Encore didSelectItemAtIndexPath")
-        for symbol in Thread.callStackSymbols {
-            NSLog("[Omneon] \(symbol)")
+        var output = "didSelectItemAtIndexPath called\n"
+        for (i, symbol) in Thread.callStackSymbols.enumerated() {
+            if symbol.contains("Spotify") || symbol.contains("YourLibrary") || symbol.contains("Encore") {
+                output += "[\(i)] \(symbol)\n"
+            }
         }
+        let path = "/var/jb/var/mobile/Documents/encore_callstack.txt"
+        let existing = (try? String(contentsOfFile: path)) ?? ""
+        try? (existing + output + "\n---\n").write(toFile: path, atomically: true, encoding: .utf8)
+        NSLog("[Omneon] wrote callstack to \(path)")
         orig.collectionView(collectionView, didSelectItemAtIndexPath: indexPath)
     }
 }
