@@ -15,8 +15,8 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
     typealias Group = ForcePlaylist
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
 
-    func viewDidLayoutSubviews() {
-        orig.viewDidLayoutSubviews()
+    func viewDidAppear(_ animated: Bool) {
+        orig.viewDidAppear(animated)
         if DidForcePlaylistAlready { return }
         let view = self.target.view
         guard
@@ -28,6 +28,10 @@ class YourLibraryViewController_Hook: ClassHook<UIViewController> {
             let s5 = s4.subviews[safe: 0],
             let collectionView = s5.subviews[safe: 0] as? UICollectionView
         else { return }
+
+        //NSLog("[Omneon] found collectionView: \(collectionView.accessibilityIdentifier ?? "no id")")
+        //NSLog("[Omneon] delegate: \(String(describing: collectionView.delegate))")
+        //NSLog("[Omneon] delegate class: \(NSStringFromClass(type(of: collectionView.delegate as AnyObject)))")
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
