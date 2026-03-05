@@ -62,7 +62,9 @@ struct Omneon: Tweak {
         if UserDefaults.centerTitle {
             CenterTitle().activate()
         }
-        ForcePlaylist().activate()
-
+        // Your Library
+        if UserDefaults.forcePlaylist {
+            ForcePlaylist().activate()
+        }
     }
 }
