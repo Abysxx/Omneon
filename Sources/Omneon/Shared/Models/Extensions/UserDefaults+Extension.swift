@@ -2,11 +2,11 @@ import Foundation
 
 extension UserDefaults {
     static var container: UserDefaults = .standard
-
+    // General
     private static let removeExplicitIconKey = "removeExplicitIcon"
     private static let hideCreateTabKey = "hideCreateTab"
     private static let makeTabBarNotTransparentKey = "makeTabBarNotTransparent"
-    
+    // Now Playing
     private static let hideAddButtonKey = "hideAddButton"
     private static let hideBanButtonKey = "hideBanButton"
 
@@ -22,6 +22,9 @@ extension UserDefaults {
     private static let hideSmallBluetoothIconKey = "hideSmallBluetoothIcon"
     private static let hideBigBluetoothIconKey = "hideBigBluetoothIcon"
     private static let centerTitleKey = "centerTitle"
+    // Your Library
+    private static let forcePlaylistKey = "forcePlaylist"
+    
     ///
     /// General
     ///
@@ -151,6 +154,17 @@ extension UserDefaults {
         }
         set (centerTitle) {
             container.set(centerTitle, forKey: centerTitleKey)
+        }
+    }
+    ///
+    /// Your Library
+    ///
+    static var forcePlaylist: Bool {
+        get {
+            container.object(forKey: forcePlaylistKey) as? Bool ?? false
+        }
+        set (forcePlaylist) {
+            container.set(forcePlaylist, forKey: forcePlaylistKey)
         }
     }
 }
