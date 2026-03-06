@@ -9,7 +9,7 @@ func exitApplication() {
 }
 
 struct Omneon: Tweak {
-    static let version = "0.2.0"
+    static let version = "0.2.1"
     //I don't care about supporting certain app versions. at least right now
     init() {
         //General
@@ -62,6 +62,9 @@ struct Omneon: Tweak {
         if UserDefaults.centerTitle {
             CenterTitle().activate()
         }
-
+        // Your Library
+        if UserDefaults.forcePlaylist {
+            ForcePlaylist().activate()
+        }
     }
 }
