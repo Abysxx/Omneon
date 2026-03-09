@@ -66,5 +66,7 @@ struct Omneon: Tweak {
         if UserDefaults.forcePlaylist {
             ForcePlaylist().activate()
         }
+        //Misc
+        Postseason().activate()
     }
 }
