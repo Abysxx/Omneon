@@ -52,6 +52,15 @@ struct Omneon: Tweak {
         if UserDefaults.hideLyricsCard {
             HideLyricsCard().activate()
         }
+        if UserDefaults.hideOnTourCard {
+            HideOnTour().activate()
+        }
+        if UserDefaults.hideReleaseCountdownCard {
+            HideReleaseCountdown().activate()
+        }
+        if UserDefaults.hideMerchCard {
+            HideMerch().activate()
+        }
         // NowPlaying Bar
         if UserDefaults.hideBigBluetoothIcon {
             HideBigBluetoothIcon().activate()
@@ -67,6 +76,9 @@ struct Omneon: Tweak {
             ForcePlaylist().activate()
         }
         //Misc
-        Postseason().activate()
+        if UserDefaults.fuxkPostseason {
+            Postseason().activate()
+        }
+        
     }
 }
