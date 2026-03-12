@@ -1,10 +1,10 @@
 # Omneon
 
-A Spotify tweak that adds more customization options *WIP*</br>
+A Spotify tweak that adds more customization options</br>
 The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpotifyReborn
 
 ## Features
- Currently there are 16 customization options split into 3 different tabs with there own sub-sections,</br>
+ Currently there are 20 customization options split into 4 different tabs with there own sub-sections,</br>
  Here I'll list all of them and what they do
 
 ### General
@@ -27,6 +27,9 @@ The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpot
   - **Hide Credits** - Hides the credits section
   - **Hide About Artist** - Hides the about artist section
   - **Hide Lyrics** - Hides the lyrics section
+  - **Hide On Tour** - Hides the on tour section
+  - **Hide Release Countdown** - Hides the release countdown section
+  - **Hide Merch** - Hides the merch section
 
 - **Now Playing Bar** - Unlike the others these affect the bar when your not clicked into the song
   - **Hide Big Bluetooth Icon** - Hides the bluetooth icon next to the play/pause button on the left
@@ -37,7 +40,10 @@ The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpot
 - **Main View** - The view you see when you first click on "Your Library"
 
   - **Force Playlist** - Auto selects the playlist filter on first open
+    
+### Misc/Dev - (Misc Features & Things In Testing)
 
+- **Axxturel Postseason Test** - A Test I did checking if the cover's can be easily changed
 
 ## About me / the project
 So currently this is my first tweak that I have ever made. I've been jailbreaking since ios 13 (or 12 i dont remeber) but I've finally decided to contribute something to the community. The reason I'm making this tweak is because I used to use sposify and spotilife but somewhat recently the older versions of spotify stopped working along with sposify.

@@ -18,13 +18,17 @@ extension UserDefaults {
     private static let hideCreditsKey = "hideCredits"
     private static let hideAboutArtistKey = "hideAboutArtist"
     private static let hideLyricsCardKey = "hideLyricsCard"
+    private static let hideOnTourCardKey = "hideOnTourCard"
+    private static let hideReleaseCountdownCardKey = "hideReleaseCountdownCard"
+    private static let hideMerchCardKey = "hideMerchCard"
 
     private static let hideSmallBluetoothIconKey = "hideSmallBluetoothIcon"
     private static let hideBigBluetoothIconKey = "hideBigBluetoothIcon"
     private static let centerTitleKey = "centerTitle"
     // Your Library
     private static let forcePlaylistKey = "forcePlaylist"
-    
+    // Misc/Dev
+    private static let fuxkPostseasonKey = "fuxkPostseason"
     ///
     /// General
     ///
@@ -131,6 +135,30 @@ extension UserDefaults {
             container.set(hideLyricsCard, forKey: hideLyricsCardKey)
         }
     }
+    static var hideOnTourCard: Bool {
+        get {
+            container.object(forKey: hideOnTourCardKey) as? Bool ?? false
+        }
+        set (hideOnTourCard) {
+            container.set(hideOnTourCard, forKey: hideOnTourCardKey)
+        }
+    }
+    static var hideReleaseCountdownCard: Bool {
+        get {
+            container.object(forKey: hideReleaseCountdownCardKey) as? Bool ?? false
+        }
+        set (hideReleaseCountdownCard) {
+            container.set(hideReleaseCountdownCard, forKey: hideReleaseCountdownCardKey)
+        }
+    }
+    static var hideMerchCard: Bool {
+        get {
+            container.object(forKey: hideMerchCardKey) as? Bool ?? false
+        }
+        set (hideMerchCard) {
+            container.set(hideMerchCard, forKey: hideMerchCardKey)
+        }
+    }
     /// Bar
     static var hideSmallBluetoothIcon: Bool {
         get {
@@ -165,6 +193,17 @@ extension UserDefaults {
         }
         set (forcePlaylist) {
             container.set(forcePlaylist, forKey: forcePlaylistKey)
+        }
+    }
+    ///
+    /// Misc/Dev
+    ///
+    static var fuxkPostseason: Bool {
+        get {
+            container.object(forKey: fuxkPostseasonKey) as? Bool ?? false
+        }
+        set (fuxkPostseason) {
+            container.set(fuxkPostseason, forKey: fuxkPostseasonKey)
         }
     }
 }
