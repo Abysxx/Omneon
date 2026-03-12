@@ -66,6 +66,19 @@ struct OmneonSettingsView: View {
                     )
                 }
                 
+                Button {
+                    pushSettingsController(
+                        with: OmneonMiscSettingsView(),
+                        title: "misc".localized
+                    )
+                } label: {
+                    NavigationSectionView(
+                        color: Color(hex: "#64D2FF"),
+                        title: "misc".localized,
+                        imageSystemName: "paintpalette.fill"
+                    )
+                }
+                
             }
 
             //

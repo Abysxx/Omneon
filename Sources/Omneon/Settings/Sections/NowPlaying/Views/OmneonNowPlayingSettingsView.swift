@@ -90,6 +90,27 @@ struct OmneonNowPlayingSettingsView: View {
                         set: { UserDefaults.hideLyricsCard = $0 }
                     )
                 )
+                Toggle(
+                    "hide_on_tour".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideOnTourCard },
+                        set: { UserDefaults.hideOnTourCard = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_release_countdown".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideReleaseCountdownCard },
+                        set: { UserDefaults.hideReleaseCountdownCard = $0 }
+                    )
+                )
+                Toggle(
+                    "hide_merch".localized,
+                    isOn: Binding<Bool>(
+                        get: { UserDefaults.hideMerchCard },
+                        set: { UserDefaults.hideMerchCard = $0 }
+                    )
+                )
             } header: {
                 Text("scroll_view_elements".localized)
                     .font(.footnote)

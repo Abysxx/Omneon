@@ -3,6 +3,7 @@ customization = "Customization";
 general = "General";
 now_playing = "Now Playing";
 your_library = "Your Library";
+misc = "Misc/Dev";
 
 // NowPaying Sections
 
@@ -23,6 +24,9 @@ hide_explore = "Hide Explore";
 hide_credits = "Hide Credits";
 hide_about_artist = "Hide About Artist";
 hide_lyrics_card = "Hide Lyrics";
+hide_on_tour = "Hide On Tour";
+hide_release_countdown = "Hide Release Countdown";
+hide_merch = "Hide Merch";
 
 hide_small_bluetooth_icon = "Hide Small Bluetooth Icon";
 hide_big_bluetooth_icon = "Hide Big Bluetooth Icon";
@@ -39,6 +43,9 @@ main_view = "Main View";
 
 // Your Library Buttons
 force_playlist = "Force Playlist";
+
+// Misc/Dev
+postseason = "Axxturel Postseason Test";
 
 // Stuff
 
