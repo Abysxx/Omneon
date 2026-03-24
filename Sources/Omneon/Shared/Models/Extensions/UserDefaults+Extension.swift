@@ -29,6 +29,7 @@ extension UserDefaults {
     private static let forcePlaylistKey = "forcePlaylist"
     // Misc/Dev
     private static let fuxkPostseasonKey = "fuxkPostseason"
+    private static let replaceWithLocalKey = "replaceWithLocal"
     ///
     /// General
     ///
@@ -204,6 +205,14 @@ extension UserDefaults {
         }
         set (fuxkPostseason) {
             container.set(fuxkPostseason, forKey: fuxkPostseasonKey)
+        }
+    }
+    static var replaceWithLocal: Bool {
+        get {
+            container.object(forKey: replaceWithLocalKey) as? Bool ?? false
+        }
+        set (replaceWithLocal) {
+            container.set(replaceWithLocal, forKey: replaceWithLocalKey)
         }
     }
 }
