@@ -1,5 +1,7 @@
 # Omneon
 
+***Taking a break from developing this****
+
 A Spotify tweak that adds more customization options</br>
 The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpotifyReborn
 
