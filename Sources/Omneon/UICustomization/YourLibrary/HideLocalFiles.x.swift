@@ -2,7 +2,7 @@ import Orion
 import UIKit
 import Foundation
 
-struct HideLocalFiles: HookGroup {}]
+struct HideLocalFiles: HookGroup {}
 
 func containsIdentifier1(_ view: UIView, identifier: String) -> Bool {
     if view.accessibilityIdentifier == identifier || 
