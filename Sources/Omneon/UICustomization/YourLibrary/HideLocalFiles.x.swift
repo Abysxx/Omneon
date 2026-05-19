@@ -28,14 +28,10 @@ class HideLocalFiles_ControllerHook: ClassHook<UIViewController> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
 
-    func viewWillAppear(_ animated: Bool) {
-        orig.viewWillAppear(animated)
-        localFilesItem = nil
-        isScanning = false
-    }
-
     func viewDidAppear(_ animated: Bool) {
         orig.viewDidAppear(animated)
+        localFilesItem = nil
+        isScanning = false
         let view = self.target.view
         guard
             let s0 = view?.subviews[safe: 0],
@@ -44,7 +40,15 @@ class HideLocalFiles_ControllerHook: ClassHook<UIViewController> {
             let s3 = s2.subviews[safe: 0],
             let collectionView = s3.subviews[safe: 0] as? UICollectionView
         else { return }
+        // register blank cell to flush the localFiles reuse queue
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "YourLibraryListItemBinderIdentifier.localFilesRow.none")
         scanAndRemoveLocalFiles(in: collectionView)
+    }
+
+    func viewWillAppear(_ animated: Bool) {
+        orig.viewWillAppear(animated)
+        localFilesItem = nil
+        isScanning = false
     }
 }
 
