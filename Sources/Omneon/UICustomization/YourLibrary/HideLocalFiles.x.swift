@@ -2,56 +2,67 @@ import Orion
 import UIKit
 import Foundation
 
-struct HideLocalFiles: HookGroup {}
+var localFilesIndexPath: IndexPath? = nil
 
-func containsIdentifier1(_ view: UIView, identifier: String) -> Bool {
-    if view.accessibilityIdentifier == identifier || 
-       String(describing: type(of: view)).contains(identifier) ||
-       view.restorationIdentifier == identifier {
-        return true
-    }
-    for subview in view.subviews {
-        if containsIdentifier1(subview, identifier: identifier) {
-            return true
+func scanAndRemoveLocalFiles(in collectionView: UICollectionView) {
+    for cell in collectionView.visibleCells {
+        if containsIdentifier(cell, identifier: "LocalFiles.Row.Library"),
+           let indexPath = collectionView.indexPath(for: cell) {
+            if localFilesIndexPath != indexPath {
+                localFilesIndexPath = indexPath
+                DispatchQueue.main.async {
+                    collectionView.reloadData()
+                }
+            }
+            break
         }
     }
-    return false
 }
+
+struct HideLocalFiles: HookGroup {}
 
 class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
+    
+    @objc(collectionView:numberOfItemsInSection:)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let count = orig.collectionView(collectionView, numberOfItemsInSection: section)
+        let adjusted = localFilesIndexPath != nil ? count - 1 : count
+        return adjusted
+    }
 
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
-        
-        if containsIdentifier1(cell, identifier: "LocalFiles.Row.Library") {
-            cell.isHidden = true
-            cell.alpha = 0
-            cell.isUserInteractionEnabled = false
-            
-            var frame = cell.frame
-            frame.size.height = 0
-            frame.size.width = 0
-            cell.frame = frame
-        } else {
-            cell.isHidden = false
-            cell.alpha = 1
-            cell.isUserInteractionEnabled = true
+        guard let hidden = localFilesIndexPath else {
+            // Haven't found the target yet, check this cell
+            let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
+            if containsIdentifier(cell, identifier: "LocalFiles.Row.Library") {
+                localFilesIndexPath = indexPath
+                DispatchQueue.main.async {
+                    collectionView.reloadData()
+                }
+            }
+            return cell
         }
-        
-        return cell
+        let adjustedIndexPath = indexPath.item >= hidden.item
+            ? IndexPath(item: indexPath.item + 1, section: indexPath.section)
+            : indexPath
+        return orig.collectionView(collectionView, cellForItemAt: adjustedIndexPath)
     }
 
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
-        
-        if containsIdentifier1(cell, identifier: "LocalFiles.Row.Library") {
-            cell.isHidden = true
-            cell.alpha = 0
-            cell.isUserInteractionEnabled = false
+        // Catch cells that had subviews added asynchronously
+        if localFilesIndexPath == nil && containsIdentifier(cell, identifier: "LocalFiles.Row.Library") {
+            localFilesIndexPath = indexPath
+            DispatchQueue.main.async {
+                collectionView.reloadData()
+            }
         }
+        orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
+}
+
+
 }
