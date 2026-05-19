@@ -63,6 +63,3 @@ class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
 }
-
-
-}
