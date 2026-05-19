@@ -47,3 +47,13 @@ class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
         return orig.collectionView(collectionView, cellForItemAt: adjusted)
     }
 }
+
+class HideLocalFiles_ViewControllerHook: ClassHook<UIViewController> {
+    typealias Group = HideLocalFiles
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
+
+    func viewDidAppear(_ animated: Bool) {
+        orig.viewDidAppear(animated)
+        localFilesIndexPath = nil
+    }
+}
