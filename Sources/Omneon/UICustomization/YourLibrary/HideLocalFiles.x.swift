@@ -21,6 +21,16 @@ func scanAndRemoveLocalFiles(in collectionView: UICollectionView) {
 
 struct HideLocalFiles: HookGroup {}
 
+class HideLocalFiles_ControllerHook: ClassHook<UIViewController> {
+    typealias Group = HideLocalFiles
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
+
+    func viewDidAppear(_ animated: Bool) {
+        orig.viewDidAppear(animated)
+        localFilesIndexPath = nil
+    }        
+}
+
 class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
