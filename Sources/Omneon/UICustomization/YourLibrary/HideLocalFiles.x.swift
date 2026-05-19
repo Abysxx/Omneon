@@ -10,12 +10,14 @@ class YourLibraryCollectionView_Hook: ClassHook<UICollectionView> {
   
     func layoutSubviews() {
         orig.layoutSubviews()
-        if let view = target.subviews[safe: 2]?
-            .subviews[safe: 0]?
-            .subviews[safe: 0],
-            view.accessibilityIdentifier == "LocalFiles.Row.Library" {
-            view.isHidden = true
-            NSLog("[Omneon] hidden LocalFiles.Row.Library")
+        for subview in target.subviews {
+            if let view = subview.subviews[safe: 2]?
+                .subviews[safe: 0]?
+                .subviews[safe: 0],
+                view.accessibilityIdentifier == "LocalFiles.Row.Library" {
+                view.isHidden = true
+                NSLog("[Omneon] hidden LocalFiles.Row.Library")
+            }
         }
     }
 }
