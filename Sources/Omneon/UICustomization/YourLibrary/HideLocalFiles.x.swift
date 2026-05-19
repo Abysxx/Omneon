@@ -36,7 +36,7 @@ class HideLocalFiles_ViewControllerHook: ClassHook<UIViewController> {
 
 class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
+    static let targetName = "YourLibrary_CommonKit.YourLibraryCollectionView"
 
     @objc(collectionView:numberOfItemsInSection:)
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -68,16 +68,6 @@ class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
 
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        NSLog("[Omneon] cell at \(indexPath) subviews: \(cell.subviews.count)")
-        for (i, sub) in cell.subviews.enumerated() {
-            NSLog("[Omneon] cell.subviews[\(i)] = \(type(of: sub)) id=\(sub.accessibilityIdentifier ?? "nil") subviews=\(sub.subviews.count)")
-            for (j, sub2) in sub.subviews.enumerated() {
-                NSLog("[Omneon] cell.subviews[\(i)][\(j)] = \(type(of: sub2)) id=\(sub2.accessibilityIdentifier ?? "nil") subviews=\(sub2.subviews.count)")
-                for (k, sub3) in sub2.subviews.enumerated() {
-                    NSLog("[Omneon] cell.subviews[\(i)][\(j)][\(k)] = \(type(of: sub3)) id=\(sub3.accessibilityIdentifier ?? "nil")")
-                }
-            }
-        }
         if hiddenLocalFilesIndexPath == nil,
            let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
            view.accessibilityIdentifier == "LocalFiles.Row.Library" {
