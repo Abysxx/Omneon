@@ -9,7 +9,7 @@ func exitApplication() {
 }
 
 struct Omneon: Tweak {
-    static let version = "0.2.2"
+    static let version = "0.2.3"
     //I don't care about supporting certain app versions. at least right now
     init() {
         //General
@@ -74,6 +74,9 @@ struct Omneon: Tweak {
         // Your Library
         if UserDefaults.forcePlaylist {
             ForcePlaylist().activate()
+        }
+        if UserDefaults.hideLocalFiles {
+            HideLocalFiles().activate()
         }
         //Misc
         if UserDefaults.fuxkPostseason {

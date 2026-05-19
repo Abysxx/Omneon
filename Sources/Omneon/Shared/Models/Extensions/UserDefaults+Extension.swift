@@ -27,8 +27,10 @@ extension UserDefaults {
     private static let centerTitleKey = "centerTitle"
     // Your Library
     private static let forcePlaylistKey = "forcePlaylist"
+    private static let hideLocalFilesKey = "hideLocalFiles"
     // Misc/Dev
     private static let fuxkPostseasonKey = "fuxkPostseason"
+    private static let replaceWithLocalKey = "replaceWithLocal"
     ///
     /// General
     ///
@@ -195,6 +197,14 @@ extension UserDefaults {
             container.set(forcePlaylist, forKey: forcePlaylistKey)
         }
     }
+    static var hideLocalFiles: Bool {
+        get {
+            container.object(forKey: hideLocalFilesKey) as? Bool ?? false
+        }
+        set (hideLocalFiles) {
+            container.set(hideLocalFiles, forKey: hideLocalFilesKey)
+        }
+    }
     ///
     /// Misc/Dev
     ///
@@ -204,6 +214,14 @@ extension UserDefaults {
         }
         set (fuxkPostseason) {
             container.set(fuxkPostseason, forKey: fuxkPostseasonKey)
+        }
+    }
+    static var replaceWithLocal: Bool {
+        get {
+            container.object(forKey: replaceWithLocalKey) as? Bool ?? false
+        }
+        set (replaceWithLocal) {
+            container.set(replaceWithLocal, forKey: replaceWithLocalKey)
         }
     }
 }

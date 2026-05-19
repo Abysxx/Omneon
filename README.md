@@ -3,7 +3,7 @@ A Spotify tweak that adds more customization options</br>
 The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpotifyReborn
 
 ## Features
- Currently there are 20 customization options split into 4 different tabs with there own sub-sections,</br>
+ Currently there are 21 customization options split into 4 different tabs with there own sub-sections,</br>
  Here I'll list all of them and what they do
 
 ### General
@@ -39,6 +39,7 @@ The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpot
 - **Main View** - The view you see when you first click on "Your Library"
 
   - **Force Playlist** - Auto selects the playlist filter on first open
+  - **Hide Local Files** - Hides the local files playlist
     
 ### Misc/Dev - (Misc Features & Things In Testing)
 
