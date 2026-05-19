@@ -3,10 +3,38 @@ import UIKit
 import SwiftUI
 
 struct HideLocalFiles: HookGroup { }
-
 var hiddenLocalFilesIndexPath: IndexPath? = nil
 
-class YourLibraryContentViewBinder_Hook: ClassHook<NSObject> {
+func scanAndHideLocalFiles(in collectionView: UICollectionView) {
+    for cell in collectionView.visibleCells {
+        if let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
+           view.accessibilityIdentifier == "LocalFiles.Row.Library",
+           let indexPath = collectionView.indexPath(for: cell) {
+            if hiddenLocalFilesIndexPath != indexPath {
+                hiddenLocalFilesIndexPath = indexPath
+                DispatchQueue.main.async { collectionView.reloadData() }
+            }
+            break
+        }
+    }
+}
+
+class HideLocalFiles_ViewControllerHook: ClassHook<UIViewController> {
+    typealias Group = HideLocalFiles
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
+
+    func viewDidAppear(_ animated: Bool) {
+        orig.viewDidAppear(animated)
+        guard let collectionView = target.view
+            .subviews[safe: 0]?
+            .subviews[safe: 0]?
+            .subviews[safe: 0] as? UICollectionView else { return }
+        hiddenLocalFilesIndexPath = nil
+        scanAndHideLocalFiles(in: collectionView)
+    }
+}
+
+class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
 
@@ -35,19 +63,9 @@ class YourLibraryContentViewBinder_Hook: ClassHook<NSObject> {
 
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        NSLog("[Omneon] willDisplay cell at \(indexPath) subviews: \(cell.subviews.count)")
-        if let s2 = cell.subviews[safe: 2] {
-            NSLog("[Omneon] subviews[2] subviews: \(s2.subviews.count)")
-            if let s0 = s2.subviews[safe: 0] {
-                NSLog("[Omneon] subviews[2][0] subviews: \(s0.subviews.count)")
-                if let s00 = s0.subviews[safe: 0] {
-                    NSLog("[Omneon] subviews[2][0][0] accessibilityIdentifier: \(s00.accessibilityIdentifier ?? "nil")")
-                }
-            }
-        }
         if hiddenLocalFilesIndexPath == nil,
-            let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
-            view.accessibilityIdentifier == "LocalFiles.Row.Library" {
+           let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
+           view.accessibilityIdentifier == "LocalFiles.Row.Library" {
             hiddenLocalFilesIndexPath = indexPath
             DispatchQueue.main.async { collectionView.reloadData() }
         }
