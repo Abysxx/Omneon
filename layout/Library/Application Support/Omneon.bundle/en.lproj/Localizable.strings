@@ -43,6 +43,7 @@ main_view = "Main View";
 
 // Your Library Buttons
 force_playlist = "Force Playlist";
+hide_local_files = "Hide Local Files";
 
 // Misc/Dev
 postseason = "Axxturel Postseason Test";
