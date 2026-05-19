@@ -4,17 +4,19 @@ import SwiftUI
 
 struct HideLocalFiles: HookGroup { }
 
-class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
+class YourLibraryCompositionalLayout_Hook: ClassHook<UICollectionViewLayout> {
     typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryCompositionalLayout"
 
-    @objc(collectionView:layout:sizeForItemAtIndexPath:)
-    func collectionView(_ collectionView: UICollectionView, layout: AnyObject, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if let cell = collectionView.cellForItem(at: indexPath),
+    @objc(layoutAttributesForItemAtIndexPath:)
+    func layoutAttributesForItem(at indexPath: IndexPath) -> AnyObject? {
+        guard let attrs = orig.layoutAttributesForItem(at: indexPath) else { return nil }
+        if let cell = target.collectionView?.cellForItem(at: indexPath),
            let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
            view.accessibilityIdentifier == "LocalFiles.Row.Library" {
-            return .zero
+            (attrs as? UICollectionViewLayoutAttributes)?.frame = .zero
+            (attrs as? UICollectionViewLayoutAttributes)?.isHidden = true
         }
-        return orig.collectionView(collectionView, layout: layout, sizeForItemAt: indexPath)
+        return attrs
     }
 }
