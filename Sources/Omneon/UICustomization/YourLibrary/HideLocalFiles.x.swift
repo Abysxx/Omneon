@@ -1,47 +1,57 @@
 import Orion
 import UIKit
-import SwiftUI
+import Foundation
 
-struct HideLocalFiles: HookGroup { }
-var localFilesIndexPath: IndexPath? = nil
+struct HideLocalFiles: HookGroup {}]
 
-class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
-    typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
-
-    @objc(collectionView:numberOfItemsInSection:)
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = orig.collectionView(collectionView, numberOfItemsInSection: section)
-        // scan all items to find localFiles index
-        for i in 0..<count {
-            let ip = IndexPath(item: i, section: section)
-            let cell = orig.collectionView(collectionView, cellForItemAt: ip)
-            if cell.reuseIdentifier == "YourLibraryListItemBinderIdentifier.localFilesRow.none" {
-                localFilesIndexPath = ip
-                break
-            }
-        }
-        return localFilesIndexPath != nil ? count - 1 : count
+func containsIdentifier1(_ view: UIView, identifier: String) -> Bool {
+    if view.accessibilityIdentifier == identifier || 
+       String(describing: type(of: view)).contains(identifier) ||
+       view.restorationIdentifier == identifier {
+        return true
     }
+    for subview in view.subviews {
+        if containsIdentifier1(subview, identifier: identifier) {
+            return true
+        }
+    }
+    return false
+}
+
+class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
+    typealias Group = HideLocalFiles
+    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
 
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let hidden = localFilesIndexPath else {
-            return orig.collectionView(collectionView, cellForItemAt: indexPath)
+        let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if containsIdentifier1(cell, identifier: "LocalFiles.Row.Library") {
+            cell.isHidden = true
+            cell.alpha = 0
+            cell.isUserInteractionEnabled = false
+            
+            var frame = cell.frame
+            frame.size.height = 0
+            frame.size.width = 0
+            cell.frame = frame
+        } else {
+            cell.isHidden = false
+            cell.alpha = 1
+            cell.isUserInteractionEnabled = true
         }
-        let adjusted = indexPath.item >= hidden.item
-            ? IndexPath(item: indexPath.item + 1, section: indexPath.section)
-            : indexPath
-        return orig.collectionView(collectionView, cellForItemAt: adjusted)
+        
+        return cell
     }
-}
 
-class HideLocalFiles_ViewControllerHook: ClassHook<UIViewController> {
-    typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
-
-    func viewDidAppear(_ animated: Bool) {
-        orig.viewDidAppear(animated)
-        localFilesIndexPath = nil
+    @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
+        
+        if containsIdentifier1(cell, identifier: "LocalFiles.Row.Library") {
+            cell.isHidden = true
+            cell.alpha = 0
+            cell.isUserInteractionEnabled = false
+        }
     }
 }
