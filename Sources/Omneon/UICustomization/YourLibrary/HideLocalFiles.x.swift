@@ -20,7 +20,7 @@ func containsIdentifier1(_ view: UIView, identifier: String) -> Bool {
 
 class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_CommonKit.YourLibraryCollectionView"
+    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
 
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
