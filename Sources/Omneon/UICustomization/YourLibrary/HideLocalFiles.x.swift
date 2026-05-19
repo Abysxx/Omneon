@@ -84,4 +84,16 @@ class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
         }
         orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
+
+    @objc(collectionView:didSelectItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let hidden = localFilesItem else {
+            orig.collectionView(collectionView, didSelectItemAt: indexPath)
+            return
+        }
+        let adjusted = indexPath.item >= hidden
+            ? IndexPath(item: indexPath.item + 1, section: indexPath.section)
+            : indexPath
+        orig.collectionView(collectionView, didSelectItemAt: adjusted)
+    }
 }
