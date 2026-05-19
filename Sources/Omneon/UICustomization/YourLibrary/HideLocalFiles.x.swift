@@ -36,8 +36,8 @@ class YourLibraryContentViewBinder_Hook: ClassHook<NSObject> {
     @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if hiddenLocalFilesIndexPath == nil,
-        if let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
-           view.accessibilityIdentifier == "LocalFiles.Row.Library" {
+            let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
+            view.accessibilityIdentifier == "LocalFiles.Row.Library" {
             hiddenLocalFilesIndexPath = indexPath
             DispatchQueue.main.async { collectionView.reloadData() }
         }
