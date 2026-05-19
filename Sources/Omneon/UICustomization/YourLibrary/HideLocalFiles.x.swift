@@ -20,7 +20,7 @@ func containsIdentifier1(_ view: UIView, identifier: String) -> Bool {
 
 class HideLocalFiles_DelegateHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
-    static let targetName = "NowPlaying_ScrollImpl.ScrollCollectionViewManagerWithDynamicSizingImplementation"
+    static let targetName = "YourLibrary_CommonKit.YourLibraryCollectionView"
 
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
