@@ -5,27 +5,6 @@ import SwiftUI
 struct HideLocalFiles: HookGroup { }
 var localFilesIndexPath: IndexPath? = nil
 
-class YourLibraryCollectionView_Hook: ClassHook<UICollectionView> {
-    typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_CommonKit.YourLibraryCollectionView"
-
-    func layoutSubviews() {
-        orig.layoutSubviews()
-        for cell in target.visibleCells {
-            if cell.reuseIdentifier == "YourLibraryListItemBinderIdentifier.localFilesRow.none",
-               let indexPath = target.indexPath(for: cell) {
-                if localFilesIndexPath != indexPath {
-                    localFilesIndexPath = indexPath
-                    target.performBatchUpdates {
-                        target.deleteItems(at: [indexPath])
-                    }
-                }
-                break
-            }
-        }
-    }
-}
-
 class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
@@ -38,13 +17,23 @@ class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
 
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let hidden = localFilesIndexPath else {
-            return orig.collectionView(collectionView, cellForItemAt: indexPath)
+        let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
+        if cell.reuseIdentifier == "YourLibraryListItemBinderIdentifier.localFilesRow.none" {
+            localFilesIndexPath = indexPath
+            DispatchQueue.main.async { collectionView.reloadData() }
         }
-        let adjusted = indexPath.item >= hidden.item
-            ? IndexPath(item: indexPath.item + 1, section: indexPath.section)
-            : indexPath
-        return orig.collectionView(collectionView, cellForItemAt: adjusted)
+        return cell
+    }
+
+    @objc(collectionView:willDisplayCell:forItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if cell.reuseIdentifier == "YourLibraryListItemBinderIdentifier.localFilesRow.none" {
+            if localFilesIndexPath != indexPath {
+                localFilesIndexPath = indexPath
+                DispatchQueue.main.async { collectionView.reloadData() }
+            }
+        }
+        orig.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
 }
 
