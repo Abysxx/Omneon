@@ -24,10 +24,20 @@ struct HideLocalFiles: HookGroup {}
 class HideLocalFiles_ControllerHook: ClassHook<UIViewController> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
+    
 
-    func viewDidAppear(_ animated: Bool) {
-        orig.viewDidAppear(animated)
+    func viewDidLayoutSubviews() {
+        orig.viewDidLayoutSubviews()
+        let view = self.target.view
+        guard
+            let s0 = view?.subviews[safe: 0],
+            let s1 = s0.subviews[safe: 0],
+            let s2 = s1.subviews[safe: 0],
+            let s3 = s2.subviews[safe: 0],
+            let collectionView = s3.subviews[safe: 0] as? UICollectionView
+        else { return }
         localFilesIndexPath = nil
+        scanAndHideCredits(in: collectionView)
     }        
 }
 
