@@ -46,6 +46,7 @@ class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
 
     @objc(collectionView:cellForItemAtIndexPath:)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // always request one extra to account for hidden cell
         guard let hidden = hiddenLocalFilesIndexPath else {
             let cell = orig.collectionView(collectionView, cellForItemAt: indexPath)
             if let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
@@ -54,6 +55,10 @@ class HideLocalFiles_DataSourceHook: ClassHook<NSObject> {
                 DispatchQueue.main.async { collectionView.reloadData() }
             }
             return cell
+        }
+        if indexPath == hidden {
+            // return a blank invisible cell instead
+            return orig.collectionView(collectionView, cellForItemAt: IndexPath(item: hidden.item + 1, section: hidden.section))
         }
         let adjusted = indexPath.item >= hidden.item
             ? IndexPath(item: indexPath.item + 1, section: indexPath.section)
