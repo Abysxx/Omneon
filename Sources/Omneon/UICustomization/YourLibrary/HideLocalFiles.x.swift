@@ -18,4 +18,15 @@ class YourLibraryCollectionView_Hook: ClassHook<UICollectionView> {
             }
         }
     }
+
+    @objc(collectionView:layout:sizeForItemAtIndexPath:)
+    func collectionView(_ collectionView: UICollectionView, layout: AnyObject, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if let cell = target.cellForItem(at: indexPath),
+           let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
+           view.accessibilityIdentifier == "LocalFiles.Row.Library" {
+            return .zero
+        }
+        return orig.collectionView(collectionView, layout: layout, sizeForItemAt: indexPath)
+    }
+    
 }
