@@ -15,8 +15,12 @@ class YourLibraryCollectionView_Hook: ClassHook<UICollectionView> {
                 .subviews[safe: 0]?
                 .subviews[safe: 0],
                 view.accessibilityIdentifier == "LocalFiles.Row.Library" {
-                view.isHidden = true
-                NSLog("[Omneon] hidden LocalFiles.Row.Library")
+                if let cell = subview as? UICollectionViewCell,
+                   let indexPath = target.indexPath(for: cell) {
+                    target.performBatchUpdates {
+                        target.deleteItems(at: [indexPath])
+                    }
+                }
             }
         }
     }
