@@ -8,15 +8,16 @@ class YourLibraryCompositionalLayout_Hook: ClassHook<UICollectionViewLayout> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryCompositionalLayout"
 
-    @objc(layoutAttributesForItemAtIndexPath:)
-    func layoutAttributesForItem(at indexPath: IndexPath) -> AnyObject? {
-        guard let attrs = orig.layoutAttributesForItem(at: indexPath) else { return nil }
-        if let cell = target.collectionView?.cellForItem(at: indexPath),
-           let view = cell.subviews[safe: 2]?.subviews[safe: 0]?.subviews[safe: 0],
-           view.accessibilityIdentifier == "LocalFiles.Row.Library" {
-            (attrs as? UICollectionViewLayoutAttributes)?.frame = .zero
-            (attrs as? UICollectionViewLayoutAttributes)?.isHidden = true
+    @objc(layoutAttributesForElementsInRect:)
+    func layoutAttributesForElements(in rect: CGRect) -> AnyObject? {
+        guard let attrs = orig.layoutAttributesForElements(in: rect) as? [UICollectionViewLayoutAttributes] else { return nil }
+        for attr in attrs {
+            if let cell = target.collectionView?.cellForItem(at: attr.indexPath),
+               cell.reuseIdentifier == "YourLibraryListItemBinderIdentifier.localFilesRow.none" {
+                attr.frame = .zero
+                attr.isHidden = true
+            }
         }
-        return attrs
+        return attrs as AnyObject
     }
 }
