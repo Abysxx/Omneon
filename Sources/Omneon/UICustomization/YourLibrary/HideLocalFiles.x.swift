@@ -12,11 +12,13 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
         NSLog("[Omneon] viewDidAppear fired")
         orig.viewDidAppear(animated)
         let view = self.target.view
+        NSLog("[Omneon] subviews count: \(view?.subviews.count ?? -1)")
         guard
             let s0 = view?.subviews[safe: 0],
             let s1 = s0.subviews[safe: 0],
             let s2 = s1.subviews[safe: 0],
-            let collectionView = s2.subviews[safe: 0] as? UICollectionView
+            let s3 = s1.subviews[safe: 0],
+            let collectionView = s3.subviews[safe: 0] as? UICollectionView
         else { return }
 
         var output = "=== DEBUG DUMP ===\n"
