@@ -17,8 +17,7 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
         guard
             let s0 = view?.subviews[safe: 0],
             let s1 = s0.subviews[safe: 0],
-            let s2 = s1.subviews[safe: 0],
-            let collectionView = s2.subviews[safe: 0] as? UICollectionView
+            let collectionView = s1.subviews[safe: 0] as? UICollectionView
         else {
             NSLog("[Omneon] guard failed")
             NSLog("[Omneon] view subviews: \(view?.subviews.count ?? -1)")
