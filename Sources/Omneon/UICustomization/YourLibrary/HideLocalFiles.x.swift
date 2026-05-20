@@ -62,7 +62,7 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
         }
         free(ivars)
 
-        let path = "/var/jb/var/mobile/Documents/localfiles_debug.txt"
+        let path = "/private/preboot/35AEADB2AA0C8C654CF88E21A5BC148C5B48D30EAF3EA82DC6382A32AFEB3BAE8CB6C2A413E5F1485A968A768744CA22/dopamine-KMooEG/procursus/var/mobile/Documents/localfiles_debug.txt"
         try? output.write(toFile: path, atomically: true, encoding: .utf8)
         NSLog("[Omneon] debug dumped to \(path)")
     }
