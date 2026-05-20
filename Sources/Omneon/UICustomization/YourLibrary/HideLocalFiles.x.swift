@@ -11,7 +11,7 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
     func viewDidAppear(_ animated: Bool) {
     NSLog("[Omneon] viewDidAppear fired")
     orig.viewDidAppear(animated)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
         let view = self.target.view
         NSLog("[Omneon] subviews count: \(view?.subviews.count ?? -1)")
         guard
@@ -21,8 +21,14 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
             let collectionView = s2.subviews[safe: 0] as? UICollectionView
         else {
             NSLog("[Omneon] guard failed")
+            NSLog("[Omneon] view subviews: \(view?.subviews.count ?? -1)")
+            NSLog("[Omneon] s0 subviews: \(view?.subviews[safe: 0]?.subviews.count ?? -1)")
+            NSLog("[Omneon] s1 subviews: \(view?.subviews[safe: 0]?.subviews[safe: 0]?.subviews.count ?? -1)")
+            NSLog("[Omneon] s2 subviews: \(view?.subviews[safe: 0]?.subviews[safe: 0]?.subviews[safe: 0]?.subviews.count ?? -1)")
+            NSLog("[Omneon] s2[0] class: \(String(describing: view?.subviews[safe: 0]?.subviews[safe: 0]?.subviews[safe: 0]?.subviews[safe: 0].self))")
             return
         }
+        NSLog("[Omneon] collectionView class: \(NSStringFromClass(type(of: collectionView)))
 
         var output = "=== DEBUG DUMP ===\n"
         output += "dataSource: \(String(describing: collectionView.dataSource))\n"
