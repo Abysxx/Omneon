@@ -28,7 +28,7 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
             NSLog("[Omneon] s2[0] class: \(String(describing: view?.subviews[safe: 0]?.subviews[safe: 0]?.subviews[safe: 0]?.subviews[safe: 0].self))")
             return
         }
-        NSLog("[Omneon] collectionView class: \(NSStringFromClass(type(of: collectionView)))
+        NSLog("[Omneon] collectionView class: \(NSStringFromClass(type(of: collectionView)))")
 
         var output = "=== DEBUG DUMP ===\n"
         output += "dataSource: \(String(describing: collectionView.dataSource))\n"
