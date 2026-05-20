@@ -1,8 +1,8 @@
 Package: abysxx.github.omneon
 Name: Omneon
-Version: 0.2.3
+Version: 0.2.4
 Architecture: iphoneos-arm
-Description: A Spotify tweak that adds more customization options *WIP*
+Description: A Spotify tweak that adds more customization options
 Maintainer: Abyss
 Author: Abyss
 Section: Tweaks
