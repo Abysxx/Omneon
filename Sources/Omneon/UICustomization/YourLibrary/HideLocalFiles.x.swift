@@ -43,7 +43,7 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
                 }
             }
     
-            let path = "/var/mobile/Documents/localfiles_debug.txt"
+            let path = "/var/jb/var/mobile/Documents/localfiles_debug.txt"
             do {
                 try output.write(toFile: path, atomically: true, encoding: .utf8)
                 NSLog("[Omneon] dumped to \(path)")
