@@ -75,7 +75,7 @@ struct Omneon: Tweak {
         if UserDefaults.forcePlaylist {
             ForcePlaylist().activate()
         }
-        if UserDefaults.forcePlaylist {
+        if UserDefaults.hideLocalFiles {
             HideLocalFiles().activate()
         }
         //Misc
