@@ -1,3 +1,5 @@
+// Its supper bugged and i cant figure out how to make this work correctly
+// Disabled because of bugs
 import Orion
 import UIKit
 import SwiftUI
