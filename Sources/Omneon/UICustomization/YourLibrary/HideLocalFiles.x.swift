@@ -62,10 +62,14 @@ class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
         }
         free(ivars)
 
-        let path = "/var/jb/var/mobile/Documents/localfiles_debug.txt"
-        try? output.write(toFile: path, atomically: true, encoding: .utf8)
-        NSLog("[Omneon] debug dumped to \(path)")
-    }
+        let path = "/var/mobile/Documents/localfiles_debug.txt"
+        do {
+            try output.write(toFile: path, atomically: true, encoding: .utf8)
+            NSLog("[Omneon] dumped to \(path)")
+        } catch {
+            NSLog("[Omneon] write failed: \(error)")
+        }
+            }
 }
 
 class HideLocalFiles_DataSourceDebug: ClassHook<NSObject> {
