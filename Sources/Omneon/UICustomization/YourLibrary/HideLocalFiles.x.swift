@@ -1,3 +1,7 @@
+import Orion
+import UIKit
+import SwiftUI
+
 class HideLocalFiles_DebugHook: ClassHook<UIViewController> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryViewController"
