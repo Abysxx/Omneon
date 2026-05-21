@@ -55,7 +55,8 @@ func logProperties(_ obj: AnyObject, className: String? = nil) {
     for i in 0..<Int(count) {
         let property = properties[i]
 
-        guard let name = property_getName(property) else { continue }
+        // FIX: Remove 'guard let' because property_getName returns a non-optional pointer
+        let name = property_getName(property)
 
         let propName = String(cString: name)
 
@@ -122,14 +123,6 @@ class SortRuleHook: ClassHook<NSObject> {
     }
 }
 
-// MARK: - Selected Sort Order Impl
-// Pure Swift Object -> SwiftClassHook
-
-class SelectedSortOrderImplHook: SwiftClassHook {
-    typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibrarySelectedSortOrderImpl"
-}
-
 // MARK: - Local Settings Observer
 
 class LocalSettingsObserverHook: ClassHook<NSObject> {
@@ -143,14 +136,6 @@ class LocalSettingsObserverHook: ClassHook<NSObject> {
         if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
-}
-
-// MARK: - Sort/Filter Options Provider
-// Pure Swift Object -> SwiftClassHook
-
-class SortAndFilterProviderHook: SwiftClassHook {
-    typealias Group = HideLocalFiles
-    static let targetName = "Collection_DataLoaderImpl.CollectionDataLoaderSortAndFilterOptionsProviderImpl"
 }
 
 // MARK: - Sorting Filtering Picker
@@ -327,12 +312,4 @@ class ContentViewBinderHook: ClassHook<NSObject> {
         if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
-}
-
-// MARK: - Header View Binder
-// Pure Swift Object -> SwiftClassHook
-
-class HeaderViewBinderHook: SwiftClassHook {
-    typealias Group = HideLocalFiles
-    static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryHeaderViewBinder"
 }
