@@ -118,18 +118,6 @@ class SortRuleHook: ClassHook<NSObject> {
 
         return orig.isEqual(other)
     }
-
-    func `init`() -> AnyObject {
-        let obj = orig.init()
-
-        NSLog("[Omneon] SortRule.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
-        return obj
-    }
 }
 
 // MARK: - Selected Sort Order Impl
