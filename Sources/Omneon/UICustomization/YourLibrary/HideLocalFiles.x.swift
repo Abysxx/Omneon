@@ -113,14 +113,11 @@ class SortRuleHook: ClassHook<NSObject> {
         return orig.isEqual(other)
     }
     
-    func `init`() -> Target {
-        let obj = orig.init()
+    @objc(init)
+    func myInit() -> Target {
+        let obj = orig.myInit() // Safely calls the original Obj-C -init
         NSLog("[Omneon] SortRule.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
+        if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
 }
@@ -131,17 +128,6 @@ class SortRuleHook: ClassHook<NSObject> {
 class SelectedSortOrderImplHook: SwiftClassHook {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibrarySelectedSortOrderImpl"
-
-    func `init`() -> Target {
-        let obj = orig.init()
-        NSLog("[Omneon] YourLibrarySelectedSortOrderImpl.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
-        return obj
-    }
 }
 
 // MARK: - Local Settings Observer
@@ -150,14 +136,11 @@ class LocalSettingsObserverHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
     static let targetName = "_TtC28YourLibrary_YourLibraryXImpl49YourLibrarySelectedSortOrderLocalSettingsObserver"
 
-    func `init`() -> Target {
-        let obj = orig.init()
+    @objc(init)
+    func myInit() -> Target {
+        let obj = orig.myInit()
         NSLog("[Omneon] LocalSettingsObserver.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
+        if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
 }
@@ -168,17 +151,6 @@ class LocalSettingsObserverHook: ClassHook<NSObject> {
 class SortAndFilterProviderHook: SwiftClassHook {
     typealias Group = HideLocalFiles
     static let targetName = "Collection_DataLoaderImpl.CollectionDataLoaderSortAndFilterOptionsProviderImpl"
-
-    func `init`() -> Target {
-        let obj = orig.init()
-        NSLog("[Omneon] CollectionDataLoaderSortAndFilterOptionsProviderImpl.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
-        return obj
-    }
 }
 
 // MARK: - Sorting Filtering Picker
@@ -283,15 +255,12 @@ class FilterChipsProviderConfigHook: ClassHook<NSObject> {
 
         orig.filterDataLoaderError(loader, error: error)
     }
-
-    func `init`() -> Target {
-        let obj = orig.init()
+    
+    @objc(init)
+    func myInit() -> Target {
+        let obj = orig.myInit()
         NSLog("[Omneon] CSFilterChipsProviderConfig.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
+        if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
 }
@@ -326,14 +295,11 @@ class SongsFilterImplHook: ClassHook<NSObject> {
         orig.setTitle(title)
     }
 
-    func `init`() -> Target {
-        let obj = orig.init()
+    @objc(init)
+    func myInit() -> Target {
+        let obj = orig.myInit()
         NSLog("[Omneon] SongsFilterImpl.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
+        if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
 }
@@ -353,15 +319,12 @@ class ContentViewBinderHook: ClassHook<NSObject> {
         NSLog("[Omneon] scrollViewDidScrollToTop")
         orig.scrollViewDidScrollToTop(scrollView)
     }
-
-    func `init`() -> Target {
-        let obj = orig.init()
+    
+    @objc(init)
+    func myInit() -> Target {
+        let obj = orig.myInit()
         NSLog("[Omneon] YourLibraryContentViewBinder.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
+        if let o = obj as? AnyObject { logEverything(o) }
         return obj
     }
 }
@@ -372,15 +335,4 @@ class ContentViewBinderHook: ClassHook<NSObject> {
 class HeaderViewBinderHook: SwiftClassHook {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryHeaderViewBinder"
-
-    func `init`() -> Target {
-        let obj = orig.init()
-        NSLog("[Omneon] YourLibraryHeaderViewBinder.init")
-
-        if let o = obj as? AnyObject {
-            logEverything(o)
-        }
-
-        return obj
-    }
 }
