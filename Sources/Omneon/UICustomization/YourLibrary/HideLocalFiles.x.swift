@@ -318,7 +318,7 @@ class FilterChipsProviderConfigHook: ClassHook<NSObject> {
 // MARK: - Songs Filter Impl
 
 class SongsFilterImplHook: ClassHook<NSObject> {
-    typealias Group = HideLocalFiles
+    typealias Group = YourLibraryLoggerHooks
     static let targetName = "CollectionSongs_SongsImpl.SongsFilterImpl"
 
     func query() -> AnyObject {
@@ -333,7 +333,7 @@ class SongsFilterImplHook: ClassHook<NSObject> {
     func setQuery(_ query: AnyObject) {
         NSLog("[Omneon] SongsFilterImpl.setQuery -> \(query)")
 
-        orig.setQuery(query)
+        orig.perform(Selector(("setQuery:")), with: query)
     }
 
     func title() -> AnyObject {
@@ -348,7 +348,7 @@ class SongsFilterImplHook: ClassHook<NSObject> {
     func setTitle(_ title: AnyObject) {
         NSLog("[Omneon] SongsFilterImpl.setTitle -> \(title)")
 
-        orig.setTitle(title)
+        orig.perform(Selector(("setTitle:")), with: title)
     }
 
     func `init`() -> AnyObject {
