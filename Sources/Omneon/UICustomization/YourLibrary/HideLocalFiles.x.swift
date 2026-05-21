@@ -79,9 +79,10 @@ func logEverything(_ obj: AnyObject, name: String? = nil) {
     logIvars(obj)
 }
 
-// MARK: - Hook Group
+// MARK: - Hook Groups
 
 struct HideLocalFiles: HookGroup { }
+struct YourLibraryLoggerHooks: HookGroup { }
 
 // MARK: - Sort Rule
 
@@ -91,37 +92,29 @@ class SortRuleHook: ClassHook<NSObject> {
 
     func identifier() -> AnyObject {
         let result = orig.identifier()
-
         NSLog("[Omneon] SortRule.identifier -> \(result)")
-
         return result
     }
 
     func title() -> AnyObject {
         let result = orig.title()
-
         NSLog("[Omneon] SortRule.title -> \(result)")
-
         return result
     }
 
     func ascendingOrder() -> Bool {
         let result = orig.ascendingOrder()
-
         NSLog("[Omneon] SortRule.ascendingOrder -> \(result)")
-
         return result
     }
 
     func isEqual(_ other: AnyObject?) -> Bool {
         NSLog("[Omneon] SortRule.isEqual: \(String(describing: other))")
-
         return orig.isEqual(other)
     }
     
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] SortRule.init")
 
         if let o = obj as? AnyObject {
@@ -133,14 +126,14 @@ class SortRuleHook: ClassHook<NSObject> {
 }
 
 // MARK: - Selected Sort Order Impl
+// Pure Swift Object -> SwiftClassHook
 
-class SelectedSortOrderImplHook: ClassHook<NSObject> {
+class SelectedSortOrderImplHook: SwiftClassHook {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibrarySelectedSortOrderImpl"
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] YourLibrarySelectedSortOrderImpl.init")
 
         if let o = obj as? AnyObject {
@@ -159,7 +152,6 @@ class LocalSettingsObserverHook: ClassHook<NSObject> {
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] LocalSettingsObserver.init")
 
         if let o = obj as? AnyObject {
@@ -171,14 +163,14 @@ class LocalSettingsObserverHook: ClassHook<NSObject> {
 }
 
 // MARK: - Sort/Filter Options Provider
+// Pure Swift Object -> SwiftClassHook
 
-class SortAndFilterProviderHook: ClassHook<NSObject> {
+class SortAndFilterProviderHook: SwiftClassHook {
     typealias Group = HideLocalFiles
     static let targetName = "Collection_DataLoaderImpl.CollectionDataLoaderSortAndFilterOptionsProviderImpl"
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] CollectionDataLoaderSortAndFilterOptionsProviderImpl.init")
 
         if let o = obj as? AnyObject {
@@ -200,12 +192,10 @@ class SortingFilteringPickerHook: ClassHook<NSObject> {
         NSLog("===================================================")
         NSLog("[Omneon] selectedSortRule")
         NSLog("===================================================")
-
         NSLog("[Omneon] rule: \(rule)")
         NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
 
         logEverything(rule)
-
         orig.sortingFilteringPicker(picker, selectedSortRule: rule)
     }
 
@@ -214,12 +204,10 @@ class SortingFilteringPickerHook: ClassHook<NSObject> {
         NSLog("===================================================")
         NSLog("[Omneon] selectedFilterRule")
         NSLog("===================================================")
-
         NSLog("[Omneon] rule: \(rule)")
         NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
 
         logEverything(rule)
-
         orig.sortingFilteringPicker(picker, selectedFilterRule: rule)
     }
 
@@ -228,19 +216,16 @@ class SortingFilteringPickerHook: ClassHook<NSObject> {
         NSLog("===================================================")
         NSLog("[Omneon] deselectedFilterRule")
         NSLog("===================================================")
-
         NSLog("[Omneon] rule: \(rule)")
         NSLog("[Omneon] class: \(NSStringFromClass(type(of: rule)))")
 
         logEverything(rule)
-
         orig.sortingFilteringPicker(picker, deselectedFilterRule: rule)
     }
 
     @objc(didCancelSortingFilteringPicker:reason:)
     func didCancelSortingFilteringPicker(_ picker: AnyObject, reason: UInt) {
         NSLog("[Omneon] didCancelSortingFilteringPicker reason: \(reason)")
-
         orig.didCancelSortingFilteringPicker(picker, reason: reason)
     }
 }
@@ -251,9 +236,8 @@ class HeaderContentFiltersViewHook: ClassHook<UIView> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_CommonKit.YourLibraryHeaderContentFiltersView"
 
-    func initWithFrame(_ frame: CGRect) -> AnyObject {
+    func initWithFrame(_ frame: CGRect) -> Target {
         let obj = orig.initWithFrame(frame)
-
         NSLog("[Omneon] HeaderContentFiltersView.initWithFrame")
 
         if let o = obj as? AnyObject {
@@ -263,9 +247,8 @@ class HeaderContentFiltersViewHook: ClassHook<UIView> {
         return obj
     }
 
-    func initWithCoder(_ coder: NSCoder) -> AnyObject {
+    func initWithCoder(_ coder: NSCoder) -> Target {
         let obj = orig.initWithCoder(coder)
-
         NSLog("[Omneon] HeaderContentFiltersView.initWithCoder")
 
         if let o = obj as? AnyObject {
@@ -289,7 +272,6 @@ class FilterChipsProviderConfigHook: ClassHook<NSObject> {
         NSLog("[Omneon] filters: \(filters)")
 
         logEverything(filters)
-
         orig.filterDataLoaderLoaded(loader, filters: filters)
     }
 
@@ -304,7 +286,6 @@ class FilterChipsProviderConfigHook: ClassHook<NSObject> {
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] CSFilterChipsProviderConfig.init")
 
         if let o = obj as? AnyObject {
@@ -323,37 +304,30 @@ class SongsFilterImplHook: ClassHook<NSObject> {
 
     func query() -> AnyObject {
         let result = orig.query()
-
         NSLog("[Omneon] SongsFilterImpl.query -> \(result)")
-
         return result
     }
 
     @objc(setQuery:)
     func setQuery(_ query: AnyObject) {
         NSLog("[Omneon] SongsFilterImpl.setQuery -> \(query)")
-
-        orig.setQuery(Selector(("setQuery:")), with: query)
+        orig.setQuery(query)
     }
 
     func title() -> AnyObject {
         let result = orig.title()
-
         NSLog("[Omneon] SongsFilterImpl.title -> \(result)")
-
         return result
     }
 
     @objc(setTitle:)
     func setTitle(_ title: AnyObject) {
         NSLog("[Omneon] SongsFilterImpl.setTitle -> \(title)")
-
-        orig.setTitle(Selector(("setTitle:")), with: title)
+        orig.setTitle(title)
     }
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] SongsFilterImpl.init")
 
         if let o = obj as? AnyObject {
@@ -372,19 +346,16 @@ class ContentViewBinderHook: ClassHook<NSObject> {
 
     func collectionView(_ collectionView: AnyObject, didSelectItemAt indexPath: AnyObject) {
         NSLog("[Omneon] didSelectItemAtIndexPath: \(indexPath)")
-
         orig.collectionView(collectionView, didSelectItemAt: indexPath)
     }
 
     func scrollViewDidScrollToTop(_ scrollView: AnyObject) {
         NSLog("[Omneon] scrollViewDidScrollToTop")
-
         orig.scrollViewDidScrollToTop(scrollView)
     }
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] YourLibraryContentViewBinder.init")
 
         if let o = obj as? AnyObject {
@@ -396,14 +367,14 @@ class ContentViewBinderHook: ClassHook<NSObject> {
 }
 
 // MARK: - Header View Binder
+// Pure Swift Object -> SwiftClassHook
 
-class HeaderViewBinderHook: ClassHook<NSObject> {
+class HeaderViewBinderHook: SwiftClassHook {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryHeaderViewBinder"
 
     func `init`() -> Target {
         let obj = orig.init()
-
         NSLog("[Omneon] YourLibraryHeaderViewBinder.init")
 
         if let o = obj as? AnyObject {
