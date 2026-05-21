@@ -123,21 +123,6 @@ class SortRuleHook: ClassHook<NSObject> {
     }
 }
 
-// MARK: - Local Settings Observer
-
-class LocalSettingsObserverHook: ClassHook<NSObject> {
-    typealias Group = HideLocalFiles
-    static let targetName = "_TtC28YourLibrary_YourLibraryXImpl49YourLibrarySelectedSortOrderLocalSettingsObserver"
-
-    @objc(init)
-    func myInit() -> Target {
-        let obj = orig.myInit()
-        NSLog("[Omneon] LocalSettingsObserver.init")
-        if let o = obj as? AnyObject { logEverything(o) }
-        return obj
-    }
-}
-
 // MARK: - Sorting Filtering Picker
 
 class SortingFilteringPickerHook: ClassHook<NSObject> {
