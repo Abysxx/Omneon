@@ -279,16 +279,6 @@ class SongsFilterImplHook: ClassHook<NSObject> {
 class ContentViewBinderHook: ClassHook<NSObject> {
     typealias Group = HideLocalFiles
     static let targetName = "YourLibrary_YourLibraryXImpl.YourLibraryContentViewBinder"
-
-    func collectionView(_ collectionView: AnyObject, didSelectItemAt indexPath: AnyObject) {
-        NSLog("[Omneon] didSelectItemAtIndexPath: \(indexPath)")
-        orig.collectionView(collectionView, didSelectItemAt: indexPath)
-    }
-
-    func scrollViewDidScrollToTop(_ scrollView: AnyObject) {
-        NSLog("[Omneon] scrollViewDidScrollToTop")
-        orig.scrollViewDidScrollToTop(scrollView)
-    }
     
     @objc(init)
     func myInit() -> Target {
