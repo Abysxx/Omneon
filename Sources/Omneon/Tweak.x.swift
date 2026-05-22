@@ -76,7 +76,8 @@ struct Omneon: Tweak {
             ForcePlaylist().activate()
         }
         if UserDefaults.hideLocalFiles {
-            HideLocalFiles().activate()
+            // Disabled due to bugs, someone else can fix this bcs i give up
+            //HideLocalFiles().activate()
         }
         //Misc
         if UserDefaults.fuxkPostseason {
