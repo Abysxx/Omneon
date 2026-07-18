@@ -1,5 +1,5 @@
 # Omneon
-!!v0.2.3 use 0.2.2 or dont use nee feature its very broken
+!!v0.2.3 use 0.2.2 or dont use new feature its very broken
 A Spotify tweak that adds more customization options</br>
 The UI is taken and slightly modified from https://github.com/whoeevee/EeveeSpotifyReborn
 
